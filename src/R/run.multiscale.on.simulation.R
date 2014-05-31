@@ -1,6 +1,7 @@
 ## `run.multiscale.on.simulation.R' simulates data by thinning and perform
 ## permutation-based test using a multiscale Poisson model. See the input arguments. 
-## .....
+## Example Usage : R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID numPerm=1000 numSig=10 geno.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/geno.$SGE_TASK_ID.dat' raw.dat.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/raw.$SGE_TASK_ID.dat' ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.$SGE_TASK_ID' scale.level=0.8 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/'" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.simulation.R
+## 
 ##
 ##
 ## Copyright (C) 2014 Heejung Shim
