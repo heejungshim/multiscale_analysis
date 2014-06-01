@@ -120,7 +120,7 @@ if(length(wh1) > 0){
 
 
 # perform test 
-res2 = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth = NULL, numPerm = numPerm, numSig= numSig, use.default.compute.logLR = TRUE, cxx=TRUE)
+res = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth = NULL, numPerm = numPerm, numSig= numSig, use.default.compute.logLR = TRUE, cxx=FALSE)
 
 
 # write output
