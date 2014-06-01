@@ -3,7 +3,9 @@ get.pval.R
   - modify "getpval.sim.578.R" from /mnt/lustre/home/shim/wavelets/revision/code/ 
 see.pval.R 
   - 1. check the distribution of p-values under the null
-
+check.numberOfperm.R
+  - to check if different numbers of permuation (1000 vs 10000) result in similar results
+  - modify wavelets/revision/code/check.numberOfperm.R (for wavelets and window based approah, I got consistent results)
 
 
 
