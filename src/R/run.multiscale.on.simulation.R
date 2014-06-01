@@ -1,6 +1,6 @@
 ## `run.multiscale.on.simulation.R' simulates data by thinning and perform
 ## permutation-based test using a multiscale Poisson model. See the input arguments. 
-## Example Usage : R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID numPerm=1000 numSig=10 geno.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/geno.$SGE_TASK_ID.dat' raw.dat.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/raw.$SGE_TASK_ID.dat' ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.$SGE_TASK_ID' scale.level=0.8 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/'" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.simulation.R
+## Example Usage : R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID numPerm=1000 numSig=10 geno.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/geno.$SGE_TASK_ID.dat' raw.dat.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/raw.$SGE_TASK_ID.dat' ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.$SGE_TASK_ID' scale.level=0.8 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/' read.depth.ratio=NULL" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.simulation.R
 ## 
 ##
 ##
@@ -27,18 +27,9 @@ setwd("/mnt/lustre/home/shim/multiscale_analysis")
 library("multiseq")
 library("ashr")
 
-multiseq.repodir <- scan(".multiseq.repodir.txt", what=character())
-ash.repodir <- scan(".ash.repodir.txt", what=character())
+
 multiscale.analysis.repodir <- scan(".multiscale_analysis.repodir.txt", what=character())
 
-
-source(file.path(multiseq.repodir, "/package/multiseq/R/multiseq.R"))
-source(file.path(multiseq.repodir, "/package/multiseq/R/glm_approx.R"))
-source(file.path(multiseq.repodir, "/package/multiseq/R/deltamethod.R"))
-
-source(file.path(ash.repodir, "/package/ashr/R/ash.R"))
-source(file.path(ash.repodir, "/package/ashr/R/mix.R"))
-source(file.path(ash.repodir, "/package/ashr/R/RcppExports.R"))
 
 #seed=1
 #numPerm=20
@@ -48,7 +39,7 @@ source(file.path(ash.repodir, "/package/ashr/R/RcppExports.R"))
 #ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.1'
 #scale.level=NULL
 #wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/'
-
+#read.depth.ratio=0.5
 
 args = (commandArgs(TRUE))
 eval(parse(text=args[[1]]))
@@ -59,9 +50,10 @@ eval(parse(text=args[[5]]))
 eval(parse(text=args[[6]]))
 eval(parse(text=args[[7]]))
 eval(parse(text=args[[8]]))
+eval(parse(text=args[[9]]))
 
 
-
+ 
 
 setwd(wd.path)
 
@@ -78,6 +70,10 @@ setwd(wd.path)
 raw.data = read.table(raw.dat.path, as.is = TRUE)
 raw.data.T = as.numeric(apply(raw.data, 2, sum))
 
+# change read depth
+if(!is.null(read.depth.ratio)){
+    raw.data.T = floor(raw.data.T*read.depth.ratio)
+}
 
 mu0.sig = rep(1/70, 1024)
 if(is.null(ratio.path)){
@@ -124,7 +120,7 @@ if(length(wh1) > 0){
 
 
 # perform test 
-res = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth = NULL, numPerm = numPerm, numSig= numSig, use.default.compute.logLR = TRUE, cxx=FALSE)
+res2 = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth = NULL, numPerm = numPerm, numSig= numSig, use.default.compute.logLR = TRUE, cxx=TRUE)
 
 
 # write output
@@ -146,7 +142,14 @@ cat(res$pval, file = pval.path, append = TRUE)
 
 
 
+out.dir.path = paste0(wd.path, "warnings") 
+if(!file.exists(out.dir.path)){
+    dir.create(out.dir.path)
+}
 
+
+warn.path = paste0(out.dir.path, "/warnings.", seed, ".out")
+cat(warnings(), file =warn.path)
 
 
 
