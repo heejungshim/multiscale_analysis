@@ -132,9 +132,8 @@ res = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth
 out.dir.path = paste0(wd.path, output.dir.name, ".output") 
 if(!file.exists(out.dir.path)){
     dir.create(out.dir.path)
-}else{
-    stop("ERROR: there is a directory with the same name in working directory")
 }
+
 
 write.table(res$logLR, file = paste0(out.dir.path, "/res.", seed, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
 
@@ -152,16 +151,11 @@ cat(res$pval, file = pval.path, append = TRUE)
 out.dir.path = paste0(wd.path, output.dir.name, ".warnings") 
 if(!file.exists(out.dir.path)){
     dir.create(out.dir.path)
-}else{
-    stop("ERROR: there is a directory with the same name in working directory")
 }
 
 
 warn.path = paste0(out.dir.path, "/warnings.", seed, ".out")
 cat(warnings(), file =warn.path)
-
-
-
 
 
 
