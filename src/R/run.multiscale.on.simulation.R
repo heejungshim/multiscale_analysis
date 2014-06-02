@@ -1,6 +1,6 @@
 ## `run.multiscale.on.simulation.R' simulates data by thinning and perform
 ## permutation-based test using a multiscale Poisson model. See the input arguments. 
-## Example Usage : R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID numPerm=1000 numSig=10 geno.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/geno.$SGE_TASK_ID.dat' raw.dat.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/raw.$SGE_TASK_ID.dat' ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.$SGE_TASK_ID' scale.level=0.8 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/' read.depth.ratio=NULL" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.simulation.R
+## Example Usage : R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID numPerm=1000 numSig=10 geno.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/geno.$SGE_TASK_ID.dat' raw.dat.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/raw.$SGE_TASK_ID.dat' ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.$SGE_TASK_ID' scale.level=0.8 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/' read.depth.ratio=NULL output.dir.name='test'" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.simulation.R
 ## 
 ##
 ##
@@ -40,6 +40,9 @@ multiscale.analysis.repodir <- scan(".multiscale_analysis.repodir.txt", what=cha
 #scale.level=NULL
 #wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/'
 #read.depth.ratio=0.5
+#output.dir.name='test'
+
+
 
 args = (commandArgs(TRUE))
 eval(parse(text=args[[1]]))
@@ -51,6 +54,7 @@ eval(parse(text=args[[6]]))
 eval(parse(text=args[[7]]))
 eval(parse(text=args[[8]]))
 eval(parse(text=args[[9]]))
+eval(parse(text=args[[10]]))
 
 
  
@@ -123,10 +127,13 @@ if(length(wh1) > 0){
 res = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth = NULL, numPerm = numPerm, numSig= numSig, use.default.compute.logLR = TRUE, cxx=FALSE)
 
 
+
 # write output
-out.dir.path = paste0(wd.path, "output") 
+out.dir.path = paste0(wd.path, output.dir.name, ".output") 
 if(!file.exists(out.dir.path)){
     dir.create(out.dir.path)
+}else{
+    stop("ERROR: there is a directory with the same name in working directory")
 }
 
 write.table(res$logLR, file = paste0(out.dir.path, "/res.", seed, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
@@ -142,9 +149,11 @@ cat(res$pval, file = pval.path, append = TRUE)
 
 
 
-out.dir.path = paste0(wd.path, "warnings") 
+out.dir.path = paste0(wd.path, output.dir.name, ".warnings") 
 if(!file.exists(out.dir.path)){
     dir.create(out.dir.path)
+}else{
+    stop("ERROR: there is a directory with the same name in working directory")
 }
 
 
