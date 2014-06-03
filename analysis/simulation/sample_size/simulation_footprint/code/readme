@@ -6,4 +6,6 @@ get.pval.wave.R
    - collect pvalue from wave output files, make a list, and save R object.
 get.pval.ms.R 
    - collect pvalue from multiscale output files, make a list, and save R object.
+see.pval.R 
+   - make histogram and roc curves from results
  
