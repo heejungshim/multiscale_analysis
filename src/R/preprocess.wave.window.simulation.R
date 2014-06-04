@@ -36,17 +36,17 @@ source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
 
 
 
-seed=1
-geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno10.dat'
-raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat'
-ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio'
-scale.level=0.5
-wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/'
-read.depth.ratio=NULL
-output.dir.name='fullread.10ind'
-wavelet.preprocess=TRUE
-window.preprocess=TRUE
-over.dispersion=1/70/70/10
+#seed=1
+#geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno10.dat'
+#raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat'
+#ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio'
+#scale.level=0.5
+#wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/'
+#read.depth.ratio=NULL
+#output.dir.name='fullread.10ind'
+#wavelet.preprocess=TRUE
+#window.preprocess=TRUE
+#over.dispersion=1/70/70/10
 
 
 args = (commandArgs(TRUE))
