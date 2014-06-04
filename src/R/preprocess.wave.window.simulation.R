@@ -2,7 +2,7 @@
 ##
 ##
 ## Example Usage : 
-## /data/tools/R-3.0.3/bin/R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno70.dat' raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat' ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio' scale.level=0.5 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/' read.depth.ratio=NULL output.dir.name='fullread.70ind' wavelet.preprocess=TRUE window.preprocess=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.window.simulation.R
+## /data/tools/R-3.0.3/bin/R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno70.dat' raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat' ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio' scale.level=0.5 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/' read.depth.ratio=NULL output.dir.name='fullread.70ind' wavelet.preprocess=TRUE window.preprocess=TRUE over.dispersion=NULL" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.window.simulation.R
 ## 
 ##
 ##
@@ -31,20 +31,22 @@ library("ashr")
 
 
 multiscale.analysis.repodir <- scan(".multiscale_analysis.repodir.txt", what=character())
+source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
 
 
 
 
-#seed=1
-#geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno10.dat'
-#raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat'
-#ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio'
-#scale.level=0.5
-#wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/'
-#read.depth.ratio=NULL
-#output.dir.name='fullread.10ind'
-#wavelet.preprocess=TRUE
-#window.preprocess=TRUE
+seed=1
+geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno10.dat'
+raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat'
+ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio'
+scale.level=0.5
+wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/'
+read.depth.ratio=NULL
+output.dir.name='fullread.10ind'
+wavelet.preprocess=TRUE
+window.preprocess=TRUE
+over.dispersion=1/70/70/10
 
 
 args = (commandArgs(TRUE))
@@ -58,6 +60,7 @@ eval(parse(text=args[[7]]))
 eval(parse(text=args[[8]]))
 eval(parse(text=args[[9]]))
 eval(parse(text=args[[10]]))
+eval(parse(text=args[[11]]))
 
 
  
@@ -103,6 +106,8 @@ trunc.fun = function(x){
 mu0.sig = sapply(mu0.sig, trunc.fun)
 mu1.sig = sapply(mu1.sig, trunc.fun)
 
+
+
 # read genotype data
 genoD = round(as.numeric(scan(geno.path, what=double())))
 
@@ -111,20 +116,17 @@ phenoD = matrix(data=NA, nr= length(genoD), nc = length(raw.data.T))
 
 # let's sample!!!
 set.seed(seed)
+
 # geno = 0
 wh0 = which(genoD == 0)
 if(length(wh0) > 0){
-    dat.T = rbinom(length(raw.data.T)*length(wh0), raw.data.T, mu0.sig) 
-    phenoD[wh0,] = matrix(data=dat.T, nr = length(wh0), byrow = TRUE)
+    phenoD[wh0,] = sample.from.Binomial.with.Overdispersion(num.sam = length(wh0), total.count = raw.data.T, mu.sig = mu0.sig, over.dispersion = over.dispersion)
 }  
 # geno = 1
 wh1 = which(genoD == 1)
 if(length(wh1) > 0){
-    dat.T = rbinom(length(raw.data.T)*length(wh1), raw.data.T, mu1.sig) 
-    phenoD[wh1,] = matrix(data=dat.T, nr = length(wh1), byrow = TRUE)
-}  
-
-
+    phenoD[wh1,] = sample.from.Binomial.with.Overdispersion(num.sam = length(wh1), total.count = raw.data.T, mu.sig = mu1.sig, over.dispersion = over.dispersion)
+}
 
 
 
