@@ -1,6 +1,6 @@
 ## `run.multiscale.on.simulation.R' simulates data by thinning and perform
 ## permutation-based test using a multiscale Poisson model. See the input arguments. 
-## Example Usage : R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID numPerm=1000 numSig=10 geno.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/geno.$SGE_TASK_ID.dat' raw.dat.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/raw.$SGE_TASK_ID.dat' ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.$SGE_TASK_ID' scale.level=0.8 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/' read.depth.ratio=NULL output.dir.name='test'" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.simulation.R
+## Example Usage : R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID numPerm=1000 numSig=10 geno.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/geno.$SGE_TASK_ID.dat' raw.dat.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/raw.$SGE_TASK_ID.dat' ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.$SGE_TASK_ID' scale.level=0.8 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/' read.depth.ratio=NULL output.dir.name='test' over.dispersion=NULL" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.simulation.R
 ## 
 ##
 ##
@@ -29,6 +29,7 @@ library("ashr")
 
 
 multiscale.analysis.repodir <- scan(".multiscale_analysis.repodir.txt", what=character())
+source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
 
 
 #seed=1
@@ -41,7 +42,7 @@ multiscale.analysis.repodir <- scan(".multiscale_analysis.repodir.txt", what=cha
 #wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/'
 #read.depth.ratio=0.5
 #output.dir.name='test'
-
+#over.dispersion=1/70/70/10
 
 
 args = (commandArgs(TRUE))
@@ -55,6 +56,7 @@ eval(parse(text=args[[7]]))
 eval(parse(text=args[[8]]))
 eval(parse(text=args[[9]]))
 eval(parse(text=args[[10]]))
+eval(parse(text=args[[11]]))
 
 
  
@@ -111,20 +113,20 @@ set.seed(seed)
 # geno = 0
 wh0 = which(genoD == 0)
 if(length(wh0) > 0){
-    dat.T = rbinom(length(raw.data.T)*length(wh0), raw.data.T, mu0.sig) 
-    phenoD[wh0,] = matrix(data=dat.T, nr = length(wh0), byrow = TRUE)
+    phenoD[wh0,] = sample.from.Binomial.with.Overdispersion(num.sam = length(wh0), total.count = raw.data.T, mu.sig = mu0.sig, over.dispersion = over.dispersion)
 }  
 # geno = 1
 wh1 = which(genoD == 1)
 if(length(wh1) > 0){
-    dat.T = rbinom(length(raw.data.T)*length(wh1), raw.data.T, mu1.sig) 
-    phenoD[wh1,] = matrix(data=dat.T, nr = length(wh1), byrow = TRUE)
-}  
+    phenoD[wh1,] = sample.from.Binomial.with.Overdispersion(num.sam = length(wh1), total.count = raw.data.T, mu.sig = mu1.sig, over.dispersion = over.dispersion)
+}
+
+
 
 
 
 # perform test 
-res = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth = NULL, numPerm = numPerm, numSig= numSig, use.default.compute.logLR = TRUE, cxx=FALSE)
+res = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth = NULL, numPerm = numPerm, numSig= numSig, use.default.compute.logLR = TRUE, cxx=TRUE)
 
 
 
