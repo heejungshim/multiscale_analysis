@@ -39,9 +39,9 @@ source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
 #raw.dat.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/raw.1.dat'
 #ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.1'
 #scale.level=NULL
-wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/'
+#wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/'
 #read.depth.ratio=0.5
-output.dir.name='test'
+#output.dir.name='test'
 #over.dispersion=1/70/70/10
 
 
