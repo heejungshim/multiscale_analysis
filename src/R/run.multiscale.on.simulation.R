@@ -39,9 +39,9 @@ source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
 #raw.dat.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/raw.1.dat'
 #ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.1'
 #scale.level=NULL
-#wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/'
+wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/'
 #read.depth.ratio=0.5
-#output.dir.name='test'
+output.dir.name='test'
 #over.dispersion=1/70/70/10
 
 
@@ -63,6 +63,17 @@ eval(parse(text=args[[11]]))
 
 setwd(wd.path)
 
+
+
+### create file for warning message
+out.dir.path = paste0(wd.path, output.dir.name, ".warnings") 
+if(!file.exists(out.dir.path)){
+    dir.create(out.dir.path)
+}
+
+warn.path = paste0(out.dir.path, "/warnings.", seed, ".txt")
+warnings.file <- file(warn.path, open="wt")
+sink(warnings.file, type="message")
 
 
 
@@ -147,19 +158,6 @@ cat("\n", file =pval.path, append = TRUE)
 cat(res$Count_sig, file = pval.path, append = TRUE)
 cat("\n", file = pval.path, append = TRUE)	
 cat(res$pval, file = pval.path, append = TRUE)
-
-
-
-out.dir.path = paste0(wd.path, output.dir.name, ".warnings") 
-if(!file.exists(out.dir.path)){
-    dir.create(out.dir.path)
-}
-
-
-warn.path = paste0(out.dir.path, "/warnings.", seed, ".out")
-cat(warnings(), file =warn.path)
-
-
 
 
 
