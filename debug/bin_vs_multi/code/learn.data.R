@@ -232,7 +232,13 @@ multi.null.12$logLR$value
 
 
 
-#### compare myix15 and myix12
+#### compare myix17, myix15 and myix12
+
+
+round(bin.null$logLR$scales,3)
+round(bin.alt$logLR$scales,3)
+round(multi.null$logLR$scales,3)
+round(multi.alt$logLR$scales,3)
 
 round(bin.null.15$logLR$scales,3)
 round(bin.alt.15$logLR$scales,3)
@@ -243,6 +249,22 @@ round(bin.null.12$logLR$scales,3)
 round(bin.alt.12$logLR$scales,3)
 round(multi.null.12$logLR$scales,3)
 round(multi.alt.12$logLR$scales,3)
+
+
+> round(bin.null$logLR$scales,3)
+ [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+[13] 0.000 0.000 0.000 0.000 0.000 0.025
+> round(bin.alt$logLR$scales,3)
+ [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.015 0.000
+[13] 0.000 0.000 0.000 0.000 0.000 0.000
+> round(multi.null$logLR$scales,3)
+ [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+[13] 0.000 0.000 0.089 0.000 0.054 0.000
+> round(multi.alt$logLR$scales,3)
+ [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.318 2.038 0.719
+[13] 1.889 2.371 0.016 0.000 0.000 0.000
+
+
 
 > round(bin.null.15$logLR$scales,3)
  [1] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -424,6 +446,162 @@ round(bin.null.15$fitted.g[[11]]$sd,2)
  
 
 
+
+round(multi.alt$fitted.g[[14]]$pi,2)
+round(multi.alt$fitted.g[[14]]$sd,2)
+round(bin.alt$fitted.g[[14]]$pi,2)
+round(bin.alt$fitted.g[[14]]$sd,2)
+
+round(multi.null$fitted.g[[14]]$pi,2)
+round(multi.null$fitted.g[[14]]$sd,2)
+round(bin.null$fitted.g[[14]]$pi,2)
+round(bin.null$fitted.g[[14]]$sd,2)
+
+
+
+round(multi.alt$fitted.g[[13]]$pi,2)
+round(multi.alt$fitted.g[[13]]$sd,2)
+round(bin.alt$fitted.g[[13]]$pi,2)
+round(bin.alt$fitted.g[[13]]$sd,2)
+
+round(multi.null$fitted.g[[13]]$pi,2)
+round(multi.null$fitted.g[[13]]$sd,2)
+round(bin.null$fitted.g[[13]]$pi,2)
+round(bin.null$fitted.g[[13]]$sd,2)
+
+
+round(multi.alt$fitted.g[[11]]$pi,2)
+round(multi.alt$fitted.g[[11]]$sd,2)
+round(bin.alt$fitted.g[[11]]$pi,2)
+round(bin.alt$fitted.g[[11]]$sd,2)
+
+round(multi.null$fitted.g[[11]]$pi,2)
+round(multi.null$fitted.g[[11]]$sd,2)
+round(bin.null$fitted.g[[11]]$pi,2)
+round(bin.null$fitted.g[[11]]$sd,2)
+
+
+
+round(multi.alt$fitted.g[[17]]$pi,2)
+round(multi.alt$fitted.g[[17]]$sd,2)
+round(bin.alt$fitted.g[[17]]$pi,2)
+round(bin.alt$fitted.g[[17]]$sd,2)
+
+round(multi.null$fitted.g[[17]]$pi,2)
+round(multi.null$fitted.g[[17]]$sd,2)
+round(bin.null$fitted.g[[17]]$pi,2)
+round(bin.null$fitted.g[[17]]$sd,2)
+
+
+
+round(multi.alt$fitted.g[[18]]$pi,2)
+round(multi.alt$fitted.g[[18]]$sd,2)
+round(bin.alt$fitted.g[[18]]$pi,2)
+round(bin.alt$fitted.g[[18]]$sd,2)
+
+round(multi.null$fitted.g[[18]]$pi,2)
+round(multi.null$fitted.g[[18]]$sd,2)
+round(bin.null$fitted.g[[18]]$pi,2)
+round(bin.null$fitted.g[[18]]$sd,2)
+
+
+> round(multi.alt$fitted.g[[14]]$pi,2)
+[1] 0.29 0.00 0.00 0.00 0.00 0.39 0.32 0.00 0.00
+> round(multi.alt$fitted.g[[14]]$sd,2)
+[1] 0.00 0.01 0.03 0.06 0.11 0.22 0.45 0.90 1.80
+> round(bin.alt$fitted.g[[14]]$pi,2)
+[1] 1 0 0 0 0 0 0 0 0
+> round(bin.alt$fitted.g[[14]]$sd,2)
+[1] 0.00 0.01 0.02 0.04 0.08 0.16 0.32 0.64 1.28
+
+
+> round(multi.null$fitted.g[[14]]$pi,2)
+ [1] 1 0 0 0 0 0 0 0 0 0
+> round(multi.null$fitted.g[[14]]$sd,2)
+ [1] 0.00 0.01 0.02 0.03 0.06 0.12 0.25 0.50 1.00 1.99
+> round(bin.null$fitted.g[[14]]$pi,2)
+[1] 1 0 0 0 0 0 0 0 0
+> round(bin.null$fitted.g[[14]]$sd,2)
+[1] 0.00 0.01 0.02 0.03 0.07 0.14 0.27 0.54 1.08
+
+
+> round(multi.alt$fitted.g[[13]]$pi,2)
+ [1] 0.01 0.00 0.00 0.00 0.64 0.02 0.30 0.03 0.00 0.00
+> round(multi.alt$fitted.g[[13]]$sd,2)
+ [1] 0.00 0.01 0.02 0.05 0.10 0.20 0.39 0.78 1.56 3.12
+> round(bin.alt$fitted.g[[13]]$pi,2)
+ [1] 1 0 0 0 0 0 0 0 0 0
+> round(bin.alt$fitted.g[[13]]$sd,2)
+ [1] 0.00 0.01 0.02 0.04 0.09 0.18 0.35 0.71 1.42 2.83
+ 
+> round(multi.null$fitted.g[[13]]$pi,2)
+ [1] 1 0 0 0 0 0 0 0 0 0
+> round(multi.null$fitted.g[[13]]$sd,2)
+ [1] 0.00 0.01 0.02 0.04 0.09 0.18 0.35 0.71 1.42 2.84
+> round(bin.null$fitted.g[[13]]$pi,2)
+ [1] 1 0 0 0 0 0 0 0 0 0
+> round(bin.null$fitted.g[[13]]$sd,2)
+ [1] 0.00 0.01 0.03 0.05 0.10 0.21 0.42 0.83 1.66 3.32
+
+
+> round(multi.alt$fitted.g[[11]]$pi,2)
+ [1] 0.98 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.02 0.00 0.00
+> round(multi.alt$fitted.g[[11]]$sd,2)
+ [1] 0.00 0.02 0.03 0.06 0.12 0.24 0.49 0.98 1.95 3.91 7.81
+> round(bin.alt$fitted.g[[11]]$pi,2)
+ [1] 0.99 0.00 0.00 0.00 0.00 0.00 0.00 0.01 0.00 0.00
+> round(bin.alt$fitted.g[[11]]$sd,2)
+ [1] 0.00 0.02 0.03 0.06 0.12 0.25 0.50 0.99 1.99 3.97
+
+
+> round(multi.null$fitted.g[[11]]$pi,2)
+ [1] 1 0 0 0 0 0 0 0 0 0 0
+> round(multi.null$fitted.g[[11]]$sd,2)
+ [1] 0.00 0.01 0.03 0.05 0.10 0.21 0.41 0.83 1.66 3.31 6.63
+> round(bin.null$fitted.g[[11]]$pi,2)
+ [1] 1 0 0 0 0 0 0 0 0 0 0
+> round(bin.null$fitted.g[[11]]$sd,2)
+ [1] 0.00 0.02 0.03 0.06 0.12 0.25 0.49 0.98 1.97 3.94 7.87
+
+
+> round(multi.alt$fitted.g[[17]]$pi,2)
+[1] 1 0 0 0 0 0 0 0
+> round(multi.alt$fitted.g[[17]]$sd,2)
+[1] 0.00 0.01 0.01 0.02 0.05 0.09 0.19 0.38
+> round(bin.alt$fitted.g[[17]]$pi,2)
+[1] 1 0 0 0 0 0 0
+> round(bin.alt$fitted.g[[17]]$sd,2)
+[1] 0.00 0.01 0.01 0.03 0.05 0.10 0.20
+
+
+> round(multi.null$fitted.g[[17]]$pi,2)
+[1] 0 0 0 0 1 0 0 0
+> round(multi.null$fitted.g[[17]]$sd,2)
+[1] 0.00 0.01 0.01 0.02 0.05 0.09 0.18 0.36
+> round(bin.null$fitted.g[[17]]$pi,2)
+[1] 1 0 0 0 0 0 0
+> round(bin.null$fitted.g[[17]]$sd,2)
+[1] 0.00 0.00 0.01 0.02 0.04 0.08 0.15
+
+
+> round(multi.alt$fitted.g[[18]]$pi,2)
+[1] 1 0 0 0 0
+> round(multi.alt$fitted.g[[18]]$sd,2)
+[1] 0.00 0.00 0.01 0.01 0.03
+> round(bin.alt$fitted.g[[18]]$pi,2)
+[1] 1 0 0 0 0
+> round(bin.alt$fitted.g[[18]]$sd,2)
+[1] 0.00 0.01 0.01 0.02 0.04
+
+
+> round(multi.null$fitted.g[[18]]$pi,2)
+[1] 1 0 0 0 0
+> round(multi.null$fitted.g[[18]]$sd,2)
+[1] 0.00 0.00 0.01 0.01 0.03
+> round(bin.null$fitted.g[[18]]$pi,2)
+[1] 0 0 0 0 1 0
+> round(bin.null$fitted.g[[18]]$sd,2)
+[1] 0.00 0.00 0.01 0.01 0.02 0.04
 
 
 
