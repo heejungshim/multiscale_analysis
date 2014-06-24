@@ -70,117 +70,117 @@ multi.null$logLR$value
 #[1] 0.1439083
 
 
-> round(bin.null$logLR$scales,3)
- [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
-[13] 0.000 0.000 0.000 0.000 0.000 0.025
-> round(bin.alt$logLR$scales,3)
- [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.015 0.000
-[13] 0.000 0.000 0.000 0.000 0.000 0.000
-> round(multi.null$logLR$scales,3)
- [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
-[13] 0.000 0.000 0.089 0.000 0.054 0.000
-> round(multi.alt$logLR$scales,3)
- [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.318 2.038 0.719
-[13] 1.889 2.371 0.016 0.000 0.000 0.000
+round(bin.null$logLR$scales,3)
+# [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+#[13] 0.000 0.000 0.000 0.000 0.000 0.025
+round(bin.alt$logLR$scales,3)
+# [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.015 0.000
+#[13] 0.000 0.000 0.000 0.000 0.000 0.000
+round(multi.null$logLR$scales,3)
+# [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+#[13] 0.000 0.000 0.089 0.000 0.054 0.000
+round(multi.alt$logLR$scales,3)
+# [1] 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.318 2.038 0.719
+#[13] 1.889 2.371 0.016 0.000 0.000 0.000
 
 
-> round(multi.alt$fitted.g[[14]]$pi,2)
-[1] 0.29 0.00 0.00 0.00 0.00 0.39 0.32 0.00 0.00
-> round(multi.alt$fitted.g[[14]]$sd,2)
-[1] 0.00 0.01 0.03 0.06 0.11 0.22 0.45 0.90 1.80
-> round(bin.alt$fitted.g[[14]]$pi,2)
-[1] 1 0 0 0 0 0 0 0 0
-> round(bin.alt$fitted.g[[14]]$sd,2)
-[1] 0.00 0.01 0.02 0.04 0.08 0.16 0.32 0.64 1.28
+round(multi.alt$fitted.g[[14]]$pi,2)
+#[1] 0.29 0.00 0.00 0.00 0.00 0.39 0.32 0.00 0.00
+round(multi.alt$fitted.g[[14]]$sd,2)
+#[1] 0.00 0.01 0.03 0.06 0.11 0.22 0.45 0.90 1.80
+round(bin.alt$fitted.g[[14]]$pi,2)
+#[1] 1 0 0 0 0 0 0 0 0
+round(bin.alt$fitted.g[[14]]$sd,2)
+#[1] 0.00 0.01 0.02 0.04 0.08 0.16 0.32 0.64 1.28
 
 
-> round(multi.null$fitted.g[[14]]$pi,2)
- [1] 1 0 0 0 0 0 0 0 0 0
-> round(multi.null$fitted.g[[14]]$sd,2)
- [1] 0.00 0.01 0.02 0.03 0.06 0.12 0.25 0.50 1.00 1.99
-> round(bin.null$fitted.g[[14]]$pi,2)
-[1] 1 0 0 0 0 0 0 0 0
-> round(bin.null$fitted.g[[14]]$sd,2)
-[1] 0.00 0.01 0.02 0.03 0.07 0.14 0.27 0.54 1.08
+round(multi.null$fitted.g[[14]]$pi,2)
+# [1] 1 0 0 0 0 0 0 0 0 0
+round(multi.null$fitted.g[[14]]$sd,2)
+# [1] 0.00 0.01 0.02 0.03 0.06 0.12 0.25 0.50 1.00 1.99
+round(bin.null$fitted.g[[14]]$pi,2)
+#[1] 1 0 0 0 0 0 0 0 0
+round(bin.null$fitted.g[[14]]$sd,2)
+#[1] 0.00 0.01 0.02 0.03 0.07 0.14 0.27 0.54 1.08
 
 
-> round(multi.alt$fitted.g[[13]]$pi,2)
- [1] 0.01 0.00 0.00 0.00 0.64 0.02 0.30 0.03 0.00 0.00
-> round(multi.alt$fitted.g[[13]]$sd,2)
- [1] 0.00 0.01 0.02 0.05 0.10 0.20 0.39 0.78 1.56 3.12
-> round(bin.alt$fitted.g[[13]]$pi,2)
- [1] 1 0 0 0 0 0 0 0 0 0
-> round(bin.alt$fitted.g[[13]]$sd,2)
- [1] 0.00 0.01 0.02 0.04 0.09 0.18 0.35 0.71 1.42 2.83
+round(multi.alt$fitted.g[[13]]$pi,2)
+# [1] 0.01 0.00 0.00 0.00 0.64 0.02 0.30 0.03 0.00 0.00
+round(multi.alt$fitted.g[[13]]$sd,2)
+# [1] 0.00 0.01 0.02 0.05 0.10 0.20 0.39 0.78 1.56 3.12
+round(bin.alt$fitted.g[[13]]$pi,2)
+# [1] 1 0 0 0 0 0 0 0 0 0
+round(bin.alt$fitted.g[[13]]$sd,2)
+# [1] 0.00 0.01 0.02 0.04 0.09 0.18 0.35 0.71 1.42 2.83
  
-> round(multi.null$fitted.g[[13]]$pi,2)
- [1] 1 0 0 0 0 0 0 0 0 0
-> round(multi.null$fitted.g[[13]]$sd,2)
- [1] 0.00 0.01 0.02 0.04 0.09 0.18 0.35 0.71 1.42 2.84
-> round(bin.null$fitted.g[[13]]$pi,2)
- [1] 1 0 0 0 0 0 0 0 0 0
-> round(bin.null$fitted.g[[13]]$sd,2)
- [1] 0.00 0.01 0.03 0.05 0.10 0.21 0.42 0.83 1.66 3.32
+round(multi.null$fitted.g[[13]]$pi,2)
+# [1] 1 0 0 0 0 0 0 0 0 0
+round(multi.null$fitted.g[[13]]$sd,2)
+# [1] 0.00 0.01 0.02 0.04 0.09 0.18 0.35 0.71 1.42 2.84
+round(bin.null$fitted.g[[13]]$pi,2)
+# [1] 1 0 0 0 0 0 0 0 0 0
+round(bin.null$fitted.g[[13]]$sd,2)
+# [1] 0.00 0.01 0.03 0.05 0.10 0.21 0.42 0.83 1.66 3.32
 
 
-> round(multi.alt$fitted.g[[11]]$pi,2)
- [1] 0.98 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.02 0.00 0.00
-> round(multi.alt$fitted.g[[11]]$sd,2)
- [1] 0.00 0.02 0.03 0.06 0.12 0.24 0.49 0.98 1.95 3.91 7.81
-> round(bin.alt$fitted.g[[11]]$pi,2)
- [1] 0.99 0.00 0.00 0.00 0.00 0.00 0.00 0.01 0.00 0.00
-> round(bin.alt$fitted.g[[11]]$sd,2)
- [1] 0.00 0.02 0.03 0.06 0.12 0.25 0.50 0.99 1.99 3.97
+round(multi.alt$fitted.g[[11]]$pi,2)
+# [1] 0.98 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.02 0.00 0.00
+round(multi.alt$fitted.g[[11]]$sd,2)
+# [1] 0.00 0.02 0.03 0.06 0.12 0.24 0.49 0.98 1.95 3.91 7.81
+round(bin.alt$fitted.g[[11]]$pi,2)
+# [1] 0.99 0.00 0.00 0.00 0.00 0.00 0.00 0.01 0.00 0.00
+round(bin.alt$fitted.g[[11]]$sd,2)
+# [1] 0.00 0.02 0.03 0.06 0.12 0.25 0.50 0.99 1.99 3.97
 
 
-> round(multi.null$fitted.g[[11]]$pi,2)
- [1] 1 0 0 0 0 0 0 0 0 0 0
-> round(multi.null$fitted.g[[11]]$sd,2)
- [1] 0.00 0.01 0.03 0.05 0.10 0.21 0.41 0.83 1.66 3.31 6.63
-> round(bin.null$fitted.g[[11]]$pi,2)
- [1] 1 0 0 0 0 0 0 0 0 0 0
-> round(bin.null$fitted.g[[11]]$sd,2)
- [1] 0.00 0.02 0.03 0.06 0.12 0.25 0.49 0.98 1.97 3.94 7.87
+round(multi.null$fitted.g[[11]]$pi,2)
+# [1] 1 0 0 0 0 0 0 0 0 0 0
+round(multi.null$fitted.g[[11]]$sd,2)
+# [1] 0.00 0.01 0.03 0.05 0.10 0.21 0.41 0.83 1.66 3.31 6.63
+round(bin.null$fitted.g[[11]]$pi,2)
+# [1] 1 0 0 0 0 0 0 0 0 0 0
+round(bin.null$fitted.g[[11]]$sd,2)
+# [1] 0.00 0.02 0.03 0.06 0.12 0.25 0.49 0.98 1.97 3.94 7.87
 
 
-> round(multi.alt$fitted.g[[17]]$pi,2)
-[1] 1 0 0 0 0 0 0 0
-> round(multi.alt$fitted.g[[17]]$sd,2)
-[1] 0.00 0.01 0.01 0.02 0.05 0.09 0.19 0.38
-> round(bin.alt$fitted.g[[17]]$pi,2)
-[1] 1 0 0 0 0 0 0
-> round(bin.alt$fitted.g[[17]]$sd,2)
-[1] 0.00 0.01 0.01 0.03 0.05 0.10 0.20
+round(multi.alt$fitted.g[[17]]$pi,2)
+#[1] 1 0 0 0 0 0 0 0
+round(multi.alt$fitted.g[[17]]$sd,2)
+#[1] 0.00 0.01 0.01 0.02 0.05 0.09 0.19 0.38
+round(bin.alt$fitted.g[[17]]$pi,2)
+#[1] 1 0 0 0 0 0 0
+round(bin.alt$fitted.g[[17]]$sd,2)
+#[1] 0.00 0.01 0.01 0.03 0.05 0.10 0.20
 
 
-> round(multi.null$fitted.g[[17]]$pi,2)
-[1] 0 0 0 0 1 0 0 0
-> round(multi.null$fitted.g[[17]]$sd,2)
-[1] 0.00 0.01 0.01 0.02 0.05 0.09 0.18 0.36
-> round(bin.null$fitted.g[[17]]$pi,2)
-[1] 1 0 0 0 0 0 0
-> round(bin.null$fitted.g[[17]]$sd,2)
-[1] 0.00 0.00 0.01 0.02 0.04 0.08 0.15
+round(multi.null$fitted.g[[17]]$pi,2)
+#[1] 0 0 0 0 1 0 0 0
+round(multi.null$fitted.g[[17]]$sd,2)
+#[1] 0.00 0.01 0.01 0.02 0.05 0.09 0.18 0.36
+round(bin.null$fitted.g[[17]]$pi,2)
+#[1] 1 0 0 0 0 0 0
+round(bin.null$fitted.g[[17]]$sd,2)
+#[1] 0.00 0.00 0.01 0.02 0.04 0.08 0.15
 
 
-> round(multi.alt$fitted.g[[18]]$pi,2)
-[1] 1 0 0 0 0
-> round(multi.alt$fitted.g[[18]]$sd,2)
-[1] 0.00 0.00 0.01 0.01 0.03
-> round(bin.alt$fitted.g[[18]]$pi,2)
-[1] 1 0 0 0 0
-> round(bin.alt$fitted.g[[18]]$sd,2)
-[1] 0.00 0.01 0.01 0.02 0.04
+round(multi.alt$fitted.g[[18]]$pi,2)
+#[1] 1 0 0 0 0
+round(multi.alt$fitted.g[[18]]$sd,2)
+#[1] 0.00 0.00 0.01 0.01 0.03
+round(bin.alt$fitted.g[[18]]$pi,2)
+#[1] 1 0 0 0 0
+round(bin.alt$fitted.g[[18]]$sd,2)
+#[1] 0.00 0.01 0.01 0.02 0.04
 
 
-> round(multi.null$fitted.g[[18]]$pi,2)
-[1] 1 0 0 0 0
-> round(multi.null$fitted.g[[18]]$sd,2)
-[1] 0.00 0.00 0.01 0.01 0.03
-> round(bin.null$fitted.g[[18]]$pi,2)
-[1] 0 0 0 0 1 0
-> round(bin.null$fitted.g[[18]]$sd,2)
-[1] 0.00 0.00 0.01 0.01 0.02 0.04
+round(multi.null$fitted.g[[18]]$pi,2)
+#[1] 1 0 0 0 0
+round(multi.null$fitted.g[[18]]$sd,2)
+#[1] 0.00 0.00 0.01 0.01 0.03
+round(bin.null$fitted.g[[18]]$pi,2)
+#[1] 0 0 0 0 1 0
+round(bin.null$fitted.g[[18]]$sd,2)
+#[1] 0.00 0.00 0.01 0.01 0.02 0.04
 
 
 
@@ -192,7 +192,7 @@ multi.null$logLR$value
 #multiseq = function(x,g=NULL,read.depth = NULL,reflect=FALSE,baseline="inter",minobs=1,pseudocounts=0.5,all=FALSE,center=FALSE,repara=TRUE,forcebin=FALSE,lm.approx=TRUE,disp=c("add","mult"),nullcheck=TRUE,pointmass=TRUE,prior="nullbiased",gridmult=2,mixsd=NULL,VB=FALSE,shape.eff=FALSE,cxx=TRUE, computelogLR = FALSE, maxlogLR = NULL){
 
 
-multi.null = multiseq( x = sim.data.multi.null[[1]], g = c(0, 0, 1, 1), read.depth = read.depth, prior = "uniform", onlylogLR = TRUE)
+#multi.null = multiseq( x = sim.data.multi.null[[1]], g = c(0, 0, 1, 1), read.depth = read.depth, prior = "uniform", onlylogLR = TRUE)
 
 g = c(0, 0, 1, 1)
 read.depth = read.depth
@@ -256,7 +256,60 @@ if(!is.null(g)){
     }
 
 
-#x = sim.data.multi.alt[[1]]
+## run for multinomial alt data
+
+x = sim.data.multi.alt[[1]]
+
+
+    fitted.g=list()
+    fitted.g.intercept=list()
+    logLR=NULL
+    sumlogLR=NULL
+    finite.logLR=NULL
+
+
+
+
+
+xRowSums = rowSums(x)
+y.rate = matrix(c(xRowSums, read.depth-xRowSums), ncol=2)
+zdat.rate = as.vector(glm.approx(y.rate, g=g, center=center, repara=repara, lm.approx=lm.approx, disp=disp))
+zdat.rate.ash = ash(zdat.rate[3], zdat.rate[4], prior=prior, pointmass=pointmass, nullcheck=nullcheck, gridmult=gridmult, mixsd=mixsd, VB=VB, onlylogLR=onlylogLR, g=set.fitted.g[[J+1]])
+
+
+
+fitted.g[[J+1]] = zdat.rate.ash$fitted.g
+logLR[J+1] = zdat.rate.ash$logLR
+
+y = matrix(nrow=nsig, ncol=2*J*n); for(i in 1:nsig){tt = ParentTItable(x[i,]); y[i,] = as.vector(t(tt$parent))}
+
+zdat = glm.approx(y, g, minobs=minobs, pseudocounts=pseudocounts, center=center, all=all, forcebin=forcebin, repara=repara, lm.approx=lm.approx, disp=disp)
+
+
+for(j in 1:J){
+
+        spins = 2^j
+        ind = ((j-1)*n+1):(j*n)
+        zdat.ash = ash(zdat[3,ind], zdat[4,ind], prior=prior, multiseqoutput=TRUE, pointmass=pointmass, nullcheck=nullcheck, gridmult=gridmult, mixsd=mixsd, VB=VB, onlylogLR=onlylogLR, g=set.fitted.g[[j]])
+        
+        fitted.g[[j]] = zdat.ash$fitted.g
+        
+        logLR[j] = zdat.ash$logLR/spins
+}
+
+
+sumlogLR = sum(logLR) # combine logLR from different scales
+
+
+
+y.multi.alt = y
+zdat.multi.alt = zdat
+fitted.g.multi.alt =  fitted.g
+logLR.multi.alt = logLR
+
+
+# run on binomial alternative data
+
 x = sim.data.bin.alt[[1]]
 
     fitted.g=list()
@@ -285,7 +338,7 @@ zdat = glm.approx(y, g, minobs=minobs, pseudocounts=pseudocounts, center=center,
 
 
 for(j in 1:J){
-#    j = 14
+
         spins = 2^j
         ind = ((j-1)*n+1):(j*n)
         zdat.ash = ash(zdat[3,ind], zdat[4,ind], prior=prior, multiseqoutput=TRUE, pointmass=pointmass, nullcheck=nullcheck, gridmult=gridmult, mixsd=mixsd, VB=VB, onlylogLR=onlylogLR, g=set.fitted.g[[j]])
@@ -296,14 +349,9 @@ for(j in 1:J){
 }
 
 
-        sumlogLR = sum(logLR) # combine logLR from different scales
+sumlogLR = sum(logLR) # combine logLR from different scales
 
 
-
-y.multi.alt = y
-zdat.multi.alt = zdat
-fitted.g.multi.alt =  fitted.g
-logLR.multi.alt = logLR
 
 
 y.bin.alt = y
@@ -458,7 +506,7 @@ zdat.ash.multi.alt$logLR
 # 0
 
 
-# without one big observations 
+# without one big observation
 
 zdat.ash.bin.alt = ash(zdat.bin.alt[3,(st:en)[-7]], zdat.bin.alt[4,(st:en)[-7]], prior=prior, multiseqoutput=TRUE, pointmass=pointmass, nullcheck=nullcheck, gridmult=gridmult, mixsd=mixsd, VB=VB, onlylogLR=onlylogLR, g=set.fitted.g[[j]])
 
@@ -539,82 +587,24 @@ round(y.multi.alt[,s.IX]/(y.multi.alt[,s.IX] + y.multi.alt[,f.IX]),2)
 
 
 
+##### Use another data set's pi and sd in a different way
 
-
-##### ????
-
-
-
-
-
-str(zdat.ash.multi.alt)
-str(fitted.g.multi.alt[[14]])
-
-
-
-j = 14
-ind = ((j-1)*n+1):(j*n)
-zdat.ash.bin.alt = ash(zdat.bin.alt[3,ind], zdat.bin.alt[4,ind], prior=prior, multiseqoutput=TRUE, pointmass=pointmass, nullcheck=nullcheck, gridmult=gridmult, mixsd=mixsd, VB=VB, onlylogLR=onlylogLR, g=fitted.g.bin.alt[[j]])
-
-str(zdat.ash.bin.alt)
-fitted.g.bin.alt[[j]]
-
-fitted.g.bin.alt[[j]]$pi
-zdat.ash.bin.alt$fitted.g$pi
-
-
-logLR.bin.alt[j]
-logLR.multi.alt[j]
-
-
-llk.f = loglik_conv(fitted.g.bin.alt[[j]], zdat.bin.alt[3,ind], zdat.bin.alt[4,ind], "+")
-matrix_lik = t(compdens_conv(fitted.g.bin.alt[[j]], zdat.bin.alt[3,ind], zdat.bin.alt[4,ind]))
-llk.l = sum(log(matrix_lik[,1]))
-
-(llk.f - llk.l)/(2^j)
-
+## binomial data set <- use multinomial pi and sd
 
 llk.f = loglik_conv(fitted.g.multi.alt[[j]], zdat.bin.alt[3,ind], zdat.bin.alt[4,ind], "+")
 matrix_lik = t(compdens_conv(fitted.g.multi.alt[[j]], zdat.bin.alt[3,ind], zdat.bin.alt[4,ind]))
 llk.l = sum(log(matrix_lik[,1]))
 
 (llk.f - llk.l)/(2^j)
+#[1] -1.202417
 
+## multinomial data set <- use binomial pi and sd
 
-llk.f = loglik_conv(fitted.g.multi.alt[[j]], zdat.multi.alt[3,ind], zdat.multi.alt[4,ind], "+")
-matrix_lik = t(compdens_conv(fitted.g.multi.alt[[j]], zdat.multi.alt[3,ind], zdat.multi.alt[4,ind]))
+llk.f = loglik_conv(fitted.g.bin.alt[[j]], zdat.multi.alt[3,ind], zdat.multi.alt[4,ind], "+")
+matrix_lik = t(compdens_conv(fitted.g.bin.alt[[j]], zdat.multi.alt[3,ind], zdat.multi.alt[4,ind]))
 llk.l = sum(log(matrix_lik[,1]))
 
 (llk.f - llk.l)/(2^j)
-
-
-dim(matrix_lik)
-
-zdat.ash.bin.alt$logLR
-
-
-dim(y.bin.alt)
-dim(zdat.bin.alt)
-s.IX = ((1:(dim(zdat.bin.alt)[2]))*2)[st:en]
-f.IX = ((1:(dim(zdat.bin.alt)[2]))*2)[st:en] - 1
-
-y.multi.alt[,s.IX]
-y.multi.alt[,f.IX]
-
-y.bin.alt[,s.IX]
-y.bin.alt[,f.IX]
-
-round(y.bin.alt[,s.IX]/(y.bin.alt[,s.IX] + y.bin.alt[,f.IX]),2)
-round(y.multi.alt[,s.IX]/(y.multi.alt[,s.IX] + y.multi.alt[,f.IX]),2)
-
-
-> zdat.bin.alt[3,st:en]/zdat.bin.alt[4, st:en]
-[1] -1.112694333  0.009868762  0.746081311  0.766573033  0.736585495
-[6] -0.294967341 -1.873330354 -0.420272674
-> zdat.multi.alt[3,st:en]/zdat.multi.alt[4, st:en]
-[1]  0.248413167 -0.008873381  0.589071690  1.611591568 -0.248718681
-[6] -0.490846347 -4.466402488 -2.251895683
-
-
+# 0
 
 
