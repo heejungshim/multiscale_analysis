@@ -33,6 +33,8 @@ library("ashr")
 multiscale.analysis.repodir <- scan(".multiscale_analysis.repodir.txt", what=character())
 source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
 
+WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
+
 
 
 
@@ -136,9 +138,10 @@ if(length(wh1) > 0){
 #########################################
 
 if(wavelet.preprocess){
-    source("/mnt/lustre/home/shim/BIMBAM_wavelets/WaveQTL_example/Wave_preprocess.R")
+    source(paste0(WaveQTL.repodir, "/R/WaveQTL_preprocess_funcs.R"))
+
     meanR.thresh = 2
-    res = Wave_preprocess(Data = phenoD, Read.depth =NULL , C = NULL, meanR.thresh = meanR.thresh)
+    res = WaveQTL_preprocess(Data = phenoD, library.read.depth =NULL , Covariates = NULL, meanR.thresh = meanR.thresh)
 
     filteredWCs = res$filtered.WCs
     norm.DNase = res$WCs
