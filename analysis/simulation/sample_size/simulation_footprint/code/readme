@@ -9,3 +9,20 @@ get.pval.ms.R
 see.pval.R 
    - make histogram and roc curves from results
  
+get.logLR.wave.R 
+   - collect logLR from wave output files, make a list, and save R object.
+get.logLR.ms.R 
+   - collect logLR from multiscale output files, make a list, and save R object.
+see.logLR.R 
+   - make histogram and roc curves from results
+
+
+see.pval.over.R 
+  - make ROC curves to compare overdispersion effect
+see.logLR.over.R
+  - make ROC curves to compare overdispersion effect
+
+see.pval.RD.R 
+ - make ROC curves to see effects of different read depth
+see.logLR.RD.R
+ - make ROC curves to see effects of different read depth 

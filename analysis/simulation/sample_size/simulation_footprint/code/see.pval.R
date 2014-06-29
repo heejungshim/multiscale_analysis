@@ -1,18 +1,40 @@
 
 
 
-case.name = c("fullread.70ind", "fullread.30ind", "fullread.10ind")
+
+#case.name = c("fullread.70ind", "fullread.30ind", "fullread.10ind")
+#case.name = c("fullread.70ind.over", "fullread.30ind.over", "fullread.10ind.over")
+#case.name = c("fullread.70ind.over.2", "fullread.30ind.over.2", "fullread.10ind.over.2")
+case.name = c("halfread.70ind.over", "halfread.30ind.over", "2fullread.10ind.over")
+
+#output.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/sum/f.Robj"
+#output.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/sum/f.overS.Robj"
+#output.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/sum/f.overB.Robj"
+output.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/sum/f.overS.RD.Robj"
+
+
+#ROC.file.name = "ROC.pdf"
+#ROC.file.name = "ROC_overS.pdf"
+#ROC.file.name = "ROC_overB.pdf"
+ROC.file.name = "ROC_overS_RD.pdf"
+
+#hist.file.name = "hist.pdf"
+#hist.file.name = "hist_overS.pdf"
+#hist.file.name = "hist_overB.pdf"
+hist.file.name = "hist_overS_RD.pdf"
+
+
 
 ##### ms ######
 ms.null = vector("list", length(case.name))
 ms.alt = vector("list", length(case.name))
 
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/multiscale/sum/pval.fullread.70ind.Robj")
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/multiscale/sum/pval.", case.name[1], ".Robj"))
 pval.alt  = as.numeric(pval_list)
 done.alt = done_res
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/multiscale/sum/pval.fullread.70ind.Robj")
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/multiscale/sum/pval.", case.name[1], ".Robj"))
 pval.null  = as.numeric(pval_list)
 done.null = done_res
 
@@ -28,13 +50,17 @@ ms.null[[1]] = pval.null
 ms.alt[[1]] = pval.alt
 
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/multiscale/sum/pval.fullread.30ind.Robj")
+
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/multiscale/sum/pval.", case.name[2], ".Robj"))
 pval.alt  = as.numeric(pval_list)
 done.alt = done_res
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/multiscale/sum/pval.fullread.30ind.Robj")
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/multiscale/sum/pval.", case.name[2], ".Robj"))
 pval.null  = as.numeric(pval_list)
 done.null = done_res
+
+
+
 
 
 sum(done.alt)
@@ -48,13 +74,17 @@ ms.null[[2]] = pval.null
 ms.alt[[2]] = pval.alt
 
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/multiscale/sum/pval.fullread.10ind.Robj")
+
+
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/multiscale/sum/pval.", case.name[3], ".Robj"))
 pval.alt  = as.numeric(pval_list)
 done.alt = done_res
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/multiscale/sum/pval.fullread.10ind.Robj")
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/multiscale/sum/pval.", case.name[3], ".Robj"))
 pval.null  = as.numeric(pval_list)
 done.null = done_res
+
+
 
 
 sum(done.alt)
@@ -80,11 +110,11 @@ wave.null = vector("list", length(case.name))
 wave.alt = vector("list", length(case.name))
 
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/wave/sum/pval.fullread.70ind.Robj")
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/wave/sum/pval.", case.name[1], ".Robj"))
 pval.alt  = as.numeric(pval_list)
 done.alt = done_res
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/wave/sum/pval.fullread.70ind.Robj")
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/wave/sum/pval.", case.name[1], ".Robj"))
 pval.null  = as.numeric(pval_list)
 done.null = done_res
 
@@ -100,13 +130,15 @@ wave.null[[1]] = pval.null
 wave.alt[[1]] = pval.alt
 
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/wave/sum/pval.fullread.30ind.Robj")
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/wave/sum/pval.", case.name[2], ".Robj"))
 pval.alt  = as.numeric(pval_list)
 done.alt = done_res
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/wave/sum/pval.fullread.30ind.Robj")
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/wave/sum/pval.", case.name[2], ".Robj"))
 pval.null  = as.numeric(pval_list)
 done.null = done_res
+
+
 
 
 sum(done.alt)
@@ -120,13 +152,15 @@ wave.null[[2]] = pval.null
 wave.alt[[2]] = pval.alt
 
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/wave/sum/pval.fullread.10ind.Robj")
+
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/wave/sum/pval.", case.name[3], ".Robj"))
 pval.alt  = as.numeric(pval_list)
 done.alt = done_res
 
-load("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/wave/sum/pval.fullread.10ind.Robj")
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/wave/sum/pval.", case.name[3], ".Robj"))
 pval.null  = as.numeric(pval_list)
 done.null = done_res
+
 
 
 sum(done.alt)
@@ -142,14 +176,15 @@ wave.alt[[3]] = pval.alt
 
 
 
-
-
-
 #############################
 # Make histogram
 #############################
 
-pdf("hist_null_alt_footprint.pdf")
+#pdf("hist.pdf")
+#pdf("hist_overS.pdf")
+#pdf("hist_overB.pdf")
+pdf(hist.file.name)
+
 
 par(mfrow = c(4,1))
 hist(wave.null[[1]], main="null Wavelet (70)", breaks = 47)
@@ -177,9 +212,7 @@ hist(ms.alt[[3]], main="alt multiscale (10)", breaks = 47)
 dev.off()
 
 
-
-
-
+ 
 
 ######## roc curves
 
@@ -194,7 +227,7 @@ tpr.ms.list = vector("list", length(case.name))
 for(cc in 1:length(case.name)){
     
     pval = as.numeric(c(wave.null[[cc]], wave.alt[[cc]]))
-    disc = c(rep(0,200), rep(1,200))
+    disc = c(rep(0,500), rep(1,500))
     rnk = order(pval)
     p.wave = pval[rnk]
     d.wave = disc[rnk]
@@ -208,8 +241,8 @@ for(cc in 1:length(case.name)){
         wh = which(p.wave <= uni.p.wave[i])
         sig.wave[i] = length(wh)
         fdp.wave[i] = 1 - (sum(d.wave[wh])/length(wh))
-        tpr.wave[i] = sum(d.wave[wh])/200
-        fpr.wave[i] = (length(wh) - sum(d.wave[wh]))/200
+        tpr.wave[i] = sum(d.wave[wh])/500
+        fpr.wave[i] = (length(wh) - sum(d.wave[wh]))/500
     }
 
     fpr.wave.list[[cc]] = fpr.wave
@@ -224,7 +257,7 @@ for(cc in 1:length(case.name)){
 for(cc in 1:length(case.name)){
     
     pval = as.numeric(c(ms.null[[cc]], ms.alt[[cc]]))
-    disc = c(rep(0,200), rep(1,200))
+    disc = c(rep(0,500), rep(1,500))
     rnk = order(pval)
     p.ms = pval[rnk]
     d.ms = disc[rnk]
@@ -238,8 +271,8 @@ for(cc in 1:length(case.name)){
         wh = which(p.ms <= uni.p.ms[i])
         sig.ms[i] = length(wh)
         fdp.ms[i] = 1 - (sum(d.ms[wh])/length(wh))
-        tpr.ms[i] = sum(d.ms[wh])/200
-        fpr.ms[i] = (length(wh) - sum(d.ms[wh]))/200
+        tpr.ms[i] = sum(d.ms[wh])/500
+        fpr.ms[i] = (length(wh) - sum(d.ms[wh]))/500
     }
 
     fpr.ms.list[[cc]] = fpr.ms
@@ -248,9 +281,15 @@ for(cc in 1:length(case.name)){
 }
 
 
+save("fpr.wave.list", "tpr.wave.list", "fpr.ms.list", "tpr.ms.list", file = output.path)
 
 
-pdf("simu_roc_footprint_50.pdf")
+
+
+#pdf("ROC.pdf")
+#pdf("ROC_overS.pdf")
+#pdf("ROC_overB.pdf")
+pdf(ROC.file.name)
 
 xmax = 1
 ymax = 1
@@ -266,9 +305,6 @@ points(c(0, fpr.wave.list[[3]]), c(0, tpr.wave.list[[3]]), type="l", col ="orang
 legend(0.7, 0.3, c("multiscale 70", "wave 70", "multiscale 30", "wave 30","multiscale 10", "wave 10") , col = c("blue", "skyblue", "darkgreen", "green", "red", "orange"), lty = c(1,1), text.col = "black",merge = FALSE, bg = "white")
 
 dev.off()
-
-
-
 
 
 
