@@ -1,0 +1,5 @@
+Issue: we simulate two data sets (one from binomial and one from multinomail model). But logLR or multiseq capture signals in multinomail, but missed signals in binomial. 
+1. different number of NA?
+2. pi estimate?
+3. Matthew mentioned looked at null case together.
+4. to see conclusion: read a summary June 24 2014 multiscale Poisson Group summary
