@@ -1,5 +1,5 @@
 ## `run.multiscale.on.simulation.R' simulates data by thinning and perform
-## permutation-based test using a multiscale Poisson model. See the input arguments. 
+## permutation-based test (optionally, it computes only logLR without permutation) using a multiscale Poisson model. See the input arguments. 
 ## Example Usage : R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID numPerm=1000 numSig=10 geno.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/geno.$SGE_TASK_ID.dat' raw.dat.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/raw.$SGE_TASK_ID.dat' ratio.path='/mnt/lustre/home/shim/wavelets/revision/analysis/simulation_578/data/smooth.pro1.21.$SGE_TASK_ID' scale.level=0.8 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/alt/multiscale/' read.depth.ratio=NULL output.dir.name='test' over.dispersion=NULL" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.simulation.R
 ## 
 ##
@@ -150,15 +150,18 @@ if(!file.exists(out.dir.path)){
 
 write.table(res$logLR, file = paste0(out.dir.path, "/res.", seed, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
 
-pval.path = paste0(out.dir.path, "/pval.", seed, ".out")
-cat(1, file =pval.path)
-cat("\n", file = pval.path, append = TRUE)
-cat(res$Count_stop, file = pval.path, append = TRUE)
-cat("\n", file =pval.path, append = TRUE)
-cat(res$Count_sig, file = pval.path, append = TRUE)
-cat("\n", file = pval.path, append = TRUE)	
-cat(res$pval, file = pval.path, append = TRUE)
 
+# if numPerm == NULL, permutation.logLR doesn't perform a permutation so it only returns logLR
+if(!(is.null(numPerm))){
+    pval.path = paste0(out.dir.path, "/pval.", seed, ".out")
+    cat(1, file =pval.path)
+    cat("\n", file = pval.path, append = TRUE)
+    cat(res$Count_stop, file = pval.path, append = TRUE)
+    cat("\n", file =pval.path, append = TRUE)
+    cat(res$Count_sig, file = pval.path, append = TRUE)
+    cat("\n", file = pval.path, append = TRUE)	
+    cat(res$pval, file = pval.path, append = TRUE)
+}
 
 
 
