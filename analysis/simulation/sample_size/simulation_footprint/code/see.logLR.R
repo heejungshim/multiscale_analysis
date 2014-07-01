@@ -5,13 +5,16 @@
 #case.name = c("fullread.70ind.over", "fullread.30ind.over", "fullread.10ind.over")
 
 #case.name = c("fullread.70ind.over.2", "fullread.30ind.over.2", "fullread.10ind.over.2")
-case.name = c("halfread.70ind.over", "halfread.30ind.over", "2fullread.10ind.over")
+#case.name = c("halfread.70ind.over", "halfread.30ind.over", "2fullread.10ind.over")
+
 
 
 #output.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/sum/logLR.f.Robj"
 #output.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/sum/logLR.f.overS.Robj"
 #output.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/sum/logLR.f.overB.Robj"
-output.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/sum/logLR.f.overS.RD.Robj"
+#output.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/sum/logLR.f.overS.RD.Robj"
+
+
 
 
 
@@ -19,12 +22,14 @@ output.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sam
 #ROC.file.name = "logLR_ROC.pdf"
 #ROC.file.name = "logLR_ROC_overS.pdf"
 #ROC.file.name = "logLR_ROC_overB.pdf"
-ROC.file.name = "logLR_ROC_overS_RD.pdf"
+#ROC.file.name = "logLR_ROC_overS_RD.pdf"
+
 
 #hist.file.name = "logLR_hist.pdf"
 #hist.file.name = "logLR_hist_overS.pdf"
 #hist.file.name = "logLR_hist_overB.pdf"
-hist.file.name = "logLR_hist_overS_RD.pdf"
+#hist.file.name = "logLR_hist_overS_RD.pdf"
+
 
 
 

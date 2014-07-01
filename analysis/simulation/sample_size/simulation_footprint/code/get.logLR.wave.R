@@ -7,12 +7,13 @@ path.alt = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample
 path.null = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/null/wave/"
 
 
-case.name = c("halfread.70ind.over", "halfread.30ind.over", "2fullread.10ind.over")
+#case.name = c("halfread.70ind.over", "halfread.30ind.over", "2fullread.10ind.over")
 
 
 #case.name = c("fullread.70ind.over", "fullread.30ind.over", "fullread.10ind.over")
 #case.name = c("fullread.70ind.over.2", "fullread.30ind.over.2", "fullread.10ind.over.2")
 #case.name = c("fullread.70ind", "fullread.30ind", "fullread.10ind")
+case.name = c("fullread.4ind.over", "2fullread.4ind.over", "4fullread.4ind.over")
 
 
 
@@ -28,7 +29,8 @@ for(cc in 1:length(case.name)){
 
     for(i in 1:numSites){
         # i = 1
-        num_path  = paste0(num_dir_path, i, ".fph.BFs.txt")
+        num_path  = paste0(num_dir_path, i, ".fph.logLR.txt") 
+        #num_path  = paste0(num_dir_path, i, ".fph.BFs.txt")
         if(file.exists(num_path)== FALSE){		
             done_res[IX] = FALSE
         }else{
@@ -64,7 +66,9 @@ for(cc in 1:length(case.name)){
 
     for(i in 1:numSites){
    
-        num_path  = paste0(num_dir_path, i, ".fph.BFs.txt")
+        #num_path  = paste0(num_dir_path, i, ".fph.BFs.txt")
+        num_path  = paste0(num_dir_path, i, ".fph.logLR.txt")
+
         if(file.exists(num_path)== FALSE){		
             done_res[IX] = FALSE
         }else{
