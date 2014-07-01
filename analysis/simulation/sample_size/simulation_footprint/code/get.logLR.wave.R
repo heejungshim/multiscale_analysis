@@ -13,7 +13,9 @@ path.null = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sampl
 #case.name = c("fullread.70ind.over", "fullread.30ind.over", "fullread.10ind.over")
 #case.name = c("fullread.70ind.over.2", "fullread.30ind.over.2", "fullread.10ind.over.2")
 #case.name = c("fullread.70ind", "fullread.30ind", "fullread.10ind")
-case.name = c("fullread.4ind.over", "2fullread.4ind.over", "4fullread.4ind.over")
+#case.name = c("fullread.4ind.over", "2fullread.4ind.over", "4fullread.4ind.over")
+#case.name = c("4fullread.10ind.over")
+case.name = c("fullread.6ind.over", "2fullread.6ind.over", "4fullread.6ind.over")
 
 
 
