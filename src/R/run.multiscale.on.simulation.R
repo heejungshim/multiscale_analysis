@@ -85,7 +85,7 @@ sink(warnings.file, type="message")
 
 # read raw data from which we will sample
 raw.data = read.table(raw.dat.path, as.is = TRUE)
-raw.data.T = as.numeric(apply(raw.data, 2, sum))
+raw.data.T = ceiling(as.numeric(apply(raw.data, 2, sum)))
 
 # change read depth
 if(!is.null(read.depth.ratio)){
