@@ -26,3 +26,7 @@ see.pval.RD.R
  - make ROC curves to see effects of different read depth
 see.logLR.RD.R
  - make ROC curves to see effects of different read depth 
+
+see.logLR.RD.4ind.R
+ - make histogram 
+ - make ROC curves to see effects of differnt read depth for 4 individuals. 
