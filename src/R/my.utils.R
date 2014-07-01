@@ -24,7 +24,7 @@
 ##'
 ##'
 ##' I copied the original version from http://stats.stackexchange.com/questions/12232/calculating-the-parameters-of-a-beta-distribution-using-the-mean-and-variance
-##' Then I modified to handle cases when somme elements of mu are 0 or 1 (then it returns NA if mu <= 0 or >=1)
+##' Then I modified to handle cases when somme elements of mu are 0 or 1 (then it returns NA if mu <= 0 or >=1) or when computed alpha and beta <= 0 (then it returns NA)
 ##'
 ##' @param mu.orig a vector of mean for beta distribution
 ##' @param var a vector (or scalar) of variance for beta distribution
@@ -48,6 +48,14 @@ estBetaParams <- function(mu.orig, var) {
         alpha.orig = alpha
         beta.orig = beta
     }
+
+    ## handle non-positive alpha or beta 
+    invalid.para = which((alpha.orig <= 0) | (beta.orig <= 0))
+    if(length(invalid.para) > 0){
+        alpha.orig[invalid.para] = rep(NA, length(invalid.para))
+        beta.orig[invalid.para] = rep(NA, length(invalid.para))
+    }
+    
     return(params = list(alpha = alpha.orig, beta = beta.orig))
 }
 
