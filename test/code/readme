@@ -1,8 +1,10 @@
 
-permutation.multiseq.R 
- - add a permutation procedure in multiseq
- - modify /mnt/lustre/home/shim/PB/analysis/DNase/run/DNase15_lm_each_full_all/run_PB_each.R
 
 check.change.permutation.logLR.R
  - I made a minor change in permutation.logLR of multiseq. check if minor change works as I planned.
+
+check.simulation.procedure.R
+ - with 578 sites, I got errors from simulation procedure. Let's sse what's going on!
+ - it turns out that total.count are sometimes non-integer.
+
   
