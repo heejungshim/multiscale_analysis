@@ -8,4 +8,28 @@ prepare.data.for.simulation.R
   - modify /mnt/lustre/home/shim/wavelets/revision/code/simulation.explore.578.sites.R 
         and /mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/code/better.effect.size.R
 
+get.pval.wave.R
+   - collect pvalue from wave output files, make a list, and save R object.
+get.pval.ms.R
+   - collect pvalue from multiscale output files, make a list, and save R object.
+see.pval.R
+   - make histogram and roc curves from results
 
+get.logLR.wave.R
+   - collect logLR from wave output files, make a list, and save R object.
+get.logLR.ms.R
+   - collect logLR from multiscale output files, make a list, and save R object.
+see.logLR.R
+   - make histogram and roc curves from results
+
+
+sum(done_list_alt[[1]])
+sum(done_list_alt[[2]])
+sum(done_list_alt[[3]])
+sum(done_list_alt[[4]])
+
+
+sum(done_list_null[[1]])
+sum(done_list_null[[2]])
+sum(done_list_null[[3]])
+sum(done_list_null[[4]])
