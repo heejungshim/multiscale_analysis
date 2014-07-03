@@ -22,14 +22,22 @@ get.logLR.ms.R
 see.logLR.R
    - make histogram and roc curves from results
 
-
+## use this after running get.pval.XX.R or get.logLR.XX.R to see if we have all results
 sum(done_list_alt[[1]])
 sum(done_list_alt[[2]])
 sum(done_list_alt[[3]])
 sum(done_list_alt[[4]])
-
-
 sum(done_list_null[[1]])
 sum(done_list_null[[2]])
 sum(done_list_null[[3]])
 sum(done_list_null[[4]])
+
+see.pval.over.R 
+  - make histogram and roc curves to see effects of different overdispersion parameters on performances of two methods. 
+see.logLR.over.R
+  - make histogram and roc curves to see effects of different overdispersion parameters on performances of two methods. 
+
+see.pval.RD.R 
+  - make histogram and roc curves to see effects of different library read depths on performances of two methods. 
+see.logLR.RD.R
+  - make histogram and roc curves to see effects of different library read depths on performances of two methods. 
