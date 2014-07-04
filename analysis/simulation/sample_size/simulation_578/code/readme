@@ -41,3 +41,10 @@ see.pval.RD.R
   - make histogram and roc curves to see effects of different library read depths on performances of two methods. 
 see.logLR.RD.R
   - make histogram and roc curves to see effects of different library read depths on performances of two methods. 
+
+see.pval.RD.4.R 
+  - same as see.pval.RD.R, but consider four library read depths 
+see.logLR.RD.4.R 
+  - same as see.logLR.RD.R, but consider four library read depths 
+
+
