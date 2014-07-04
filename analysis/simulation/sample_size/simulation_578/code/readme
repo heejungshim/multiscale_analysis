@@ -7,6 +7,8 @@ prepare.data.for.simulation.R
   - for simulation, prepare raw data and effect size for each dsQTL.
   - modify /mnt/lustre/home/shim/wavelets/revision/code/simulation.explore.578.sites.R 
         and /mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/code/better.effect.size.R
+make.effect.size.fig.R
+  - get effect sizes from 578 dsQTLs, idetinfied by Shim and Stephens 2014 (see its Supplementary Materials for details of those dsQTLs) and make effect size figures to investigate their patterns.
 
 get.pval.wave.R
    - collect pvalue from wave output files, make a list, and save R object.
