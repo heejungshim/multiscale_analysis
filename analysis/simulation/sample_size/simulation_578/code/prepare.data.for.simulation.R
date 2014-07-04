@@ -3,6 +3,10 @@
 ## Aim : This file contains Rscripts to get effect sizes and raw data from 578 dsQTLs idetinfied by Shim and Stephens 2014 (see its Supplementary Materials for details of those dsQTLs. This information will be used in simulation.
 ## I modified two scripts: "/mnt/lustre/home/shim/wavelets/revision/code/simulation.explore.578.sites.R" and "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/code/better.effect.size.R"
 ##
+## Usage R CMD BATCH --no-save --no-restore "--args ss=$SGE_TASK_ID" prepare.data.for.simulation.R
+## See /mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_578/com/com.effect.size.sh
+##
+## 
 ## Copyright (C) 2014 Heejung Shim
 ##
 ## License: GPL3+
