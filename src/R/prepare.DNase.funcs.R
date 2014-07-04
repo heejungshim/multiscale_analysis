@@ -52,7 +52,8 @@ get.counts.h5 <- function(list_path, chr, locus.start, locus.end, list_name = NU
 ##' @param chrIX string; chromosome name
 ##' @param locus.start
 ##' @param locus.end
-##' @return DNase.dat a matrix of numIND by size of region; 
+##' @return DNase.dat a matrix of numIND by size of region;
+##' @return mappability a vector of numBPs (size of region); either 0 or 1; 1 indicates mappable position in either strand. 
 read.DNase.data <- function(hdf5.data.path, hdf5.mapp.path, geno.info.path = NULL, inds.IDs, chrIX, locus.start, locus.end){
     
     
@@ -136,6 +137,12 @@ read.DNase.data <- function(hdf5.data.path, hdf5.mapp.path, geno.info.path = NUL
     dat = matrix(data = 0, nr = numINDs, nc = numBPs*2)
     dat[,wh] = as.matrix(DNase.dat[,wh])
 
+    # prepare mappability as an output
+    map.out = rep(0, numBPs)
+    wh = which((map[1:numBPs] == 1) | (map[(numBPs+1):(numBPs+numBPs)]  == 1))
+    map.out[wh] = rep(1, length(wh))
+
+    
     # combine two strands
     all.dat = dat[,1:numBPs] + dat[,(numBPs+1):(numBPs+numBPs)]
     all.map = map[1:numBPs] + map[(numBPs+1):(numBPs+numBPs)]
@@ -143,7 +150,7 @@ read.DNase.data <- function(hdf5.data.path, hdf5.mapp.path, geno.info.path = NUL
     wh2 = which(all.map > 0)
     pheno.dat[,wh2] = t(t(all.dat[,wh2])/all.map[wh2])
 
-    return(list(DNase.dat = pheno.dat))
+    return(list(DNase.dat = pheno.dat, mappability = map.out))
 
 }
 

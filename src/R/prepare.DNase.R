@@ -53,8 +53,10 @@ res = read.DNase.data(hdf5.data.path = hdf5.data.path, hdf5.mapp.path = hdf5.map
 
 
 str(res)
-#List of 1
-# $ DNase.dat: num [1:70, 1:1024] 0 0 0 0 0 0 0 0 0 0 ...
+#List of 2
+# $ DNase.dat  : num [1:70, 1:1024] 0 0 0 0 0 0 0 0 0 0 ...
+# $ mappability: num [1:1024] 1 1 1 1 1 1 1 1 1 1 ...
 dim(res$DNase.dat)
 #[1]   70 1024
-
+length(res$mappability)
+#[1] 1024
