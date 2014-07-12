@@ -2,7 +2,7 @@
 ##
 ##
 ## Example Usage : 
-## /data/tools/R-3.0.3/bin/R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno70.dat' raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat' ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio' scale.level=0.5 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/' read.depth.ratio=NULL output.dir.name='fullread.70ind' wavelet.preprocess=TRUE window.preprocess=TRUE over.dispersion=NULL" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.window.simulation.R
+## /data/tools/R-3.0.3/bin/R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno70.dat' raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat' ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio' scale.level=0.5 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/' read.depth.ratio=NULL output.dir.name='fullread.70ind' wavelet.preprocess=TRUE window.preprocess=TRUE DESeq.preprocess=TRUE over.dispersion=NULL" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.window.simulation.R
 ## 
 ##
 ##
@@ -38,17 +38,18 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
 
 
-#seed=1
-#geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno10.dat'
-#raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat'
-#ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio'
-#scale.level=0.5
-#wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/'
-#read.depth.ratio=NULL
-#output.dir.name='fullread.10ind'
-#wavelet.preprocess=TRUE
-#window.preprocess=TRUE
-#over.dispersion=1/70/70/10
+seed=1
+geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno10.dat'
+raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat'
+ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio'
+scale.level=0.5
+wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/'
+read.depth.ratio=NULL
+output.dir.name='fullread.10ind'
+wavelet.preprocess=TRUE
+window.preprocess=TRUE
+DESeq.preprocess=TRUE
+over.dispersion=1/70/70/10
 
 
 args = (commandArgs(TRUE))
@@ -63,6 +64,7 @@ eval(parse(text=args[[8]]))
 eval(parse(text=args[[9]]))
 eval(parse(text=args[[10]]))
 eval(parse(text=args[[11]]))
+eval(parse(text=args[[12]]))
 
 
  
@@ -159,7 +161,7 @@ if(wavelet.preprocess){
 
 }
 
-
+ 
 #########################################
 # data preprocessing for window based approach 
 # modify a code from
@@ -209,6 +211,52 @@ if(window.preprocess){
 
     this.path = paste0(out.dir.path, "JAR.", seed, ".txt")
     write.table(QT_dat, file = this.path, quote= FALSE, row.names = FALSE, col.names = FALSE)
+}
+
+
+
+
+
+ 
+#########################################
+# data preprocessing for DESeq 
+#########################################
+
+if(DESeq.preprocess){
+
+    numBPs = dim(phenoD)[2]
+    numC = numBPs%/%100
+    numIND = dim(phenoD)[1]
+
+    mat = matrix(data=NA, nc = numC, nr = numIND)
+    st = 1
+    for(c in 1:(numC-1)){
+        en = st + 100 - 1
+        den = en - st + 1
+        if(den > 0){
+            mat[,c] = apply(phenoD[,st:en], 1, sum)
+        }else{
+            mat[,c] = 0
+        }
+        st = en + 1
+    }
+    en = numBPs
+
+    den = en - st + 1
+    if(den > 0){
+        mat[,numC] = apply(phenoD[,st:en], 1, sum)
+    }else{
+        mat[,numC] = 0
+    }
+
+    # save data
+    out.dir.path = paste0(wd.path, "DESeq/", output.dir.name, ".data/") 
+    if(!file.exists(out.dir.path)){
+        dir.create(out.dir.path)
+    }
+
+    this.path = paste0(out.dir.path, "DESeq.", seed, ".txt")
+    write.table(t(mat), file = this.path, quote= FALSE, row.names = FALSE, col.names = FALSE)
 }
 
 
