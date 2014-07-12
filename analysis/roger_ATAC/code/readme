@@ -2,7 +2,14 @@
 # command to convert bam files to hdf5
 bamTohdf5.txt
 
+# take only autosome from genometile Roger provided and compute chromosome length
+preprocess.genometile.R
+
+
 # select top 5% hypersensitive 300bp sites
 select.sites.R
+
+# make 1024bp or 2048 sites from the selected top 5% hypersensitive sites
+select.givenS.sites.R
 
 
