@@ -1,3 +1,9 @@
+#######################################################
+# first clone Grahams' repo 
+# ~/genome
+# follow his instruction 
+#######################################################
+
 
 #######################################################
 # In /mnt/gluster/data/external_private_supp/roger_atacseq/bams
