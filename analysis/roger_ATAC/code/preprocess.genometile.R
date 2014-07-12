@@ -93,6 +93,9 @@ length(autosome)
 autosome.tile = genometile[autosome,]
 #path = "/mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/"
 #write.table(genometile[autosome,], file = paste0(path, "hg19.autosomes.tiles.w300.s300.bed"), quote=FALSE,row.names = FALSE, col.names = FALSE)
+#write.table(autosome, file=paste0(path, "index.in.tiles.txt"), quote=FALSE, row.names=FALSE, col.names = FALSE)
+
+
 
 
 max.posi = rep(NA, 22)
