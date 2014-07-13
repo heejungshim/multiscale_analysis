@@ -7,17 +7,27 @@
 ## License: GPL3+
 
 
-# path to directory which contain information Roger provided 
-folder = "/mnt/gluster/data/external_private_supp/roger_atacseq/deseq/"
+# path to directory which contain autosome genometile information 
+folder.process = "/mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/"
 
 # read genometile information
-genometile <- read.table(paste(folder,"hg19.tiles.w300.s300.bed.gz",sep=""), sep="\t", as.is=T)
+genometile <- read.table(paste(folder.process,"hg19.autosomes.tiles.w300.s300.bed.gz",sep=""), sep=" ", as.is=T)
 dim(genometile)
-#[1] 10457248        3
+#[1] 9603454       3
 genometile[1:2,]
 #    V1  V2  V3
 #1 chr1   0 300
 #2 chr1 300 600
+
+index.autosome =scan(file = paste0(folder.process,"index.in.tiles.txt"))
+length(index.autosome)
+#[1] 9603454
+index.autosome[1:2]
+#[1] 1 2
+
+
+# path to directory which contain information roger provided 
+folder = "/mnt/gluster/data/external_private_supp/roger_atacseq/deseq/"
 
 
 ########################################
@@ -44,8 +54,7 @@ cRep3 <- read.table(paste(folder,cbarcode,rep3barcode,".bed.gz", sep=""), as.is=
 countData <- cbind(tRep1,tRep2,tRep3,cRep1,cRep2,cRep3)
 
 ## save total sum
-rs.Copper <- rowSums(countData)
-
+rs.Copper <- rowSums(countData)[index.autosome]
 
 
 ########################################
@@ -72,7 +81,7 @@ cRep3 <- read.table(paste(folder,cbarcode,rep3barcode,".bed.gz", sep=""), as.is=
 countData <- cbind(tRep1,tRep2,tRep3,cRep1,cRep2,cRep3)
 
 ## save total sum
-rs.Selenium <- rowSums(countData)
+rs.Selenium <- rowSums(countData)[index.autosome]
 
 
 
@@ -101,7 +110,7 @@ cRep3 <- read.table(paste(folder,cbarcode,rep3barcode,".bed.gz", sep=""), as.is=
 countData <- cbind(tRep1,tRep2,tRep3,cRep1,cRep2,cRep3)
 
 ## save total sum
-rs.Retinoic <- rowSums(countData)
+rs.Retinoic <- rowSums(countData)[index.autosome]
 
 
 
@@ -112,45 +121,46 @@ rs.Retinoic <- rowSums(countData)
 #rs.Selenium
 #rs.Copper
 
+length(rs.Copper)*0.952
+#[1] 9142488
+
+
 rnk.Copper = rank(rs.Copper)
 rnk.Selenium = rank(rs.Selenium)
 rnk.Retinoic = rank(rs.Retinoic)
 
-sum(rnk.Copper > 9950000)/length(rs.Copper)
-#[1] 0.04740272
-sum(rnk.Selenium > 9950000)/length(rs.Copper)
-#[1] 0.04790591
-sum(rnk.Retinoic > 9950000)/length(rs.Copper)
-#[1] 0.0488531
 
-min(rs.Copper[which(rnk.Copper > 9950000)])
+
+sum(rnk.Copper > 9142488)/length(rs.Copper)
+#[1] 0.04743658
+sum(rnk.Selenium > 9142488)/length(rs.Copper)
+#[1] 0.04790641
+sum(rnk.Retinoic > 9142488)/length(rs.Copper)
+#[1] 0.04875329
+
+
+min(rs.Copper[which(rnk.Copper > 9142488)])
 #[1] 66
-min(rs.Selenium[which(rnk.Selenium > 9950000)])
+min(rs.Selenium[which(rnk.Selenium > 9142488)])
 #[1] 61
-min(rs.Retinoic[which(rnk.Retinoic > 9950000)])
+min(rs.Retinoic[which(rnk.Retinoic > 9142488)])
 #[1] 61
-
 
 sum(rs.Copper >= 66)/length(rs.Copper)
-#[1] 0.04740272
+#[1] 0.04743658
 sum(rs.Copper >= 66)
-#[1] 495702
-sum(rs.Copper >= 6500)
-#[1] 516
- 
+#[1] 455555
+  
 sum(rs.Selenium >= 61)/length(rs.Selenium)
-#[1] 0.04790591
+#[1] 0.04790641
 sum(rs.Selenium >= 61)
-#[1] 500964
-sum(rs.Selenium >= 6500)
-#[1] 473
- 
+#[1] 460067
+
 sum(rs.Retinoic >= 61)/length(rs.Retinoic)
-#[1] 0.0488531
+#[1] 0.04875329
 sum(rs.Retinoic >= 61)
-#[1] 510869
-sum(rs.Retinoic >= 6500)
-#[1] 405
+#[1] 468200
+ 
 
 
 ################################
