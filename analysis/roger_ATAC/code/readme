@@ -9,7 +9,7 @@ preprocess.genometile.R
 # select top 5% hypersensitive 300bp sites
 select.sites.R
 
-# make 1024bp or 2048 sites from the selected top 5% hypersensitive sites
+# combine two adjacent top 5% 300bp windows that are within a given size (1024bp or 2048bp) 
 select.givenS.sites.R
 
 
