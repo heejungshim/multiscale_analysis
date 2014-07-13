@@ -12,4 +12,7 @@ select.sites.R
 # combine two adjacent top 5% 300bp windows that are within a given size (1024bp or 2048bp) 
 select.givenS.sites.R
 
+# get total number of sites (1024 or 2048 bps) for each chromosome
+get.num.sites.R
+
 
