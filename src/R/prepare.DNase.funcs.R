@@ -1,8 +1,9 @@
 ## `prepare.DNase.funcs.R' contains R functions for 1) reading DNase-seq data from files in hdf5, 2) reading mappability information from file in hdf5, 3) masking 5bp surrounding any SNP (i.e., the SNP position and 2bp on either side) to eliminate biases stemming from DNase I sequence preference, and 4) combining DNase-seq data from two strands while taking mappability into account as Shim and Stephens (2014) did.
+## The funcrion get.counts.h5 in utils.R is used.  
 ## see prepare.DNase.R for usage.
 ##
 ##
-## Copyright (C) 2014 Heejung Shim and Ester Pantaleo (for the function get.counts.h5)
+## Copyright (C) 2014 Heejung Shim
 ##
 ##
 ## This program is free software: you can redistribute it and/or modify
@@ -19,24 +20,6 @@
 ## along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-
-
-library(rhdf5)
-
-#**************************************************************************
-#  function to Get counts from hdf5
-#  written by Ester Pantaleo
-#**************************************************************************
-get.counts.h5 <- function(list_path, chr, locus.start, locus.end, list_name = NULL){
-    M <-  NULL
-    for (h5file in list_path){
-        print(paste0("Loading ", h5file))
-        print(paste0("h5read(", h5file, ",", chr, ", index=list(", locus.start, ":", locus.end, ")"))
-        M        <- rbind(M, h5read(h5file, chr, index=list(locus.start:locus.end)))
-    }
-    row.names(M) = list_name
-    return(M)
-}
 
 
 ##' Prepare DNase data from raw data. 
