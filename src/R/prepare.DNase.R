@@ -25,6 +25,7 @@ setwd("/mnt/lustre/home/shim/multiscale_analysis")
 multiscale.analysis.repodir <- scan(".multiscale_analysis.repodir.txt", what=character())
 WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 source(paste0(multiscale.analysis.repodir, "/src/R/prepare.DNase.funcs.R"))
+source(paste0(multiscale.analysis.repodir, "/src/R/utils.R"))
 
 
 #########################################
