@@ -66,7 +66,8 @@ estBetaParams <- function(mu.orig, var) {
 ##' 'sample.from.Binomial.with.Overdispersion' simulates binomial samples with/without
 ##' over dispersion. 
 ##'
-##'
+##' For a given overdispersion parameter, computed parameters for beta distribution can be invalid (e.g., mu.sig are 0 or 1). Then we sample read without overdispersion for those positions.
+##' 
 ##' @param num.sam number of samples to be sampled
 ##' @param total.count a vector of non-negative counts;
 ##' @param mu.sig a vector of probabilities (we allow 0 or 1 as probablity)
