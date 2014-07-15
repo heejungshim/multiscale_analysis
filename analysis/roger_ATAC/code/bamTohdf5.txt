@@ -158,8 +158,33 @@ python load_bam_read_depth.py --assembly hg19 --rev_track /roger_atacseq/N706N50
 #######################################################
 
 python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N702N501.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N702N501.qfiltered10.bam
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N702N502.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N702N502.qfiltered10.bam
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N702N503.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N702N503.qfiltered10.bam
 
 
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N703N501.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N703N501.qfiltered10.bam
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N703N502.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N703N502.qfiltered10.bam
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N703N503.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N703N503.qfiltered10.bam
+
+
+
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N704N501.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N704N501.qfiltered10.bam
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N704N502.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N704N502.qfiltered10.bam
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N704N503.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N704N503.qfiltered10.bam
+
+
+
+
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N705N501.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N705N501.qfiltered10.bam
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N705N502.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N705N502.qfiltered10.bam
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N705N503.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N705N503.qfiltered10.bam
+
+
+
+
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N706N501.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N706N501.qfiltered10.bam
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N706N502.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N706N502.qfiltered10.bam
+python load_bam_read_depth.py --assembly hg19 /roger_atacseq/N706N503.qfiltered10.read.depth /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams/Pique-AT2-N706N503.qfiltered10.bam
 
 
 
