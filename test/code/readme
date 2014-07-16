@@ -7,4 +7,8 @@ check.simulation.procedure.R
  - with 578 sites, I got errors from simulation procedure. Let's sse what's going on!
  - it turns out that total.count are sometimes non-integer.
 
+check.function.PCR.artifacts.R
+
+
+
   
