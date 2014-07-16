@@ -8,6 +8,8 @@ check.simulation.procedure.R
  - it turns out that total.count are sometimes non-integer.
 
 check.function.PCR.artifacts.R
+ - implement functions to check position with PCR artifacts and remove them..
+
 
 
 

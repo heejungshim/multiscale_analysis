@@ -67,8 +67,49 @@ candidate.posi
 max.val[candidate.posi]
 #[1] 2 2
 
-        
 
+
+
+## check implemention in my.utils.R
+
+
+setwd("/mnt/lustre/home/shim/multiscale_analysis")
+
+library("multiseq")
+library("ashr")
+
+
+multiscale.analysis.repodir <- scan(".multiscale_analysis.repodir.txt", what=character())
+source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
+        
+## input matrix
+set.seed(1)
+data = matrix(data=rpois(150*4, 0.1), nc = 150, nr = 4)
+data[1,70] = 500
+data[3,110] = 500
+data[2,30] = 500
+data[3,30] = 500
+
+
+max.val = apply(data, 2, max)
+candidate.posi = which(max.val > 1)
+candidate.posi
+#[1] 30 70  81 110 137
+max.val[candidate.posi]
+#[1] 500 500   2 500   2
+        
+source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
+res = remove.pcr.artifacts(data)
+
+res$posi.with.pcr.artifacts
+# 30 70 110 
+data = res$data
+max.val = apply(data, 2, max)
+candidate.posi = which(max.val > 1)
+candidate.posi
+#[1] 81 137
+max.val[candidate.posi]
+#[1] 2 2
 
 
 
