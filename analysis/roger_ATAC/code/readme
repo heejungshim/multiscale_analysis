@@ -15,4 +15,6 @@ select.givenS.sites.R
 # get total number of sites (1024 or 2048 bps) for each chromosome
 get.num.sites.R
 
+# generate submit files
+gen.submit.file.R
 
