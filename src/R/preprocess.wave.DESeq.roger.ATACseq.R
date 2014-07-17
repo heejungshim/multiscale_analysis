@@ -1,6 +1,6 @@
 ## `preprocess.wave.DESeq.roger.ATACseq.R' preprocesses roger's ATAC seq data for wavelets or DESeq analyses.
 ##
-## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/gen.data/com) : R CMD BATCH --no-save --no-restore "--args chr=1 sites.ix=$SGE_TASK_ID wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/multiscale/' siteSize=2048 treatment='Copper' null=FALSE strand='both' meanR.thresh=1 window.size.list=c(100,300) wavelet.preprocess=TRUE deseq.preprocess=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.DESeq.roger.ATACseq.R
+## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/gen.data/com) : R CMD BATCH --no-save --no-restore "--args chr=1 sites.ix=$SGE_TASK_ID wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/' siteSize=2048 treatment='Copper' null=FALSE strand='both' meanR.thresh=1 window.size.list=c(100,300) wavelet.preprocess=TRUE deseq.preprocess=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.DESeq.roger.ATACseq.R
 ##
 ## chr : chromosome
 ## sites.ix : default=NULL; if it is null, run multiseq on all sites or we can specifiy partifular site
@@ -44,8 +44,12 @@ multiscale.analysis.repodir <- scan(".multiscale_analysis.repodir.txt", what=cha
 source(paste0(multiscale.analysis.repodir, "/src/R/utils.R"))
 source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
 
-WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
+
+
+
+
+WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
 #chr=1
 #sites.ix=1
@@ -182,9 +186,8 @@ if(is.null(sites.ix)){
     en.sites = sites.ix
 }
 
-
-
 for(sites in st.sites:en.sites){
+
 
 #sites = 1
 #############################
@@ -251,6 +254,7 @@ if((strand=='both') | (strand=='minus')){
 pcr.removed = remove.pcr.artifacts(data=ATAC.dat, win.half.size=50, prop.thresh=0.9)
 phenoD = pcr.removed$data
 
+
 #########################################
 # data preprocessing for wavelet analysis
 #########################################
@@ -263,7 +267,7 @@ if(wavelet.preprocess){
     filteredWCs = res$filtered.WCs
     norm.WCs = res$WCs
 
-    this.path = paste0(wave.out.dir.path, "WC.", sites, ".txt")
+    this.path = paste0(wave.out.dir.path, "WC.", chr, ".", sites, ".txt")
     write.table(norm.WCs, file = this.path, quote= FALSE, row.names = FALSE, col.names = FALSE)
     this.path = paste0(wave.out.dir.path, "use.", chr, ".", sites, ".txt")
     cat(filteredWCs, file = this.path)
@@ -303,6 +307,10 @@ if(deseq.preprocess){
     }
 
 }
+
+}
+
+
 
 
 
