@@ -1,5 +1,6 @@
 ## `combine.for.DESeq.data.R' contains scrits to read data (prepread by `preprocess.wave.DESeq.roger.ATACseq.R'), make them as one matrix (as DESeq input format), and save them as a file. 
 ##
+## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/com) : R CMD BATCH --no-save --no-restore "--args chr=$SGE_TASK_ID st.sites=1 en.sites=10 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/' siteSize=2048 treatment='Copper' null=FALSE strand='plus' window.size=100 numSam=6" /mnt/lustre/home/shim/multiscale_analysis/src/R/combine.for.DESeq.data.R
 ##
 ##
 ## chr : chromosome
@@ -111,3 +112,7 @@ for(sites in 1:numSites){
 
 this.out.path = paste0(output.dir.path, "data.", chr, ".txt")
 write.table(DESeq.dat, file=this.out.path, quote=FALSE, row.names = FALSE, col.names = FALSE)
+
+
+this.out.path = paste0(output.dir.path, "err.", chr, ".txt")
+write.table(which(done==FALSE), file=this.out.path, quote=FALSE, row.names = FALSE, col.names = FALSE)
