@@ -244,11 +244,11 @@ if((strand=='both') | (strand=='plus')){
     }
 
     ## read read counts for a given region
-    ## for + strand, we need shift 4bp to right
+    ## for + strand, we need shift 4bp to left
     ATAC.dat.fwd = matrix(data=NA, nr = numSam, nc = numBPs)
     for(i in 1:numSam){
         path.fwd = paste0(hdf5.data.path, sample.files[i] , ".fwd.h5")
-        ATAC.dat.fwd[i, 1:numBPs] = as.matrix(get.counts.h5(path.fwd, paste0("chr", chr), st.posi+4, en.posi+4))
+        ATAC.dat.fwd[i, 1:numBPs] = as.matrix(get.counts.h5(path.fwd, paste0("chr", chr), st.posi-4, en.posi-4))
     }
 
     ATAC.dat = ATAC.dat + ATAC.dat.fwd
@@ -266,11 +266,11 @@ if((strand=='both') | (strand=='minus')){
     }
     
     ## read read counts for a given region
-    ## for - strand, we need shift 50bp (read length) to right and shift 4bp to left
+    ## for - strand, we need shift 4bp to right
     ATAC.dat.rev = matrix(data=NA, nr = numSam, nc = numBPs)
     for(i in 1:numSam){
         path.rev = paste0(hdf5.data.path, sample.files[i] , ".rev.h5")
-        ATAC.dat.rev[i, 1:numBPs] = as.matrix(get.counts.h5(path.rev, paste0("chr", chr), st.posi-4, en.posi-4))
+        ATAC.dat.rev[i, 1:numBPs] = as.matrix(get.counts.h5(path.rev, paste0("chr", chr), st.posi+4, en.posi+4))
     }
 
     ATAC.dat = ATAC.dat + ATAC.dat.rev
