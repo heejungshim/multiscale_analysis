@@ -51,8 +51,10 @@ source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
 
 WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
-#chr=1
-#sites.ix=1
+
+
+#chr=12
+#sites.ix=6780
 #wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/'
 #siteSize=2048
 #treatment='Copper'
@@ -189,7 +191,7 @@ if(is.null(sites.ix)){
 for(sites in st.sites:en.sites){
 
 
-#sites = 1
+#sites = 6780
 #############################
 # read location information 
 #############################

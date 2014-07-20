@@ -51,6 +51,7 @@ while(st <= len){
 if(center.posi[1] - size/2 < 1){
     center.posi[1] = size/2 + 2
 }
+
 if(center.posi[length(center.posi)] + size/2 > chr.len){
     center.posi[length(center.posi)] = chr.len - size/2 - 2
 }

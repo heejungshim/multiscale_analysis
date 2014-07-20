@@ -12,8 +12,8 @@
 Treatment = "Retinoic"
 #Treatment = "Copper"
 
-size = 2048
-#size = 1024
+#size = 2048
+size = 1024
 
 path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/locus/"
 
@@ -22,6 +22,7 @@ for(chr in 1:22){
     res = read.table(file = paste0(path, Treatment, ".", size, ".chr", chr, ".locus"),header= TRUE)
     total.num[chr] = dim(res)[1]
 }
+
 
 
 output.path = paste0(path, Treatment, ".", size, ".numSites.txt")
