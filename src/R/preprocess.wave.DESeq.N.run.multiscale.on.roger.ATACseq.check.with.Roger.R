@@ -48,7 +48,7 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
 
 #chr=1
-#sites.ix=1
+#sites.ix=100
 #wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/'
 #siteSize=2048
 #treatment='Selenium'
@@ -232,6 +232,8 @@ numSam = length(sample.names)
 numBPs = siteSize
 library.read.depth = rep(0, numSam)
 ATAC.dat = matrix(data=0, nr = numSam, nc = numBPs)
+pcr.posi = vector("list", 2)
+pcr.ix = 1
 
 ## for fwd
 if((strand=='both') | (strand=='plus')){
@@ -251,7 +253,13 @@ if((strand=='both') | (strand=='plus')){
         ATAC.dat.fwd[i, 1:numBPs] = as.matrix(get.counts.h5(path.fwd, paste0("chr", chr), st.posi-4, en.posi-4))
     }
 
-    ATAC.dat = ATAC.dat + ATAC.dat.fwd
+    ## remove pcr artifacts
+    pcr.removed.fwd = remove.pcr.artifacts(data=ATAC.dat.fwd, win.half.size=50, prop.thresh=0.9)
+    ATAC.dat = ATAC.dat + pcr.removed.fwd$data
+    if(!is.null(pcr.removed.fwd$posi.with.pcr.artifacts)){
+        pcr.posi[[pcr.ix]] = pcr.removed.fwd$posi.with.pcr.artifacts
+    }
+    pcr.ix = pcr.ix + 1
 
 }
 
@@ -273,17 +281,17 @@ if((strand=='both') | (strand=='minus')){
         ATAC.dat.rev[i, 1:numBPs] = as.matrix(get.counts.h5(path.rev, paste0("chr", chr), st.posi+4, en.posi+4))
     }
 
-    ATAC.dat = ATAC.dat + ATAC.dat.rev
-
+    ## remove pcr artifacts
+    pcr.removed.rev = remove.pcr.artifacts(data=ATAC.dat.rev, win.half.size=50, prop.thresh=0.9)
+    ATAC.dat = ATAC.dat + pcr.removed.rev$data
+    if(!is.null(pcr.removed.rev$posi.with.pcr.artifacts)){
+        pcr.posi[[pcr.ix]] = pcr.removed.rev$posi.with.pcr.artifacts
+    }
+    pcr.ix = pcr.ix + 1
+    
 }
 
-
-## remove pcr artifacts
-pcr.removed = remove.pcr.artifacts(data=ATAC.dat, win.half.size=50, prop.thresh=0.9)
-phenoD = pcr.removed$data
-pcr.posi = pcr.removed$posi.with.pcr.artifacts
-
-
+phenoD = ATAC.dat
 
 #########################################
 # data preprocessing for wavelet analysis
@@ -347,18 +355,23 @@ res = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth
 ## write output
 if(is.null(sites.ix)){
     write.table(t(c(sites, res$logLR)), file = paste0(multiseq.out.dir.path, "/res.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
-    write.table(t(c(sites, pcr.posi)), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
+    write.table(t(c(sites, pcr.posi[[1]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
+    write.table(t(c(sites, pcr.posi[[2]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
 }else{
     write.table(res$logLR, file = paste0(multiseq.out.dir.path, "/res.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
-    if(is.null(pcr.posi)){
-        write.table(pcr.posi, file = paste0(multiseq.out.dir.path, "/pcr.posi.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
-    }else{
-        write.table(t(pcr.posi), file = paste0(multiseq.out.dir.path, "/pcr.posi.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)        
+    for(m in 1:(pcr.ix-1)){
+        if(m == 1){
+            write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+        }else{
+            write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
+        }
     }
 }
 
 
 }
+
+
 
 
 
