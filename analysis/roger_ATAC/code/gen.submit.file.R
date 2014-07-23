@@ -396,3 +396,73 @@ run.wavelets <- function(com.path, wd.path, siteSize, treatment, null, strand){
 
 
 
+
+
+
+###########################
+## run DESeq
+###########################
+
+wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/'
+siteSize=2048
+treatment='Copper'
+null=FALSE
+strand='plus'
+window.size=100
+numSam=6
+
+run.DESeq <- function(wd.path, siteSize, treatment, null, strand, window.size, numSam){
+        
+    ## directory name 
+    if(!null){
+        com.dir.name=paste0(treatment,".", siteSize, ".", strand,  ".", window.size, ".alt")
+    }else{
+        com.dir.name=paste0(treatment,".", siteSize, ".", strand, ".", window.size, ".null")
+    }
+
+    ## make directory 
+    com.out.dir.path = paste0(wd.path, com.dir.name, ".run/com") 
+    if(!file.exists(com.out.dir.path)){
+        dir.create(com.out.dir.path)
+    }
+    ## make err directory 
+    if(!file.exists(paste0(com.out.dir.path, "/err"))){
+        dir.create(paste0(com.out.dir.path, "/err"))
+    }
+
+    file.name = paste0(com.out.dir.path, "/DESeq.sh")
+
+    com = "#!/bin/bash"
+    cat(com, file = file.name)
+    cat("\n", file = file.name, append = TRUE)
+    
+    com = paste("#$ -o ", com.out.dir.path, "/err/out.txt", sep="")
+    cat(com, file = file.name, append = TRUE)
+    cat("\n", file = file.name, append = TRUE)	
+
+    com = paste("#$ -e ", com.out.dir.path, "/err/err.txt", sep="")
+    cat(com, file = file.name, append = TRUE)
+    cat("\n", file = file.name, append = TRUE)	
+
+    com = paste0("cd ", com.out.dir.path)
+    cat(com, file = file.name, append = TRUE)
+    cat("\n", file = file.name, append = TRUE)
+
+    com = paste0("/data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore \"--args wd.path='", wd.path, "' siteSize=", siteSize, " treatment='", treatment, "' null=", null, " strand='", strand, "' window.size=", window.size, " numSam=", numSam, "\" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.DESeq.on.roger.ATACseq.R")    
+    cat(com, file = file.name, append = TRUE)
+    cat("\n", file = file.name, append = TRUE)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
