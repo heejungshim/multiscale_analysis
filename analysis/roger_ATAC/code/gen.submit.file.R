@@ -166,6 +166,75 @@ get.com.run.multiseq.ATACseq <- function(com.path, wd.path, siteSize, treatment,
 
 
 
+###########################
+## collect logLR from multiseq analysis
+###########################
+
+com.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/multiscale/com/'
+wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/multiscale/'
+siteSize=2048
+treatment='Copper'
+null=FALSE
+strand='plus'
+
+collect.logLR.multiseq <- function(com.path, wd.path, siteSize, treatment, null, strand){
+    
+    ## directory name 
+    if(!null){
+        com.dir.name=paste0(treatment,".", siteSize, ".", strand, ".alt")
+    }else{
+        com.dir.name=paste0(treatment,".", siteSize, ".", strand, ".null")
+    }
+    ## make directory 
+    com.out.dir.path = paste0(com.path, com.dir.name, ".post") 
+    if(!file.exists(com.out.dir.path)){
+        dir.create(com.out.dir.path)
+    }
+    ## make err directory 
+    if(!file.exists(paste0(com.out.dir.path, "/err"))){
+        dir.create(paste0(com.out.dir.path, "/err"))
+    }
+    
+    ## read number of sites for each chromosome
+    path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/locus/", treatment, ".", siteSize, ".numSites.txt")
+    numSites.list = scan(path)
+
+    for(chr in 1:22){
+
+        numSites = numSites.list[chr]
+        file.name = paste0(com.out.dir.path, "/P.ms.", chr, ".sh")
+
+        com = "#!/bin/bash"
+        cat(com, file = file.name)
+        cat("\n", file = file.name, append = TRUE)
+
+        com = paste("#$ -o ", com.out.dir.path, "/err/out.", chr, ".txt", sep="")
+        cat(com, file = file.name, append = TRUE)
+        cat("\n", file = file.name, append = TRUE)	
+
+        com = paste("#$ -e ", com.out.dir.path, "/err/err.", chr, ".txt", sep="")
+        cat(com, file = file.name, append = TRUE)
+        cat("\n", file = file.name, append = TRUE)	
+
+        com = paste0("cd ", wd.path)
+        cat(com, file = file.name, append = TRUE)
+        cat("\n", file = file.name, append = TRUE)
+
+        com = paste0("/data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore \"--args chr=", chr, " st.sites=1 en.sites=", numSites, " path.output.dir='", wd.path, com.dir.name, ".output/' path.sum.dir='", wd.path,  com.dir.name, ".sum/' output.file.name='", com.dir.name, "'\" /mnt/lustre/home/shim/multiscale_analysis/src/R/get.logLR.ms.R")    
+        cat(com, file = file.name, append = TRUE)
+        cat("\n", file = file.name, append = TRUE)
+    }
+}
+
+
+
+
+
+
+
+
+
+
 ###########################################
 # preprocess data for wavelets and DESeq and run multiseq together 
 ###########################################
@@ -391,6 +460,73 @@ run.wavelets <- function(com.path, wd.path, siteSize, treatment, null, strand){
         cat("\n", file = file.name, append = TRUE)
     }
 }
+
+
+
+
+
+
+###########################
+## collect logLR from wavelet analysis
+###########################
+
+
+com.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/com/'
+wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/'
+siteSize=2048
+treatment='Copper'
+null=FALSE
+strand='plus'
+
+collect.logLR.wavelets <- function(com.path, wd.path, siteSize, treatment, null, strand){
+    
+    ## directory name 
+    if(!null){
+        com.dir.name=paste0(treatment,".", siteSize, ".", strand, ".alt")
+    }else{
+        com.dir.name=paste0(treatment,".", siteSize, ".", strand, ".null")
+    }
+    ## make directory 
+    com.out.dir.path = paste0(com.path, com.dir.name, ".post") 
+    if(!file.exists(com.out.dir.path)){
+        dir.create(com.out.dir.path)
+    }
+    ## make err directory 
+    if(!file.exists(paste0(com.out.dir.path, "/err"))){
+        dir.create(paste0(com.out.dir.path, "/err"))
+    }
+    
+    ## read number of sites for each chromosome
+    path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/locus/", treatment, ".", siteSize, ".numSites.txt")
+    numSites.list = scan(path)
+
+    for(chr in 1:22){
+
+        numSites = numSites.list[chr]
+        file.name = paste0(com.out.dir.path, "/P.wave.", chr, ".sh")
+
+        com = "#!/bin/bash"
+        cat(com, file = file.name)
+        cat("\n", file = file.name, append = TRUE)
+
+        com = paste("#$ -o ", com.out.dir.path, "/err/out.", chr, ".txt", sep="")
+        cat(com, file = file.name, append = TRUE)
+        cat("\n", file = file.name, append = TRUE)	
+
+        com = paste("#$ -e ", com.out.dir.path, "/err/err.", chr, ".txt", sep="")
+        cat(com, file = file.name, append = TRUE)
+        cat("\n", file = file.name, append = TRUE)	
+
+        com = paste0("cd ", wd.path, com.dir.name, ".run/")
+        cat(com, file = file.name, append = TRUE)
+        cat("\n", file = file.name, append = TRUE)
+
+        com = paste0("/data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore \"--args chr=", chr, " st.sites=1 en.sites=", numSites, " path.output.dir='", wd.path, com.dir.name, ".run/' output.file.name='", com.dir.name, "'\" /mnt/lustre/home/shim/multiscale_analysis/src/R/get.logLR.wave.R")    
+        cat(com, file = file.name, append = TRUE)
+        cat("\n", file = file.name, append = TRUE)
+    }
+}
+
 
 
 
