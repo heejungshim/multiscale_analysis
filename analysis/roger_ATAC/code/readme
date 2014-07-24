@@ -22,5 +22,8 @@ get.num.sites.R
 # generate submit files
 gen.submit.file.R
 
+# combine R objects from different chromosomes for wavelet and multiseq
+get.all.logLR.wave.R
+get.all.logLR.ms.R
 
 
