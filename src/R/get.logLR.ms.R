@@ -1,6 +1,6 @@
 ## `get.logLR.ms.R' contains scrits to collect logLR from multiseq analysis, save them as a vector, and output them as R object.
 ##
-## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/com/Copper.2048.plus.alt.post) : /data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore "--args chr=1 st.sites=1 en.sites=21792 path.output.dir='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/Copper.2048.plus.alt.run/' output.file.name='Copper.2048.plus.alt'" /mnt/lustre/home/shim/multiscale_analysis/src/R/get.logLR.wave.R
+## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/multiscale/com/Copper.2048.plus.alt.post) : /data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore "--args chr=10 st.sites=1 en.sites=7205 path.output.dir='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/multiscale/Copper.2048.plus.alt.output/' path.sum.dir='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/multiscale/Copper.2048.plus.alt.sum/' output.file.name='Copper.2048.plus.alt'" /mnt/lustre/home/shim/multiscale_analysis/src/R/get.logLR.ms.R
 ##
 ##
 ## chr : chromosome (if chr=NULL, we assume there is no chromosome). Otherwise, output file format is chr.sites
