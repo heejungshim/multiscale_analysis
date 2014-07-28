@@ -15,6 +15,9 @@ select.givenS.sites.R
 # correct last two sites if they are so close to the end of chromosome
 fix.sites.R
 
+# correct the first two sites if they are close to the start of chromosome
+fix.sites.begin.R
+
 
 # get total number of sites (1024 or 2048 bps) for each chromosome
 get.num.sites.R
@@ -26,4 +29,8 @@ gen.submit.file.R
 get.all.logLR.wave.R
 get.all.logLR.ms.R
 
+# look at statistic patterns from null and alternative (three methods)
+see.statistic.3method.R
 
+
+ 
