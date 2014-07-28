@@ -44,8 +44,8 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
 
 
-chr=1
-sites.ix=10146
+chr=20
+sites.ix=1
 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/'
 siteSize=2048
 treatment='Copper'
