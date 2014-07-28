@@ -361,9 +361,9 @@ if(is.null(sites.ix)){
     write.table(res$logLR, file = paste0(multiseq.out.dir.path, "/res.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
     for(m in 1:(pcr.ix-1)){
         if(m == 1){
-            write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+            write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
         }else{
-            write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
+            write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
         }
     }
 }
