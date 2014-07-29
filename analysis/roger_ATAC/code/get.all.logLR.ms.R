@@ -10,8 +10,8 @@
 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/multiscale/'
 siteSize=2048
 treatment='Copper'
-null=TRUE
-strand='plus'
+null=FALSE
+strand='both'
 
     
 ## directory name 
