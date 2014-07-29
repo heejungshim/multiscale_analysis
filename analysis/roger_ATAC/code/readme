@@ -29,8 +29,10 @@ gen.submit.file.R
 get.all.logLR.wave.R
 get.all.logLR.ms.R
 
-# look at statistic patterns from null and alternative (three methods)
+# look at statistic patterns from null and alternative (three methods) Copper plus 2048
 see.statistic.3method.R
 
+# look at statistic patterns from null and alternative (three methods) Copper both 2048
+see.statistic.3method.both.R
 
- 
+
