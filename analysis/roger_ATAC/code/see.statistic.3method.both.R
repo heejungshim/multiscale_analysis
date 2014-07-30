@@ -306,6 +306,31 @@ dev.off()
 
 
 
+#################################
+# put randomly selected (from unif[-0.001, 0] logLR for 0
+#################################
+set.seed(1)
+ms.new.a = ms.a
+wh = which(ms.a == 0)
+length(wh)
+ms.new.a[wh] = runif(length(wh), -0.001,0)
+
+ms.new.n = ms.n
+wh = which(ms.n == 0)
+length(wh)
+ms.new.n[wh] = runif(length(wh), -0.001,0)
+
+wave.new.a = wave.a
+wh = which(wave.a == 0)
+length(wh)
+wave.new.a[wh] = runif(length(wh), -0.001,0)
+
+wave.new.n = wave.n
+wh = which(wave.n == 0)
+length(wh)
+wave.new.n[wh] = runif(length(wh), -0.001,0)
+
+
 
 
 ##################################################################
@@ -330,6 +355,11 @@ pval.wave = get.pval.from.empirical.null.dist(statistic.null = wave.n, statistic
 
 pval.ms = get.pval.from.empirical.null.dist(statistic.null = ms.n, statistic.alt = ms.a)
 
+pval.wave.new = get.pval.from.empirical.null.dist(statistic.null = wave.new.n, statistic.alt = wave.new.a)
+
+pval.ms.new = get.pval.from.empirical.null.dist(statistic.null = ms.new.n, statistic.alt = ms.new.a)
+
+
 pval.deseq.100 = get.pval.from.empirical.null.dist(statistic.null = deseq.100.n, statistic.alt = deseq.100.a, big.sig = FALSE)
 
 pval.deseq.300 = get.pval.from.empirical.null.dist(statistic.null = deseq.300.n, statistic.alt = deseq.300.a, big.sig = FALSE)
@@ -341,6 +371,10 @@ save("pval.deseq.100", "pval.deseq.300", file =paste0("/mnt/lustre/home/shim/mul
 save("pval.wave", file =paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/summary/wave.", all.name, ".Robj"))
 
 save("pval.ms", file =paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/summary/ms.", all.name, ".Robj"))
+
+save("pval.wave.new", file =paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/summary/wave.new.", all.name, ".Robj"))
+
+save("pval.ms.new", file =paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/summary/ms.new.", all.name, ".Robj"))
 
 
 
@@ -370,126 +404,31 @@ hist(pval.deseq.300, breaks = 200, main="DESeq 300", xlim=c(xmin, xmax))
 dev.off()
 
 
-##################################################
-# number of discovery for different type I error
-##################################################
 
+#################################################
+## make a histogram of p-values with new
+#################################################
 
-alpha.list = seq(0.0001, 0.01, by=0.0005)
-length(alpha.list)
-# 20
-num.wave = num.ms = num.deseq.100 = num.deseq.300 = rep(NA, length(alpha.list))
-for(i in 1:length(alpha.list)){
-    num.wave[i] = sum(pval.wave < alpha.list[i])
-    num.ms[i] = sum(pval.ms < alpha.list[i])
-    num.deseq.100[i] = sum(pval.deseq.100 < alpha.list[i])
-    num.deseq.300[i] = sum(pval.deseq.300 < alpha.list[i])
-}
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/summary/deseq.", all.name, ".Robj"))
+
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/summary/wave.new.", all.name, ".Robj"))
+
+load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/summary/ms.new.", all.name, ".Robj"))
 
 
 setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/")
-pdf("discovery.pdf")
+pdf("hist.pval.3.methods.new.both.pdf")
 
-ymax = max(num.wave, num.ms, num.deseq.100, num.deseq.300)
-ymin = 0
-plot(alpha.list, num.ms, ylim=c(ymin,ymax), col="red", type = "l")
-points(alpha.list, num.wave, ylim=c(ymin,ymax), col="blue", type="l")
-points(alpha.list, num.deseq.100, ylim=c(ymin,ymax), col="darkgreen", type="l")
-points(alpha.list, num.deseq.300, ylim=c(ymin,ymax), col="darkgreen", type="l", lty="dashed")
+xmax = 1
+xmin = 0
+
+par(mfrow = c(4,1))
+hist(pval.wave.new, breaks = 200, main="wave", xlim=c(xmin, xmax))
+hist(pval.ms.new, breaks = 200, main="multiseq", xlim=c(xmin, xmax))
+hist(pval.deseq.100, breaks = 200, main="DESeq 100", xlim=c(xmin, xmax))
+hist(pval.deseq.300, breaks = 200, main="DESeq 300", xlim=c(xmin, xmax))
 
 dev.off()
-
-
-###########################
-# check intersection
-###########################
-
-#alpha = 0.0001
-alpha = 0.001
-
-sum(pval.wave< alpha)
-sum(pval.ms < alpha)
-sum(pval.deseq.100 < alpha)
-
-sum((pval.wave < alpha) & (pval.ms < alpha))
-sum((pval.wave < alpha) & (pval.deseq.100 < alpha))
-sum((pval.ms < alpha) & (pval.deseq.100 < alpha))
-
-sum((pval.wave < alpha) & (pval.ms < alpha))/sum(pval.ms < alpha)
-sum((pval.wave < alpha) & (pval.ms < alpha))/sum(pval.wave < alpha)
-
-sum((pval.deseq.100 < alpha) & (pval.ms < alpha))/sum(pval.ms < alpha)
-sum((pval.deseq.100 < alpha) & (pval.ms < alpha))/sum(pval.deseq.100 < alpha)
-
-sum((pval.deseq.100 < alpha) & (pval.wave < alpha))/sum(pval.wave < alpha)
-sum((pval.deseq.100 < alpha) & (pval.wave < alpha))/sum(pval.deseq.100 < alpha)
-
-
-
-# alpha = 0.0001
-
-#> sum(pval.wave< alpha)
-#[1] 91
-#> sum(pval.ms < alpha)
-#[1] 637
-#> sum(pval.deseq.100 < alpha)
-#[1] 48
- 
-#> sum((pval.wave < alpha) & (pval.ms < alpha))
-#[1] 61
-#> sum((pval.wave < alpha) & (pval.deseq.100 < alpha))
-#[1] 1
-#> sum((pval.ms < alpha) & (pval.deseq.100 < alpha))
-#[1] 3
- 
-#> sum((pval.wave < alpha) & (pval.ms < alpha))/sum(pval.ms < alpha)
-#[1] 0.09576138
-#> sum((pval.wave < alpha) & (pval.ms < alpha))/sum(pval.wave < alpha)
-#[1] 0.6703297
- 
-#> sum((pval.deseq.100 < alpha) & (pval.ms < alpha))/sum(pval.ms < alpha)
-#[1] 0.004709576
-#> sum((pval.deseq.100 < alpha) & (pval.ms < alpha))/sum(pval.deseq.100 < alpha)
-#[1] 0.0625
- 
-#> sum((pval.deseq.100 < alpha) & (pval.wave < alpha))/sum(pval.wave < alpha)
-#[1] 0.01098901
-#> sum((pval.deseq.100 < alpha) & (pval.wave < alpha))/sum(pval.deseq.100 < alpha)
-#[1] 0.02083333
- 
-
-
-
-#> alpha = 0.001
- 
-#> sum(pval.wave< alpha)
-#[1] 541
-#> sum(pval.ms < alpha)
-#[1] 1765
-#> sum(pval.deseq.100 < alpha)
-#[1] 218
- 
-#> sum((pval.wave < alpha) & (pval.ms < alpha))
-#[1] 331
-#> sum((pval.wave < alpha) & (pval.deseq.100 < alpha))
-#[1] 12
-#> sum((pval.ms < alpha) & (pval.deseq.100 < alpha))
-#[1] 40
- 
-#> sum((pval.wave < alpha) & (pval.ms < alpha))/sum(pval.ms < alpha)
-#[1] 0.1875354
-#> sum((pval.wave < alpha) & (pval.ms < alpha))/sum(pval.wave < alpha)
-#[1] 0.6118299
- 
-#> sum((pval.deseq.100 < alpha) & (pval.ms < alpha))/sum(pval.ms < alpha)
-#[1] 0.02266289
-#> sum((pval.deseq.100 < alpha) & (pval.ms < alpha))/sum(pval.deseq.100 < alpha)
-#[1] 0.1834862
- 
-#> sum((pval.deseq.100 < alpha) & (pval.wave < alpha))/sum(pval.wave < alpha)
-#[1] 0.02218115
-#> sum((pval.deseq.100 < alpha) & (pval.wave < alpha))/sum(pval.deseq.100 < alpha)
-#[1] 0.05504587
 
 
 
@@ -497,8 +436,8 @@ sum((pval.deseq.100 < alpha) & (pval.wave < alpha))/sum(pval.deseq.100 < alpha)
 # BH fdr
 #################################
 
-pval.bh.wave = p.adjust(pval.wave, method="BH", n= length(pval.wave))
-pval.bh.ms = p.adjust(pval.ms, method="BH", n= length(pval.ms))
+pval.bh.wave = p.adjust(pval.wave.new, method="BH", n= length(pval.wave.new))
+pval.bh.ms = p.adjust(pval.ms.new, method="BH", n= length(pval.ms.new))
 pval.bh.deseq.100 = p.adjust(pval.deseq.100, method="BH", n= length(pval.deseq.100))
 pval.bh.deseq.300 = p.adjust(pval.deseq.300, method="BH", n= length(pval.deseq.300))
 
@@ -522,7 +461,7 @@ for(i in 1:length(alpha.list)){
 
 
 setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/")
-pdf("discovery.BH.pdf")
+pdf("discovery.BH.both.pdf")
 
 ymax = max(num.wave, num.ms, num.deseq.100, num.deseq.300)
 ymin = 0
@@ -534,29 +473,173 @@ points(alpha.list, num.deseq.300, ylim=c(ymin,ymax), col="darkgreen", type="l", 
 dev.off()
 
 
+
+
+
+
 ###########################
 # check intersection
 ###########################
 
-#alpha = 0.0001
-#alpha = 0.001
+
+alpha = 0.2
 
 sum(pval.bh.wave< alpha)
 sum(pval.bh.ms < alpha)
-sum(pval.bh.deseq.100 < alpha)
+sum(pval.bh.deseq.300 < alpha)
 
 sum((pval.bh.wave < alpha) & (pval.bh.ms < alpha))
-sum((pval.bh.wave < alpha) & (pval.bh.deseq.100 < alpha))
-sum((pval.bh.ms < alpha) & (pval.bh.deseq.100 < alpha))
+sum((pval.bh.wave < alpha) & (pval.bh.deseq.300 < alpha))
+sum((pval.bh.ms < alpha) & (pval.bh.deseq.300 < alpha))
 
 sum((pval.bh.wave < alpha) & (pval.bh.ms < alpha))/sum(pval.bh.ms < alpha)
 sum((pval.bh.wave < alpha) & (pval.bh.ms < alpha))/sum(pval.bh.wave < alpha)
 
-sum((pval.bh.deseq.100 < alpha) & (pval.bh.ms < alpha))/sum(pval.bh.ms < alpha)
-sum((pval.bh.deseq.100 < alpha) & (pval.bh.ms < alpha))/sum(pval.bh.deseq.100 < alpha)
+sum((pval.bh.deseq.300 < alpha) & (pval.bh.ms < alpha))/sum(pval.bh.ms < alpha)
+sum((pval.bh.deseq.300 < alpha) & (pval.bh.ms < alpha))/sum(pval.bh.deseq.300 < alpha)
 
-sum((pval.bh.deseq.100 < alpha) & (pval.bh.wave < alpha))/sum(pval.bh.wave < alpha)
-sum((pval.bh.deseq.100 < alpha) & (pval.bh.wave < alpha))/sum(pval.bh.deseq.100 < alpha)
+sum((pval.bh.deseq.300 < alpha) & (pval.bh.wave < alpha))/sum(pval.bh.wave < alpha)
+sum((pval.bh.deseq.300 < alpha) & (pval.bh.wave < alpha))/sum(pval.bh.deseq.300 < alpha)
 
 
+
+#> sum(pval.bh.wave< alpha)
+#[1] 275
+#> sum(pval.bh.ms < alpha)
+#[1] 2895
+#> sum(pval.bh.deseq.300 < alpha)
+#[1] 71
+ 
+#> sum((pval.bh.wave < alpha) & (pval.bh.ms < alpha))
+#[1] 204
+#> sum((pval.bh.wave < alpha) & (pval.bh.deseq.300 < alpha))
+#[1] 27
+#> sum((pval.bh.ms < alpha) & (pval.bh.deseq.300 < alpha))
+#[1] 60
+ 
+#> sum((pval.bh.wave < alpha) & (pval.bh.ms < alpha))/sum(pval.bh.ms < alpha)
+#[1] 0.07046632
+#> sum((pval.bh.wave < alpha) & (pval.bh.ms < alpha))/sum(pval.bh.wave < alpha)
+#[1] 0.7418182
+ 
+#> sum((pval.bh.deseq.300 < alpha) & (pval.bh.ms < alpha))/sum(pval.bh.ms < alpha)
+#[1] 0.02072539
+#> sum((pval.bh.deseq.300 < alpha) & (pval.bh.ms < alpha))/sum(pval.bh.deseq.300 < alpha)
+#[1] 0.8450704
+ 
+#> sum((pval.bh.deseq.300 < alpha) & (pval.bh.wave < alpha))/sum(pval.bh.wave < alpha)
+#[1] 0.09818182
+#> sum((pval.bh.deseq.300 < alpha) & (pval.bh.wave < alpha))/sum(pval.bh.deseq.300 < alpha)
+#[1] 0.3802817
+
+
+
+#####################
+### Storey FDR 
+#####################
+
+#install.packages("qvalue")
+library("qvalue")
+
+qval.wave = qvalue(pval.wave.new)
+qval.ms = qvalue(pval.ms.new)
+qval.deseq.100 = qvalue(pval.deseq.100)
+qval.deseq.300 = qvalue(pval.deseq.300)
+
+qval.wave$pi0
+qval.ms$pi0
+qval.deseq.100$pi0
+qval.deseq.300$pi0
+
+#> qval.wave$pi0
+#[1] 0.7818706
+#> qval.ms$pi0
+#[1] 0.883166
+#> qval.deseq.100$pi0
+#[1] 0.9467088
+#> qval.deseq.300$pi0
+#[1] 0.9528259
+
+
+alpha.list = seq(0.01, 0.2, by=0.01)
+length(alpha.list)
+# 20
+num.wave = num.ms = num.deseq.100 = num.deseq.300 = rep(NA, length(alpha.list))
+for(i in 1:length(alpha.list)){
+    num.wave[i] = sum(qval.wave$qvalues < alpha.list[i])
+    num.ms[i] = sum(qval.ms$qvalues < alpha.list[i])
+    num.deseq.100[i] = sum(qval.deseq.100$qvalues < alpha.list[i])
+    num.deseq.300[i] = sum(qval.deseq.300$qvalues < alpha.list[i])
+}
+
+
+
+setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/")
+pdf("discovery.FDR.both.pdf")
+
+ymax = max(num.wave, num.ms, num.deseq.100, num.deseq.300)
+ymin = 0
+plot(alpha.list, num.ms, ylim=c(ymin,ymax), col="red", type = "l")
+points(alpha.list, num.wave, ylim=c(ymin,ymax), col="blue", type="l")
+points(alpha.list, num.deseq.100, ylim=c(ymin,ymax), col="darkgreen", type="l")
+points(alpha.list, num.deseq.300, ylim=c(ymin,ymax), col="darkgreen", type="l", lty="dashed")
+
+dev.off()
+
+
+
+###########################
+# check intersection
+###########################
+
+
+alpha = 0.2
+
+sum(qval.wave$qvalues < alpha)
+sum(qval.ms$qvalues < alpha)
+sum(qval.deseq.300$qvalues < alpha)
+
+sum((qval.wave$qvalues < alpha) & (qval.ms$qvalues < alpha))
+sum((qval.wave$qvalues < alpha) & (qval.deseq.300$qvalues < alpha))
+sum((qval.ms$qvalues < alpha) & (qval.deseq.300$qvalues < alpha))
+
+sum((qval.wave$qvalues < alpha) & (qval.ms$qvalues < alpha))/sum(qval.ms$qvalues < alpha)
+sum((qval.wave$qvalues < alpha) & (qval.ms$qvalues < alpha))/sum(qval.wave$qvalues < alpha)
+
+sum((qval.deseq.300$qvalues < alpha) & (qval.ms$qvalues < alpha))/sum(qval.ms$qvalues < alpha)
+sum((qval.deseq.300$qvalues < alpha) & (qval.ms$qvalues < alpha))/sum(qval.deseq.300$qvalues < alpha)
+
+sum((qval.deseq.300$qvalues < alpha) & (qval.wave$qvalues < alpha))/sum(qval.wave$qvalues < alpha)
+sum((qval.deseq.300$qvalues < alpha) & (qval.wave$qvalues < alpha))/sum(qval.deseq.300$qvalues < alpha)
+
+
+#> sum(qval.wave$qvalues < alpha)
+#[1] 377
+#> sum(qval.ms$qvalues < alpha)
+#[1] 3477
+#> sum(qval.deseq.300$qvalues < alpha)
+#[1] 71
+ 
+#> sum((qval.wave$qvalues < alpha) & (qval.ms$qvalues < alpha))
+#[1] 301
+#> sum((qval.wave$qvalues < alpha) & (qval.deseq.300$qvalues < alpha))
+#[1] 30
+#> sum((qval.ms$qvalues < alpha) & (qval.deseq.300$qvalues < alpha))
+#[1] 61
+ 
+#> sum((qval.wave$qvalues < alpha) & (qval.ms$qvalues < alpha))/sum(qval.ms$qvalues < alpha)
+#[1] 0.08656888
+#> sum((qval.wave$qvalues < alpha) & (qval.ms$qvalues < alpha))/sum(qval.wave$qvalues < alpha)
+#[1] 0.7984085
+ 
+#> sum((qval.deseq.300$qvalues < alpha) & (qval.ms$qvalues < alpha))/sum(qval.ms$qvalues < alpha)
+#[1] 0.01754386
+#> sum((qval.deseq.300$qvalues < alpha) & (qval.ms$qvalues < alpha))/sum(qval.deseq.300$qvalues < alpha)
+#[1] 0.8591549
+ 
+#> sum((qval.deseq.300$qvalues < alpha) & (qval.wave$qvalues < alpha))/sum(qval.wave$qvalues < alpha)
+#[1] 0.0795756
+#> sum((qval.deseq.300$qvalues < alpha) & (qval.wave$qvalues < alpha))/sum(qval.deseq.300$qvalues < alpha)
+#[1] 0.4225352
+ 
 
