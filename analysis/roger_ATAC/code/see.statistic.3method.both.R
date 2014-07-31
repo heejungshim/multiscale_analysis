@@ -642,4 +642,3 @@ sum((qval.deseq.300$qvalues < alpha) & (qval.wave$qvalues < alpha))/sum(qval.des
 #> sum((qval.deseq.300$qvalues < alpha) & (qval.wave$qvalues < alpha))/sum(qval.deseq.300$qvalues < alpha)
 #[1] 0.4225352
  
-
