@@ -22,6 +22,9 @@ fix.sites.begin.R
 # get total number of sites (1024 or 2048 bps) for each chromosome
 get.num.sites.R
 
+# prepare chromosome and sites corresponding to list of test statistics
+prepare.chr.sites.R
+
 # generate submit files
 gen.submit.file.R
 
@@ -35,3 +38,5 @@ see.statistic.3method.R
 # look at statistic patterns from null and alternative (three methods) Copper both 2048
 see.statistic.3method.both.R
 
+# find examples difference multiseq detects, but wavelet missed. 
+find.example.both.R
