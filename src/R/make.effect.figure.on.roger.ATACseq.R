@@ -133,14 +133,22 @@ library.read.depth.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/ro
 
 
 
+## read TF
+all_bed = read.table(gzfile('/mnt/gluster/data/external_private_supp/roger_atacseq/dnasefootprints/OpenChromDnaseGm19239.6c.bed.gz'))
+#TssAnno <- read.table('../data/Ensembl2.txt',header=F,as.is=T)
+TssAnno = read.table(gzfile('/mnt/gluster/data/external_private_supp/roger_atacseq/dnasefootprints/Copper.TSS.DiffExpressed.FDR10.bed.gz'))
+#/mnt/gluster/data/external_private_supp/roger_atacseq/dnasefootprints
+#OpenChromDnaseGm19239.6c.bed.gz
+#factorNames2.txt
+
 
 ## set up working directory and open figure file
 setwd(out.path)
 numfig = wave.effect + multiseq.effect + deseq.effect + 1
 if(numfig <= 2){
-    pdf(paste0(out.path, file.name, ".effect.pdf"), width=7, height=5)
+    pdf(paste0(out.path, file.name, ".effect.pdf"), width=10, height=5)
 }else{
-    pdf(paste0(out.path, file.name, ".effect.pdf"))
+    pdf(paste0(out.path, file.name, ".effect.pdf"), width=10, height=5)
 }    
 nf <- layout(matrix(1:numfig,numfig,1,byrow=TRUE),TRUE)
 
@@ -236,7 +244,7 @@ phenoD = ATAC.dat
 # plot raw data
 ####################
 
-
+ 
 ## get phenotype
 xmin = st.posi
 xmax = en.posi
@@ -285,10 +293,37 @@ if(!is.null(xval_mapp)){
 }
 axis(2)
 box()
+
+
+### Transcription factor
+sel.sites = all_bed[all_bed[,1] == paste("chr", chr, sep="") & all_bed[,2] < (xmax+1) & all_bed[,3] > xmin, ]
+offset = -0.0025
+if(dim(sel.sites)[1] > 0){
+for(k in 1:dim(sel.sites)[1]){
+offset = -offset
+text(x=(sel.sites[k,2] + sel.sites[k,3])/2, y=(ymax -abs(offset) - offset), strsplit(as.character(sel.sites[k,4]), split="=")[[1]][2])
+rect(sel.sites[k,2], 0, sel.sites[k,3], ymax + 1, col=rgb(0,1,0,0.3), border='NA')
+}
+}
+
+
 points(xval, trt.pheno*10^6, col = "orange", type="l")
 points(xval, ctr.pheno*10^6, col = "skyblue", type="l")
 points(xval, trt.pheno.smooth*10^6, col = "red", type="l")
 points(xval, ctr.pheno.smooth*10^6, col = "blue", type="l")
+
+
+#GETS AND PLOTS ANY TSSs IN THE REGION
+TSS <- TssAnno[(as.character(TssAnno[,1]) == paste("chr", chr, sep="")) & (TssAnno[,2] > xmin) & (TssAnno[,2] < (xmax+1)),]
+if(dim(TSS)[1] > 0) {
+for(k in 1:dim(TSS)[1]){
+mtext('*', side=1, at=TSS[k,2], col='purple', cex=1.5, padj=1)
+}
+}
+
+
+
+
 
 
 
