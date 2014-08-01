@@ -40,3 +40,17 @@ see.statistic.3method.both.R
 
 # find examples difference multiseq detects, but wavelet missed. 
 find.example.both.R
+
+# make effect size figure
+/data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore "--args info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.info' out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/' wave.out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/' file.name='msOnly' siteSize=2048 treatment='Copper' null=FALSE strand='both' sig.level=2 wave.effect=TRUE multiseq.effect=TRUE deseq.effect=FALSE" /mnt/lustre/home/shim/multiscale_analysis/src/R/make.effect.figure.on.roger.ATACseq.R
+
+/data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore "--args info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.both.info' out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/' wave.out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/' file.name='both' siteSize=2048 treatment='Copper' null=FALSE strand='both' sig.level=2 wave.effect=TRUE multiseq.effect=TRUE deseq.effect=FALSE" /mnt/lustre/home/shim/multiscale_analysis/src/R/make.effect.figure.on.roger.ATACseq.R
+
+# to get read count for each site
+get.read.count.R
+
+# to see distribution of read counts on two extreme cases
+see.read.count.dist.R
+
+
+
