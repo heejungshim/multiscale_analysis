@@ -394,10 +394,10 @@ load(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/summa
 ## 186399
 
 num.tests = length(deseq.300.null)
-pval.ms = rep(NA, length(deseq.300.null))
-pval.wave = rep(NA, length(deseq.300.null))
-pval.deseq.3 = rep(NA, length(deseq.300.null))
-ix.final = (1:length(deseq.300.null))[-del.ix]
+pval.ms = rep(NA, num.tests)
+pval.wave = rep(NA, num.tests)
+pval.deseq.3 = rep(NA, num.tests)
+ix.final = (1:num.tests)[-del.ix]
 length(ix.final)
 pval.ms[ix.final] = pval.ms.new
 pval.wave[ix.final] = pval.wave.new
@@ -496,6 +496,94 @@ out.path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC
 save("pval.deseq.3", "pval.deseq.3.60", "pval.deseq.3.30", "pval.deseq.3.20", "pval.deseq.3.10", file = out.path)
 
      
+
+#################################################
+## make a histogram of p-values for DESeq
+#################################################
+
+out.path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/deseq.pval.Robj")
+
+load(out.path)
+## pval.deseq.3
+## pval.deseq.3.60
+## pval.deseq.3.30
+## pval.deseq.3.20
+## pval.deseq.3.10
+
+
+
+setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/fig/DESeqdebug/")
+pdf("hist.pval.DESeq.debug.pdf")
+
+xmax = 1
+xmin = 0
+
+par(mfrow = c(5,1))
+hist(pval.deseq.3, breaks = 200, main="0", xlim=c(xmin, xmax))
+hist(pval.deseq.3.10, breaks = 200, main="10", xlim=c(xmin, xmax))
+hist(pval.deseq.3.20, breaks = 200, main="20", xlim=c(xmin, xmax))
+hist(pval.deseq.3.30, breaks = 200, main="30", xlim=c(xmin, xmax))
+hist(pval.deseq.3.60, breaks = 200, main="60", xlim=c(xmin, xmax))
+dev.off()
+
+
+#####################
+### Storey FDR 
+#####################
+
+#install.packages("qvalue")
+library("qvalue")
+
+
+
+setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/fig/DESeqdebug/")
+pdf("hist.pval.DESeq.debug.pdf")
+
+
+## filter.cut : 0
+pval.deseq = pval.deseq.3
+del.ix.deseq = union(union(which(is.na(pval.deseq) == TRUE), which(is.na(pval.ms)==TRUE)), which(is.na(pval.wave)==TRUE))
+
+
+qval.wave = qvalue(pval.wave[-del.ix.deseq])
+qval.ms = qvalue(pval.ms[-del.ix.deseq])
+qval.deseq = qvalue(pval.deseq[-del.ix.deseq])
+
+
+qval.wave$pi0
+qval.ms$pi0
+qval.deseq$pi0
+
+## 0.7818706
+## 0.883166
+## 0.9528259
+
+
+alpha.list = seq(0.01, 0.2, by=0.01)
+length(alpha.list)
+# 20
+num.wave = num.ms = num.deseq = rep(NA, length(alpha.list))
+for(i in 1:length(alpha.list)){
+    num.wave[i] = sum(qval.wave$qvalues < alpha.list[i])
+    num.ms[i] = sum(qval.ms$qvalues < alpha.list[i])
+    num.deseq[i] = sum(qval.deseq$qvalues < alpha.list[i])
+}
+
+
+
+setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/")
+pdf("discovery.FDR.both.pdf")
+
+ymax = max(num.wave, num.ms, num.deseq.100, num.deseq.300)
+ymin = 0
+plot(alpha.list, num.ms, ylim=c(ymin,ymax), col="red", type = "l")
+points(alpha.list, num.wave, ylim=c(ymin,ymax), col="blue", type="l")
+points(alpha.list, num.deseq.100, ylim=c(ymin,ymax), col="darkgreen", type="l")
+points(alpha.list, num.deseq.300, ylim=c(ymin,ymax), col="darkgreen", type="l", lty="dashed")
+
+dev.off()
+
+
 
 
 
