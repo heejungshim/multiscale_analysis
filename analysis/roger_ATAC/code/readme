@@ -52,8 +52,15 @@ get.read.count.R
 # to see distribution of read counts on two extreme cases
 see.read.count.dist.R
 
+######################
 # close look at DESeq
+######################
+# perform analysis (get emprical p-value)
 see.DESeq.R
+# take a look (histogram, QQ-plot, FDR)
+see.DESeq.2.R
+
+
 
 
 
