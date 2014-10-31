@@ -23,7 +23,7 @@ numSam = 6
 all.name = paste0(treatment,".", siteSize, ".", strand)
 
 
-out.path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/deseq.pval.Robj")
+out.path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/deseq.pval.discrete.Robj")
 
 load(out.path)
 ## pval.deseq.3
@@ -41,7 +41,7 @@ load(out.path)
 #################################################
 
 setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/fig/DESeqdebug/")
-pdf("hist.statistic.pval.DESeq.debug.pdf")
+pdf("hist.statistic.pval.DESeq.debug.discrete.pdf")
 
 #### filter.cut = 0
 
@@ -143,6 +143,120 @@ hist(deseq.alt[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : alt tes
 hist(deseq.null[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : null test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
 hist(pval[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : pvalue ", length(pval)-length(del.ix.deseq)), xlim=c(xmin, xmax), xlab ="p=value")
 
+
+
+
+dev.off()
+
+
+
+
+
+
+
+
+#################################################
+## make a histogram of statistics from null and alternative and p-values for DESeq (pooling)
+#################################################
+
+setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/fig/DESeqdebug/")
+pdf("hist.statistic.pval.DESeq.debug.discrete.pooling.pdf")
+
+
+
+#### filter.cut = 0
+
+filter.cut = 0
+
+
+deseq.alt = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/all.pval.txt"))))
+deseq.null = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/all.pval.txt"))))
+
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+
+xmax = 1
+xmin = 0
+
+par(mfrow = c(2,1))
+hist(deseq.alt[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : alt test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
+hist(deseq.null[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : null test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
+
+#### filter.cut = 10
+
+filter.cut = 10
+
+deseq.alt = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/all.pval.", filter.cut, ".txt"))))
+deseq.null = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/all.pval.", filter.cut, ".txt"))))
+  
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+
+xmax = 1
+xmin = 0
+
+par(mfrow = c(2,1))
+hist(deseq.alt[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : alt test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
+hist(deseq.null[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : null test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
+
+
+#### filter.cut = 20
+
+filter.cut = 20
+
+deseq.alt = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/all.pval.", filter.cut, ".txt"))))
+deseq.null = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/all.pval.", filter.cut, ".txt"))))
+  
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+
+xmax = 1
+xmin = 0
+
+par(mfrow = c(2,1))
+hist(deseq.alt[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : alt test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
+hist(deseq.null[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : null test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
+
+#### filter.cut = 30
+
+filter.cut = 30
+
+deseq.alt = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/all.pval.", filter.cut, ".txt"))))
+deseq.null = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/all.pval.", filter.cut, ".txt"))))
+  
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+
+
+
+xmax = 1
+xmin = 0
+
+par(mfrow = c(2,1))
+hist(deseq.alt[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : alt test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
+hist(deseq.null[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : null test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
+
+
+
+
+
+#### filter.cut = 60
+
+filter.cut = 60
+
+deseq.alt = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/all.pval.", filter.cut, ".txt"))))
+deseq.null = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/all.pval.", filter.cut, ".txt"))))
+  
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+
+
+xmax = 1
+xmin = 0
+
+par(mfrow = c(2,1))
+hist(deseq.alt[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : alt test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
+hist(deseq.null[-del.ix.deseq], breaks = 200, main=paste0(filter.cut, " : null test statistic"), xlim=c(xmin, xmax), xlab ="p-value")
 
 
 
@@ -323,6 +437,189 @@ dev.off()
 
 
 
+
+
+#################################################
+## QQ plot of p-values (statistics) from null and alternative in DESeq (after pooling!!)
+#################################################
+
+setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/fig/DESeqdebug/")
+pdf("QQ.statistic.DESeq.debug.pooling.pdf")
+
+#### filter.cut = 0
+
+filter.cut = 0
+
+
+deseq.alt = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/all.pval.txt"))))
+deseq.null = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/all.pval.txt"))))
+
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+
+numTests = length(deseq.alt[-del.ix.deseq])
+X <- -log(((1:numTests)/numTests), 10)
+
+num = 50000
+xval = X[1:num]
+yval.alt = sort(-log(deseq.alt[-del.ix.deseq],10), decreasing=T)[1:num]
+yval.null = sort(-log(deseq.null[-del.ix.deseq],10), decreasing=T)[1:num]
+
+xymax = max(xval, yval.null, yval.alt)
+
+plot(xval, yval.alt, xlim=c(0,xymax), ylim=c(0, xymax), cex = 0.3, ylab = "log10 quantiles of p-value distribution",xlab = "log10 quantiles of uniform distribution", main=paste0("filter ", filter.cut), col="red")
+abline(0,1)
+points(xval, yval.null, col="blue", cex = 0.3)
+legend(0,xymax, c("alt",  "null"), col = c("red", "blue"),pch = 19,cex = 1, text.col = "black",merge = FALSE, bg = "white")
+
+
+
+
+#### filter.cut = 10
+
+filter.cut = 10
+
+deseq.alt = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/all.pval.", filter.cut, ".txt"))))
+deseq.null = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/all.pval.", filter.cut, ".txt"))))
+  
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+
+
+numTests = length(deseq.alt[-del.ix.deseq])
+X <- -log(((1:numTests)/numTests), 10)
+
+num = 50000
+xval = X[1:num]
+yval.alt = sort(-log(deseq.alt[-del.ix.deseq],10), decreasing=T)[1:num]
+yval.null = sort(-log(deseq.null[-del.ix.deseq],10), decreasing=T)[1:num]
+
+xymax = max(xval, yval.null, yval.alt)
+
+plot(xval, yval.alt, xlim=c(0,xymax), ylim=c(0, xymax), cex = 0.3, ylab = "log10 quantiles of p-value distribution",xlab = "log10 quantiles of uniform distribution", main=paste0("filter ", filter.cut), col="red")
+abline(0,1)
+points(xval, yval.null, col="blue", cex = 0.3)
+legend(0,xymax, c("alt",  "null"), col = c("red", "blue"),pch = 19,cex = 1, text.col = "black",merge = FALSE, bg = "white")
+
+
+
+
+
+
+#### filter.cut = 20
+
+filter.cut = 20
+
+deseq.alt = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/all.pval.", filter.cut, ".txt"))))
+deseq.null = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/all.pval.", filter.cut, ".txt"))))
+  
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+
+
+numTests = length(deseq.alt[-del.ix.deseq])
+X <- -log(((1:numTests)/numTests), 10)
+
+num = 50000
+xval = X[1:num]
+yval.alt = sort(-log(deseq.alt[-del.ix.deseq],10), decreasing=T)[1:num]
+yval.null = sort(-log(deseq.null[-del.ix.deseq],10), decreasing=T)[1:num]
+
+xymax = max(xval, yval.null, yval.alt)
+
+plot(xval, yval.alt, xlim=c(0,xymax), ylim=c(0, xymax), cex = 0.3, ylab = "log10 quantiles of p-value distribution",xlab = "log10 quantiles of uniform distribution", main=paste0("filter ", filter.cut), col="red")
+abline(0,1)
+points(xval, yval.null, col="blue", cex = 0.3)
+legend(0,xymax, c("alt",  "null"), col = c("red", "blue"),pch = 19,cex = 1, text.col = "black",merge = FALSE, bg = "white")
+
+
+
+
+
+
+#### filter.cut = 30
+
+filter.cut = 30
+
+deseq.alt = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/all.pval.", filter.cut, ".txt"))))
+deseq.null = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/all.pval.", filter.cut, ".txt"))))
+  
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+
+
+numTests = length(deseq.alt[-del.ix.deseq])
+X <- -log(((1:numTests)/numTests), 10)
+
+num = 50000
+xval = X[1:num]
+yval.alt = sort(-log(deseq.alt[-del.ix.deseq],10), decreasing=T)[1:num]
+yval.null = sort(-log(deseq.null[-del.ix.deseq],10), decreasing=T)[1:num]
+
+xymax = max(xval, yval.null, yval.alt)
+
+plot(xval, yval.alt, xlim=c(0,xymax), ylim=c(0, xymax), cex = 0.3, ylab = "log10 quantiles of p-value distribution",xlab = "log10 quantiles of uniform distribution", main=paste0("filter ", filter.cut), col="red")
+abline(0,1)
+points(xval, yval.null, col="blue", cex = 0.3)
+legend(0,xymax, c("alt",  "null"), col = c("red", "blue"),pch = 19,cex = 1, text.col = "black",merge = FALSE, bg = "white")
+
+
+
+
+
+
+#### filter.cut = 60
+
+filter.cut = 60
+
+deseq.alt = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/all.pval.", filter.cut, ".txt"))))
+deseq.null = as.numeric(as.matrix(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/all.pval.", filter.cut, ".txt"))))
+  
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+
+
+numTests = length(deseq.alt[-del.ix.deseq])
+X <- -log(((1:numTests)/numTests), 10)
+
+num = 50000
+xval = X[1:num]
+yval.alt = sort(-log(deseq.alt[-del.ix.deseq],10), decreasing=T)[1:num]
+yval.null = sort(-log(deseq.null[-del.ix.deseq],10), decreasing=T)[1:num]
+
+xymax = max(xval, yval.null, yval.alt)
+
+plot(xval, yval.alt, xlim=c(0,xymax), ylim=c(0, xymax), cex = 0.3, ylab = "log10 quantiles of p-value distribution",xlab = "log10 quantiles of uniform distribution", main=paste0("filter ", filter.cut), col="red")
+abline(0,1)
+points(xval, yval.null, col="blue", cex = 0.3)
+legend(0,xymax, c("alt",  "null"), col = c("red", "blue"),pch = 19,cex = 1, text.col = "black",merge = FALSE, bg = "white")
+
+
+
+
+
+
+
+
+dev.off()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #####################
 ### Storey FDR 
 #####################
@@ -330,13 +627,28 @@ dev.off()
 #install.packages("qvalue")
 library("qvalue")
 
+
+siteSize=2048
+treatment='Copper'
+strand='both'
+window.size=300
+numSam = 6
+all.name = paste0(treatment,".", siteSize, ".", strand)
+
+
+
+out.path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/deseq.pval.discrete.Robj")
+
+load(out.path)
+
+
 input.path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/summary/pval.ms.wave.", all.name, ".Robj")
 load(input.path)
 ## pval.ms pval.wave
 
 
 setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/fig/DESeqdebug/")
-pdf("discovery.FDR.both.pdf")
+pdf("discovery.FDR.both.discrete.pdf")
 
 ## filter.cut : 0
 filter.cut = 0
@@ -355,7 +667,7 @@ qval.deseq$pi0
 
 ## 0.7818706
 ## 0.883166
-## 0.9528259
+## 0.9528287
 
 
 alpha.list = seq(0.01, 0.2, by=0.01)
@@ -395,7 +707,7 @@ qval.deseq$pi0
 
 ## 0.7398409
 ## 0.8730911
-## 0.8939121
+## 0.8939272
 
 alpha.list = seq(0.01, 0.2, by=0.01)
 length(alpha.list)
@@ -435,7 +747,7 @@ qval.deseq$pi0
 
 ## 0.7061634
 ## 0.8600601
-## 0.7604863
+## 0.7604868
 
 
 alpha.list = seq(0.01, 0.2, by=0.01)
@@ -478,7 +790,7 @@ qval.deseq$pi0
 
 ## 0.6372468
 ## 0.8163906
-## 0.650188
+## 0.6501886
 
 
 alpha.list = seq(0.01, 0.2, by=0.01)
@@ -521,7 +833,7 @@ qval.deseq$pi0
 
 ## 0.362377
 ## 0.5406936
-## 0.7918262
+## 0.7918214
 
 
 alpha.list = seq(0.01, 0.2, by=0.01)

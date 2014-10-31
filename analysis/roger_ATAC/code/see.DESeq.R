@@ -72,6 +72,7 @@ deseq.full.data =newCountDataSet(deseq.data,condition)
 ## select filtering criteria
 ## 0, 5, 10, 20, 30, 60
 ##############################
+## without upper bound
 rsum = rowSums ( counts ( deseq.full.data ))
 filter.cut = 60
 use = (rsum > filter.cut)
@@ -79,6 +80,7 @@ all.use = apply(matrix(use,ncol=numC,byrow=T),1,sum)
 sum(all.use > 0)
 length(all.use)
 sum(all.use > 0)/length(all.use)
+
 
 ## filter.cut : 0
 ## 186522
@@ -110,10 +112,27 @@ sum(all.use > 0)/length(all.use)
 ## 197969
 ## 0.5610222
 
+
+
+## with upper bound 6500 (as Roger used)
+##rsum = rowSums ( counts ( deseq.full.data ))
+##filter.cut = 0
+##use = ((rsum > filter.cut) & (rsum < 6500))
+##all.use = apply(matrix(use,ncol=numC,byrow=T),1,sum)
+##sum(all.use > 0)
+##length(all.use)
+##sum(all.use > 0)/length(all.use)
+##sum(rsum >= 6500)
+##[1] 9
+##rsum[rsum >= 6500]
+##   363    372    375    376  75566  75567  75568  75569  75570 
+##366776  19023 425558  38991  17011  31432  55320  99557 172516 
+
+
 ## let's try 60, 30, 20, 10
 
 rsum = rowSums ( counts ( deseq.full.data ))
-filter.cut = 10
+filter.cut = 60
 use = (rsum > filter.cut)
 
 deseq.data.filtered = deseq.full.data[ use, ]
@@ -145,6 +164,11 @@ if(!file.exists(output.dir.path)){
 ## output min.pval
 write.table(min.pval, file = paste0(output.dir.path, "/min.pval.", filter.cut, ".txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
 
+## output pval
+write.table(pval.filtered, file = paste0(output.dir.path, "/all.pval.", filter.cut, ".txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+
+
+
 
 #############################
 ## Without filtering
@@ -173,6 +197,10 @@ if(!file.exists(output.dir.path)){
 
 ## output min.pval
 write.table(min.pval, file = paste0(output.dir.path, "/min.pval.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+
+## output pval
+pval.filtered = pval
+write.table(pval.filtered, file = paste0(output.dir.path, "/all.pval.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
 
 
 
@@ -282,10 +310,27 @@ sum(all.use > 0)/length(all.use)
 ## 0.4576373
 
 
+
+##with upper bound 6500 (as Roger used)
+##rsum = rowSums ( counts ( deseq.full.data ))
+##filter.cut = 0
+##use = ((rsum > filter.cut) & (rsum < 6500))
+##all.use = apply(matrix(use,ncol=numC,byrow=T),1,sum)
+##sum(all.use > 0)
+##length(all.use)
+##sum(all.use > 0)/length(all.use)
+##sum(rsum >= 6500)
+##[1] 9
+##rsum[rsum >= 6500]
+##   363    372    375    376  75566  75567  75568  75569  75570 
+##222713  16968 263706  29363  14010  27157  47347  85199 144731 
+
+
+
 ## let's try 60, 30, 20, 10
 
 rsum = rowSums ( counts ( deseq.full.data ))
-filter.cut = 10
+filter.cut = 60
 use = (rsum > filter.cut)
 
 deseq.data.filtered = deseq.full.data[ use, ]
@@ -316,6 +361,10 @@ if(!file.exists(output.dir.path)){
 
 ## output min.pval
 write.table(min.pval, file = paste0(output.dir.path, "/min.pval.", filter.cut, ".txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+## output pval
+write.table(pval.filtered, file = paste0(output.dir.path, "/all.pval.", filter.cut, ".txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+
+
 
 
 #############################
@@ -346,6 +395,9 @@ if(!file.exists(output.dir.path)){
 ## output min.pval
 write.table(min.pval, file = paste0(output.dir.path, "/min.pval.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
 
+## output pval
+pval.filtered = pv
+write.table(pval.filtered, file = paste0(output.dir.path, "/all.pval.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
 
 
 
@@ -405,6 +457,7 @@ pval.deseq.3[ix.final] = pval.deseq.300
 
 
 
+
 out.path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/summary/pval.ms.wave.", all.name, ".Robj")
 save("pval.ms", "pval.wave", file = out.path)
 
@@ -415,18 +468,37 @@ save("pval.ms", "pval.wave", file = out.path)
 # Step 2: get p-value from empirical null distribution of test statistic (DESeq)
 ##################################################################
 
-get.pval.from.empirical.null.dist <- function(statistic.null, statistic.alt, big.sig = TRUE){
+##get.pval.from.empirical.null.dist <- function(statistic.null, statistic.alt, big.sig = TRUE){
+##    
+##    numNulltests = length(statistic.null)
+##    if(big.sig){
+##        numSig = sapply(statistic.alt, function(x, statistic.null){ return(sum(statistic.null >= x))}, statistic.null = statistic.null)
+##    }else{
+##        numSig = sapply(statistic.alt, function(x, statistic.null){ return(sum(statistic.null <= x))}, statistic.null = statistic.null)
+##    }
+##    pval.list = sapply(numSig, function(x, numNulltests){ return(runif(1, (x+1)/(numNulltests+2), (x+1)/(numNulltests+1)))}, numNulltests = numNulltests)
+##
+##    return(pval.list)
+##}
+
+
+
+
+get.pval.from.empirical.null.dist.discrete <- function(statistic.null, statistic.alt, big.sig = TRUE){
     
     numNulltests = length(statistic.null)
     if(big.sig){
-        numSig = sapply(statistic.alt, function(x, statistic.null){ return(sum(statistic.null >= x))}, statistic.null = statistic.null)
-    }else{
-        numSig = sapply(statistic.alt, function(x, statistic.null){ return(sum(statistic.null <= x))}, statistic.null = statistic.null)
+        numSig = sapply(statistic.alt, function(x, statistic.null){ return(sum(statistic.null > x))}, statistic.null = statistic.null)
+      }else{
+        numSig = sapply(statistic.alt, function(x, statistic.null){ return(sum(statistic.null < x))}, statistic.null = statistic.null)
     }
-    pval.list = sapply(numSig, function(x, numNulltests){ return(runif(1, (x+1)/(numNulltests+2), (x+1)/(numNulltests+1)))}, numNulltests = numNulltests)
-
+    numEqual = sapply(statistic.alt, function(x, statistic.null){ return(sum(statistic.null == x))}, statistic.null = statistic.null)
+    Uval = runif(length(statistic.alt))
+    
+    pval.list = (numSig + Uval*(numEqual + 1))/(numNulltests + 1)
     return(pval.list)
 }
+
 
 
 ## 60, 30, 20, 10 
@@ -437,8 +509,10 @@ deseq.null = as.numeric(read.table(paste0("/mnt/lustre/home/shim/multiscale_anal
  
 del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
 
-pval.deseq = get.pval.from.empirical.null.dist(statistic.null = deseq.null[-del.ix.deseq], statistic.alt = deseq.alt[-del.ix.deseq], big.sig = FALSE)
+pval.deseq = get.pval.from.empirical.null.dist.discrete(statistic.null = deseq.null[-del.ix.deseq], statistic.alt = deseq.alt[-del.ix.deseq], big.sig = FALSE)
 
+
+num.tests = length(deseq.alt)
 pval.deseq.3.60 = rep(NA, num.tests)
 ix.final = (1:num.tests)[-del.ix.deseq]
 pval.deseq.3.60[ix.final] = pval.deseq
@@ -455,7 +529,7 @@ deseq.null = as.numeric(read.table(paste0("/mnt/lustre/home/shim/multiscale_anal
  
 del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
 
-pval.deseq = get.pval.from.empirical.null.dist(statistic.null = deseq.null[-del.ix.deseq], statistic.alt = deseq.alt[-del.ix.deseq], big.sig = FALSE)
+pval.deseq = get.pval.from.empirical.null.dist.discrete(statistic.null = deseq.null[-del.ix.deseq], statistic.alt = deseq.alt[-del.ix.deseq], big.sig = FALSE)
 
 pval.deseq.3.30 = rep(NA, num.tests)
 ix.final = (1:num.tests)[-del.ix.deseq]
@@ -472,7 +546,7 @@ deseq.null = as.numeric(read.table(paste0("/mnt/lustre/home/shim/multiscale_anal
  
 del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
 
-pval.deseq = get.pval.from.empirical.null.dist(statistic.null = deseq.null[-del.ix.deseq], statistic.alt = deseq.alt[-del.ix.deseq], big.sig = FALSE)
+pval.deseq = get.pval.from.empirical.null.dist.discrete(statistic.null = deseq.null[-del.ix.deseq], statistic.alt = deseq.alt[-del.ix.deseq], big.sig = FALSE)
 
 pval.deseq.3.20 = rep(NA, num.tests)
 ix.final = (1:num.tests)[-del.ix.deseq]
@@ -489,7 +563,7 @@ deseq.null = as.numeric(read.table(paste0("/mnt/lustre/home/shim/multiscale_anal
  
 del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
 
-pval.deseq = get.pval.from.empirical.null.dist(statistic.null = deseq.null[-del.ix.deseq], statistic.alt = deseq.alt[-del.ix.deseq], big.sig = FALSE)
+pval.deseq = get.pval.from.empirical.null.dist.discrete(statistic.null = deseq.null[-del.ix.deseq], statistic.alt = deseq.alt[-del.ix.deseq], big.sig = FALSE)
 
 pval.deseq.3.10 = rep(NA, num.tests)
 ix.final = (1:num.tests)[-del.ix.deseq]
@@ -498,7 +572,33 @@ length(del.ix.deseq)
 ## 13014
 
 
-out.path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/deseq.pval.Robj")
+filter.cut = 0
+
+deseq.alt = as.numeric(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/min.pval.txt"))[,1])
+deseq.null = as.numeric(read.table(paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".null.run/output/min.pval.txt"))[,1])
+ 
+del.ix.deseq = union(which(is.na(deseq.alt)==TRUE), which(is.na(deseq.null)==TRUE))
+
+pval.deseq = get.pval.from.empirical.null.dist.discrete(statistic.null = deseq.null[-del.ix.deseq], statistic.alt = deseq.alt[-del.ix.deseq], big.sig = FALSE)
+
+
+num.tests = length(deseq.alt)
+pval.deseq.3 = rep(NA, num.tests)
+ix.final = (1:num.tests)[-del.ix.deseq]
+pval.deseq.3[ix.final] = pval.deseq
+length(del.ix.deseq)
+## 11565
+
+
+
+
+
+
+
+
+#out.path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/deseq.pval.Robj")
+
+out.path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/", treatment, ".", siteSize, ".", strand, ".", 300, ".alt.run/output/deseq.pval.discrete.Robj")
 
 save("pval.deseq.3", "pval.deseq.3.60", "pval.deseq.3.30", "pval.deseq.3.20", "pval.deseq.3.10", file = out.path)
 
