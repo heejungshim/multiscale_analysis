@@ -58,7 +58,10 @@ see.read.count.dist.R
 # perform analysis (get emprical p-value)
 see.DESeq.R
 # take a look (histogram, QQ-plot, FDR)
-see.DESeq.2.R
+see.DESeq.look.R
+# compare DESeq and DESeq2 with one specific example
+see.DESeq.simple.R
+
 
 
 
