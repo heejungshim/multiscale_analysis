@@ -62,6 +62,11 @@ see.DESeq.look.R
 # compare DESeq and DESeq2 with one specific example
 see.DESeq.simple.R
 
+#####################
+# run with DESeq2 
+#####################
+see.DESeq2.R ## same as see.DESeq.R
+
 
 
 

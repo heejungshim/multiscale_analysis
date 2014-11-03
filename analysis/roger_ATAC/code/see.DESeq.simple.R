@@ -153,8 +153,89 @@ dev.off()
 
 
 #############################################################
-# Conclusion: My DESeq2 analyses results are similar to what Roger has!
+## Conclusion: My DESeq2 analyses results are similar to what Roger has!
 #############################################################
+
+
+
+#####################################################
+## Let's see what happened with DESeq2 with factor or without correction!
+#####################################################
+
+
+##########################
+## For DESeq2 Analyses
+##########################
+
+
+countData = counts ( deseq.full.data )
+
+###Converts the colData table to a dataframe with vector labels
+colData <- data.frame(row.names= c("T1","T2", "T3", "C1", "C2", "C3") ,t=c("T","T","T","C","C","C"),r=as.factor(c(1,2,3,1,2,3)))
+### should be a factor!
+
+
+rsum = rowSums (countData)
+filter.cut = 60
+use = (rsum > filter.cut)
+
+countData.filtered = countData[ use, ]
+
+###Perform DESeq2 Analysis
+
+ddsTvC <- DESeqDataSetFromMatrix(
+	countData=countData.filtered,
+	colData=colData,
+	design = ~ r + t)
+dds <- DESeq(ddsTvC)
+res <- results(dds)
+
+DESeq2.factor.simple.pval = res$pvalue
+
+
+
+
+ddsTvC <- DESeqDataSetFromMatrix(
+	countData=countData.filtered,
+	colData=colData,
+	design = ~ t)
+dds <- DESeq(ddsTvC)
+res <- results(dds)
+
+DESeq2.withoutC.simple.pval = res$pvalue
+
+
+
+
+
+##############################
+# QQ plot and Histgram
+##############################
+
+setwd("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/fig/DESeqdebug/")
+
+png(paste("DESeq2factor",".qqPlot.png",sep=""))
+qqplot(-log10(ppoints(length(DESeq2.factor.simple.pval))),-log10(DESeq2.factor.simple.pval),xlab="Expected -log10(Pvalue)",ylab="Observed -log10(Pvalue)")
+abline(0,1,col='red')
+dev.off()
+
+png(paste("DESeq2withoutC",".qqPlot.png",sep=""))
+qqplot(-log10(ppoints(length(DESeq2.withoutC.simple.pval))),-log10(DESeq2.withoutC.simple.pval),xlab="Expected -log10(Pvalue)",ylab="Observed -log10(Pvalue)")
+abline(0,1,col='red')
+dev.off()
+
+
+
+png(paste("DESeq2",".Hist.png",sep=""))
+par(mfrow =c(2,1))
+hist(DESeq2.factor.simple.pval, breaks=1000)
+hist(DESeq2.withoutC.simple.pval, breaks=1000)
+dev.off()
+
+
+##################################################
+# Conclusion : factor correction seems to be best
+##################################################
 
 
 
