@@ -66,7 +66,7 @@ see.DESeq.simple.R
 # run with DESeq2 
 #####################
 see.DESeq2.R ## same as see.DESeq.R
-
+see.DESeq2.no.R ## what happens if we don't correct for different cell numbers
 
 
 
