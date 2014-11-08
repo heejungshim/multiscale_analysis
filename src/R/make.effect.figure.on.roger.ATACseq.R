@@ -1,15 +1,15 @@
 ## `make.effect.figure.on.roger.ATACseq.R' makes effect size figures from multiseq, wavelets, DESeq for selected sites
 #
-## Example Usage : R CMD BATCH --no-save --no-restore "--args info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.info' out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/' wave.out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/' file.name='msOnly' siteSize=2048 treatment='Copper' null=FALSE strand='both' sig.level=2 wave.effect=TRUE multiseq.effect=TRUE deseq.effect=FALSE" /mnt/lustre/home/shim/multiscale_analysis/src/R/make.effect.figure.on.roger.ATACseq.R
+## Example Usage : R CMD BATCH --no-save --no-restore "--args info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq.info' DESeq.info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq.all.pval.info' out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/' wave.out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/' file.name='msOnly' siteSize=2048 treatment='Copper' strand='both' sig.level=2 wave.effect=TRUE multiseq.effect=TRUE deseq.effect=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/make.effect.figure.on.roger.ATACseq.R
 ##
 ##
-## info.path : path to file that contains information on sites of interest ("chr", "sites", "st.posi", "en.posi", "pval.wave", "pval.ms", "qval.wave", "qval.ms", "logLR.wave", "logLR.ms", "logLR.wave.null", "logLR.ms.null")
+## info.path : path to file that contains information on sites of interest ("chr", "sites", "st.posi", "en.posi", "pval.wave", "pval.ms", "pval.deseq", "qval.wave", "qval.ms", "qval.deseq", "logLR.wave", "logLR.ms", "logLR.wave.null", "logLR.ms.null", "index")
+## DESeq.info.path : path to file that contains DESeq results for sub windows (p-value or fold change) 
 ## out.path : path to directory where figures will be saved
 ## wave.out.path : path to directory which contains results from wavelet analysis
 ## file.name : output figure file name
 ## siteSize : site size
 ## treatment : treatment name
-## null : indicate whether effect size from treatment vs control (null = FALSE) or from control vs control (null = TRUE)
 ## strand : 'both', 'plus', 'minus'; add two strands, use + strand, or use - strand
 ## sig.level : +/- sig.level * standard deviation
 ## wave.effect : indicate whether effect size from wavelet is plotted
@@ -47,20 +47,20 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
 
 
-#info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.info'
-#out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/'
-#wave.out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/'
-#file.name= 'msOnly.control'
-#siteSize=2048
-#treatment='Copper'
-#null = TRUE
-#strand='both'
-#strand='plus'
-#strand='minus'
-#sig.level = 2
-#wave.effect=TRUE
-#multiseq.effect=TRUE
-#deseq.effect=FALSE
+##info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq.info'
+##DESeq.info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq.all.pval.info'
+##out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/'
+##wave.out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/'
+##file.name= 'test'
+##siteSize=2048
+##treatment='Copper'
+##strand='both'
+##strand='plus'
+##strand='minus'
+##sig.level = 2
+##wave.effect=TRUE
+##multiseq.effect=TRUE
+##deseq.effect=TRUE
 
 
 
@@ -86,6 +86,53 @@ eval(parse(text=args[[12]]))
 ## Retinoic     N704    N706    N705
 
 
+
+##############################################
+## sample name and sample file for null data
+##############################################
+null = TRUE
+name.treatment = NULL
+name.control = NULL
+if(treatment=='Copper'){
+    name.control = "N706"
+    if(!null){
+        name.treatment = "N702"
+    }else{
+        name.treatment = "N705"
+    }
+}
+if(treatment=='Selenium'){
+    name.control = "N706"
+    if(!null){
+        name.treatment = "N703"
+    }else{
+        name.treatment = "N705"
+    }
+}
+if(treatment=='Retinoic'){
+    name.control = "N705"
+    if(!null){
+        name.treatment = "N704"
+    }else{
+        name.treatment = "N706"
+    }
+}
+
+## sample names
+names.Sam = c("N501", "N502", "N503")
+
+## Make a list of sample names and a list of hdf5 file names : treatment first and control later.
+sample.names = c(paste0(name.treatment, names.Sam), paste0(name.control, names.Sam))
+sample.files = paste0(sample.names, ".qfiltered10")
+
+sample.names.null = sample.names
+sample.files.null = sample.files
+
+
+##############################################
+## sample name and sample file for alternative data
+##############################################
+null = FALSE
 name.treatment = NULL
 name.control = NULL
 if(treatment=='Copper'){
@@ -124,13 +171,20 @@ hdf5.data.path = "/data/share/genome_db/hg19/roger_atacseq/"
 sample.names = c(paste0(name.treatment, names.Sam), paste0(name.control, names.Sam))
 sample.files = paste0(sample.names, ".qfiltered10")
 
+sample.names.alt = sample.names
+sample.files.alt = sample.files
+
+
+
+
+
+
 
 ## Make a covariate
 g = c(rep(0, length(names.Sam)), rep(1, length(names.Sam)))
 
 ## Path to library read depth
 library.read.depth.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/info/"
-
 
 
 ## read TF
@@ -144,11 +198,11 @@ TssAnno = read.table(gzfile('/mnt/gluster/data/external_private_supp/roger_atacs
 
 ## set up working directory and open figure file
 setwd(out.path)
-numfig = wave.effect + multiseq.effect + deseq.effect + 1
+numfig = wave.effect + multiseq.effect + deseq.effect + 2
 if(numfig <= 2){
     pdf(paste0(out.path, file.name, ".effect.pdf"), width=10, height=5)
 }else{
-    pdf(paste0(out.path, file.name, ".effect.pdf"), width=10, height=5)
+    pdf(paste0(out.path, file.name, ".effect.pdf"), width=10, height=7)
 }    
 nf <- layout(matrix(1:numfig,numfig,1,byrow=TRUE),TRUE)
 
@@ -156,8 +210,9 @@ nf <- layout(matrix(1:numfig,numfig,1,byrow=TRUE),TRUE)
 #############################
 # read all information
 #############################
-dat.info = read.table(file=info.path, header = TRUE, as.is=TRUE)
 
+deseq.info = read.table(file=DESeq.info.path)
+dat.info = read.table(file=info.path, header = TRUE, as.is=TRUE)
 
 numSites = dim(dat.info)[1]
 
@@ -172,8 +227,11 @@ en.posi = dat.info$en.posi[ss]
 
 
 #####################
-# read data
+# read data nulll
 #####################
+null = TRUE
+sample.names = sample.names.null
+sample.files = sample.files.null
 numSam = length(sample.names)
 numBPs = siteSize
 library.read.depth = rep(0, numSam)
@@ -255,18 +313,9 @@ ctr.pheno = apply(phe.D[(numSam/2+1):numSam,], 2, mean)
 trt.RC = sum(phenoD[1:(numSam/2),])
 ctr.RC = sum(phenoD[(numSam/2+1):numSam,])
 
-## smooth raw phenotype
-## denoise them using wavethresh
-library(wavethresh)
-
-sig.all = c(trt.pheno, ctr.pheno)
-sig.all.smooth = BAYES.THR(sig.all)
-sig.all.smooth[sig.all.smooth < 0] = 0
-trt.pheno.smooth = sig.all.smooth[1:siteSize]
-ctr.pheno.smooth = sig.all.smooth[((1:siteSize) + siteSize)]
 
 ymin = 0
-ymaxT = max(trt.pheno.smooth, ctr.pheno.smooth, trt.pheno, ctr.pheno)*(1+ 0.05)
+ymaxT = max(trt.pheno, ctr.pheno)*(1+ 0.05)
 
 xval = xmin:xmax
 ymax = ymaxT*10^6
@@ -280,11 +329,7 @@ if(length(unlist(pcr.posi)) > 0){
 
 
 ## Make a raw phenotype figure
-if(!null){
-    raw.title = paste0("chr", chr, ":", st.posi, "-", en.posi, ", treatment(red):", trt.RC, " control(blue):", ctr.RC)
-}else{
-    raw.title = paste0("chr", chr, ":", st.posi, "-", en.posi, ", control(red):", trt.RC, " control(blue):", ctr.RC)
-}    
+raw.title = paste0("chr", chr, ":", st.posi, "-", en.posi, ", control(red):", trt.RC, " control(blue):", ctr.RC)    
 par(mar = c(1,4,1,2))
 plot(1,1,type="n", xlab = "position", ylab = "DNaseI cut rate per million reads",ylim=c(ymin, ymax),xlim=c(xmin, xmax),main =raw.title, axes=FALSE)
 axis(1)
@@ -307,10 +352,154 @@ rect(sel.sites[k,2], 0, sel.sites[k,3], ymax + 1, col=rgb(0,1,0,0.3), border='NA
 }
 
 
-points(xval, trt.pheno*10^6, col = "orange", type="l")
-points(xval, ctr.pheno*10^6, col = "skyblue", type="l")
-points(xval, trt.pheno.smooth*10^6, col = "red", type="l")
-points(xval, ctr.pheno.smooth*10^6, col = "blue", type="l")
+points(xval, ctr.pheno*10^6, col = rgb(0,0,1,alpha=0.7), type="l")
+points(xval, trt.pheno*10^6, col = rgb(1,0,0,alpha=0.7), type="l")
+
+#GETS AND PLOTS ANY TSSs IN THE REGION
+TSS <- TssAnno[(as.character(TssAnno[,1]) == paste("chr", chr, sep="")) & (TssAnno[,2] > xmin) & (TssAnno[,2] < (xmax+1)),]
+if(dim(TSS)[1] > 0) {
+for(k in 1:dim(TSS)[1]){
+mtext('*', side=1, at=TSS[k,2], col='purple', cex=1.5, padj=1)
+}
+}
+
+
+
+
+
+
+
+#####################
+# read data alt
+#####################
+null = FALSE
+sample.names = sample.names.alt
+sample.files = sample.files.alt
+numSam = length(sample.names)
+numBPs = siteSize
+library.read.depth = rep(0, numSam)
+ATAC.dat = matrix(data=0, nr = numSam, nc = numBPs)
+pcr.posi = vector("list", 2)
+pcr.ix = 1
+
+## for fwd
+if((strand=='both') | (strand=='plus')){
+
+    ## read library read depth
+    path.read.depth = paste0(library.read.depth.path, "library.read.depth.fwd")
+    library.read.depth.dat = read.table(path.read.depth, as.is=TRUE)
+    for(i in 1:numSam){
+        library.read.depth[i] = library.read.depth[i] + library.read.depth.dat[which(library.read.depth.dat[,1] == sample.names[i]),2]
+    }
+
+    ## read read counts for a given region
+    ## for + strand, we need get reads at locations that are shifted 4bp to left
+    ATAC.dat.fwd = matrix(data=NA, nr = numSam, nc = numBPs)
+    for(i in 1:numSam){
+        path.fwd = paste0(hdf5.data.path, sample.files[i] , ".fwd.h5")
+        ATAC.dat.fwd[i, 1:numBPs] = as.matrix(get.counts.h5(path.fwd, paste0("chr", chr), st.posi-4, en.posi-4))
+    }
+
+    ## remove pcr artifacts
+    pcr.removed.fwd = remove.pcr.artifacts(data=ATAC.dat.fwd, win.half.size=50, prop.thresh=0.9)
+    ATAC.dat = ATAC.dat + pcr.removed.fwd$data
+    if(!is.null(pcr.removed.fwd$posi.with.pcr.artifacts)){
+        pcr.posi[[pcr.ix]] = pcr.removed.fwd$posi.with.pcr.artifacts
+    }
+    pcr.ix = pcr.ix + 1
+
+}
+
+## for reverse
+if((strand=='both') | (strand=='minus')){
+
+    ## read library read depth
+    path.read.depth = paste0(library.read.depth.path, "library.read.depth.rev")
+    library.read.depth.dat = read.table(path.read.depth, as.is=TRUE)
+    for(i in 1:6){
+        library.read.depth[i] = library.read.depth[i] + library.read.depth.dat[which(library.read.depth.dat[,1] == sample.names[i]),2]
+    }
+    
+    ## read read counts for a given region
+    ## for - strand, we need get reads at locations that are shifted 4bp to right
+    ATAC.dat.rev = matrix(data=NA, nr = numSam, nc = numBPs)
+    for(i in 1:numSam){
+        path.rev = paste0(hdf5.data.path, sample.files[i] , ".rev.h5")
+        ATAC.dat.rev[i, 1:numBPs] = as.matrix(get.counts.h5(path.rev, paste0("chr", chr), st.posi+4, en.posi+4))
+    }
+
+    ## remove pcr artifacts
+    pcr.removed.rev = remove.pcr.artifacts(data=ATAC.dat.rev, win.half.size=50, prop.thresh=0.9)
+    ATAC.dat = ATAC.dat + pcr.removed.rev$data
+    if(!is.null(pcr.removed.rev$posi.with.pcr.artifacts)){
+        pcr.posi[[pcr.ix]] = pcr.removed.rev$posi.with.pcr.artifacts
+    }
+    pcr.ix = pcr.ix + 1
+    
+}
+
+phenoD = ATAC.dat
+
+
+####################
+# plot raw data
+####################
+
+ 
+## get phenotype
+xmin = st.posi
+xmax = en.posi
+
+phe.D = phenoD/library.read.depth
+trt.pheno = apply(phe.D[1:(numSam/2),], 2, mean)
+ctr.pheno = apply(phe.D[(numSam/2+1):numSam,], 2, mean)
+trt.RC = sum(phenoD[1:(numSam/2),])
+ctr.RC = sum(phenoD[(numSam/2+1):numSam,])
+
+ymin = 0
+ymaxT = max(trt.pheno, ctr.pheno)*(1+ 0.05)
+
+xval = xmin:xmax
+ymax = ymaxT*10^6
+
+
+## get pcr information
+xval_mapp = NULL
+if(length(unlist(pcr.posi)) > 0){ 
+    xval_mapp = xval[unlist(pcr.posi)]
+}
+
+
+## Make a raw phenotype figure
+if(!null){
+    raw.title = paste0("chr", chr, ":", st.posi, "-", en.posi, ", treatment(red):", trt.RC, " control(blue):", ctr.RC)
+}else{
+    raw.title = paste0("chr", chr, ":", st.posi, "-", en.posi, ", control(red):", trt.RC, " control(blue):", ctr.RC)
+}    
+par(mar = c(1,4,4,2))
+plot(1,1,type="n", xlab = "position", ylab = "DNaseI cut rate per million reads",ylim=c(ymin, ymax),xlim=c(xmin, xmax),main =raw.title, axes=FALSE)
+axis(1)
+if(!is.null(xval_mapp)){
+    axis(1, at=xval_mapp, col="green")
+}
+axis(2)
+box()
+
+
+### Transcription factor
+sel.sites = all_bed[all_bed[,1] == paste("chr", chr, sep="") & all_bed[,2] < (xmax+1) & all_bed[,3] > xmin, ]
+offset = -0.0025
+if(dim(sel.sites)[1] > 0){
+for(k in 1:dim(sel.sites)[1]){
+offset = -offset
+text(x=(sel.sites[k,2] + sel.sites[k,3])/2, y=(ymax -abs(offset) - offset), strsplit(as.character(sel.sites[k,4]), split="=")[[1]][2])
+rect(sel.sites[k,2], 0, sel.sites[k,3], ymax + 1, col=rgb(0,1,0,0.3), border='NA')
+}
+}
+
+
+points(xval, ctr.pheno*10^6, col = rgb(0,0,1,alpha=0.7), type="l")
+points(xval, trt.pheno*10^6, col = rgb(1,0,0,alpha=0.7), type="l")
 
 
 #GETS AND PLOTS ANY TSSs IN THE REGION
@@ -436,9 +625,49 @@ if(wave.effect){
 
 
 
+
+
+
+
+########################
+## deseq effect
+########################
+
+if(deseq.effect){
+
+  ## read p-value
+  deseq.mlogpval.all = -log(as.numeric(deseq.info[ss,]),10)
+  deseq.mlogpval.max = max(deseq.mlogpval.all)
+  ## title
+  if(!null){
+    title = paste0("DESeq -log10(pval): ", round(-log(dat.info$pval.deseq[ss],10),2), " -log10(qval): ", round(-log(dat.info$qval.deseq[ss],10),2), " -log(min(pval)): ", round(deseq.mlogpval.max,2))
+  }else{
+    title = paste0("DESeq")
+  }
+
+  ymax.t = 5
+  ymin.t = 0
+
+  plot(1,1,type="n", xlab = "position", ylab = "DESeq -log10(pvalue)",ylim=c(ymin.t, ymax.t),xlim=c(xmin, xmax),main = title)
+  xleft = rep(NA, 6)
+  xright = rep(NA, 6)
+  xleft[1] = xmin
+  for(j in 1:5){
+    xleft[j+1] = xleft[j] + 300
+    xright[j] = xleft[j+1] - 1
+  }
+  xright[6] = xmax
+    
+  ybottom = ytop = rep(0,6)
+  ytop = deseq.mlogpval.all
+  
+  rect(xleft, ybottom, xright, ytop, col = "grey")
+  
+
+
 }
 
-
+}
 
 dev.off()
 
