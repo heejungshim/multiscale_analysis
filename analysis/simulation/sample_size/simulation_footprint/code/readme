@@ -2,6 +2,9 @@ better.effect.size.R
    - let's work on how to estimate effect size better for simulation!
    - generate raw data, genotype data (70, 30, and 10 individuals), smooth.ratio (effect size)
    - also plot effect size
+try.different.effect.size.R
+   - let's try different ways to get effect sizes
+
 get.pval.wave.R 
    - collect pvalue from wave output files, make a list, and save R object.
 get.pval.ms.R 
