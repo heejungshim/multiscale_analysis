@@ -11,7 +11,7 @@
 ##
 ## License: GPL3+
 
-ss = 1
+#ss = 1
 
 
 setwd("/mnt/lustre/home/shim/multiscale_analysis")
@@ -22,7 +22,7 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 wd.path = paste0(multiscale.analysis.repodir, "/analysis/simulation/sample_size/simulation_578/code/")
 setwd(wd.path)
 
-pdf(paste0(wd.path, "effectsize_578.pdf"), height = 5, width = 7)
+pdf(paste0(wd.path, "effectsize_578_BAYES.pdf"), height = 5, width = 7)
 ## set path to files 
 
 ## Path to directory which contain DNase-seq data as hdf5 format, 
@@ -105,28 +105,38 @@ for(ss in 1:578){
 
 
         ## handle 0 or negative count
-        wh.zero = which(sig0 <= 1/70)
-        if(length(wh.zero) > 0){ 
-            sig0[wh.zero] = 1/70
-        }
-        wh.zero = which(sig1 <=  1/70)
-        if(length(wh.zero) > 0){ 
-            sig1[wh.zero] = 1/70
-        }
+        #wh.zero = which(sig0 <= 1/70)
+        #if(length(wh.zero) > 0){ 
+        #    sig0[wh.zero] = 1/70
+        #}
+        #wh.zero = which(sig1 <=  1/70)
+        #if(length(wh.zero) > 0){ 
+        #    sig1[wh.zero] = 1/70
+        #}
 
 
     
         ## denoise mean curves using wavethresh
         library(wavethresh)
 
-        w.sig0 = wd(sig0)
-        w.sig0.smooth = threshold(w.sig0)
-        sig0.smooth = wr(w.sig0.smooth)
+        ## combine two signals
+        sig.all = c(sig0, sig1)
+        sig.all.smooth = BAYES.THR(sig.all)
 
-        w.sig1 = wd(sig1)
-        w.sig1.smooth = threshold(w.sig1)
-        sig1.smooth = wr(w.sig1.smooth)
+        sig0.smooth = sig.all.smooth[1:1024]
+        sig1.smooth = sig.all.smooth[1025:2048]
 
+        #w.sig0 = wd(sig0)
+        #w.sig0.smooth = threshold(w.sig0)
+        #sig0.smooth = wr(w.sig0.smooth)
+
+        #w.sig1 = wd(sig1)
+        #w.sig1.smooth = threshold(w.sig1)
+        #sig1.smooth = wr(w.sig1.smooth)
+
+        delix = which(abs(sig0.smooth - sig1.smooth) <= 1/70)
+        #sig0.smooth[delix] = 0
+        sig1.smooth[delix] = sig0.smooth[delix]
 
         ## handle 0 or negative count
         wh.zero = which(sig0.smooth <= 1/70)
