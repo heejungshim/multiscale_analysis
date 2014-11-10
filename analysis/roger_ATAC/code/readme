@@ -66,9 +66,53 @@ see.DESeq.simple.R
 # run with DESeq2 
 #####################
 see.DESeq2.R ## same as see.DESeq.R
-see.DESeq2.no.R ## what happens if we don't correct for different cell numbers
+see.DESeq2.noC.R ## what happens if we don't correct for different cell numbers
+
+#####################
+# obtain empirical p-value
+#####################
+see.DESeq2.pval.R
+see.DESeq2.pval.noC.R
+
+######################
+# Make figures 
+#####################
+see.DESeq2.look.R
+see.DESeq2.look.noC.R
 
 
+#################################################################
+# find examples difference multiseq detects, but DESeq missed. 
+#################################################################
+find.example.both.deseq.R
 
+
+#########################################
+# See DESeq2 with different window size  
+# 100bp, 600bp and 2048bp
+########################################
+see.DESeq2.100.R
+see.DESeq2.full.R
+see.DESeq2.600.R
+
+
+#################################
+# Obtain empirical p-values
+#################################
+see.DESeq2.100.full.pval.R
+see.DESeq2.100.full.look.R
+
+# 100 with different minimum read count
+see.DESeq2.100.pval.R
+see.DESeq2.100.look.R
+
+see.DESeq2.600.pval.R
+see.DESeq2.600.look.R
+
+
+#####################
+# Look FDR curves
+#####################
+see.FDR.R
 
 
