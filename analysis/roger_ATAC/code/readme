@@ -115,4 +115,16 @@ see.DESeq2.600.look.R
 #####################
 see.FDR.R
 
+#############################################
+# Let's see q-value plot to see overlapping?
+# Also see number of detection (either one of them or both) at a given FDR
+#############################################
+see.overlap.R
+
+
+
+
+
+
+
 
