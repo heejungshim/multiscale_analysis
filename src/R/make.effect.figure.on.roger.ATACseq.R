@@ -1,10 +1,11 @@
 ## `make.effect.figure.on.roger.ATACseq.R' makes effect size figures from multiseq, wavelets, DESeq for selected sites
 #
-## Example Usage : R CMD BATCH --no-save --no-restore "--args info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq.info' DESeq.info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq.all.pval.info' out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/' wave.out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/' file.name='msOnly' siteSize=2048 treatment='Copper' strand='both' sig.level=2 wave.effect=TRUE multiseq.effect=TRUE deseq.effect=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/make.effect.figure.on.roger.ATACseq.R
+## Example Usage : R CMD BATCH --no-save --no-restore "--args info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq2.info' DESeq.300.info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq2.info.300' DESeq.600.info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq2.info.600' out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/' wave.out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/' file.name='msOnly' siteSize=2048 treatment='Copper' strand='both' sig.level=2 wave.effect=TRUE multiseq.effect=TRUE deseq.300.effect=TRUE deseq.600.effect=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/make.effect.figure.on.roger.ATACseq.R
 ##
 ##
-## info.path : path to file that contains information on sites of interest ("chr", "sites", "st.posi", "en.posi", "pval.wave", "pval.ms", "pval.deseq", "qval.wave", "qval.ms", "qval.deseq", "logLR.wave", "logLR.ms", "logLR.wave.null", "logLR.ms.null", "index")
-## DESeq.info.path : path to file that contains DESeq results for sub windows (p-value or fold change) 
+## info.path : path to file that contains information on sites of interest (index chr sites st.posi en.posi pval.wave pval.ms pval.deseq.full pval.deseq.600 pval.deseq.300 pval.deseq.100 qval.wave qval.ms qval.deseq.full qval.deseq.600 qval.deseq.300 qval.deseq.100 logLR.wave logLR.ms)
+## DESeq.300.info.path : path to file that contains DESeq2 (bin : 300)  results for sub windows (p-value or fold change)
+## DESeq.600.info.path : path to file that contains DESeq2 (bin : 600) results for sub windows (p-value or fold change) 
 ## out.path : path to directory where figures will be saved
 ## wave.out.path : path to directory which contains results from wavelet analysis
 ## file.name : output figure file name
@@ -14,7 +15,8 @@
 ## sig.level : +/- sig.level * standard deviation
 ## wave.effect : indicate whether effect size from wavelet is plotted
 ## multiseq.effect : indicate whether effect size from multiseq is plotted
-## deseq.effect : indicate whether effect size from DESeq is plotted
+## deseq.300.effect : indicate whether effect size from DESeq2 (bin :300) is plotted
+## deseq.600.effect : indicate whether effect size from DESeq2 (bin :600) is plotted
 ##
 ## Copyright (C) 2014 Heejung Shim
 ##
@@ -47,20 +49,22 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
 
 
-##info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq.info'
-##DESeq.info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq.all.pval.info'
-##out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/'
-##wave.out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/'
-##file.name= 'test'
-##siteSize=2048
-##treatment='Copper'
-##strand='both'
+#info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq2.info'
+#DESeq.300.info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq2.info.300'
+#DESeq.600.info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/tmp/Copper.2048.both.msOnly.DESeq2.info.600'
+#out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/code/'
+#wave.out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/wave/'
+#file.name= 'test'
+#siteSize=2048
+#treatment='Copper'
+#strand='both'
 ##strand='plus'
 ##strand='minus'
-##sig.level = 2
-##wave.effect=TRUE
-##multiseq.effect=TRUE
-##deseq.effect=TRUE
+#sig.level = 2
+#wave.effect=FALSE
+#multiseq.effect=TRUE
+#deseq.300.effect=TRUE
+#deseq.600.effect=TRUE
 
 
 
@@ -78,6 +82,8 @@ eval(parse(text=args[[9]]))
 eval(parse(text=args[[10]]))
 eval(parse(text=args[[11]]))
 eval(parse(text=args[[12]]))
+eval(parse(text=args[[13]]))
+eval(parse(text=args[[14]]))
 
 ## assigen treatment and control name according to input
 ## treatment    alt     null    control 
@@ -198,7 +204,7 @@ TssAnno = read.table(gzfile('/mnt/gluster/data/external_private_supp/roger_atacs
 
 ## set up working directory and open figure file
 setwd(out.path)
-numfig = wave.effect + multiseq.effect + deseq.effect + 2
+numfig = wave.effect + multiseq.effect + deseq.300.effect + deseq.600.effect + 2
 if(numfig <= 2){
     pdf(paste0(out.path, file.name, ".effect.pdf"), width=10, height=5)
 }else{
@@ -211,7 +217,12 @@ nf <- layout(matrix(1:numfig,numfig,1,byrow=TRUE),TRUE)
 # read all information
 #############################
 
-deseq.info = read.table(file=DESeq.info.path)
+if(deseq.300.effect){
+  deseq.300.info = read.table(file=DESeq.300.info.path)
+}
+if(deseq.600.effect){
+  deseq.600.info = read.table(file=DESeq.600.info.path)
+}
 dat.info = read.table(file=info.path, header = TRUE, as.is=TRUE)
 
 numSites = dim(dat.info)[1]
@@ -630,22 +641,22 @@ if(wave.effect){
 
 
 ########################
-## deseq effect
+## deseq 300 effect
 ########################
 
-if(deseq.effect){
+if(deseq.300.effect){
 
   ## read p-value
-  deseq.mlogpval.all = -log(as.numeric(deseq.info[ss,]),10)
+  deseq.mlogpval.all = -log(as.numeric(deseq.300.info[ss,]),10)
   deseq.mlogpval.max = max(deseq.mlogpval.all)
   ## title
   if(!null){
-    title = paste0("DESeq -log10(pval): ", round(-log(dat.info$pval.deseq[ss],10),2), " -log10(qval): ", round(-log(dat.info$qval.deseq[ss],10),2), " -log(min(pval)): ", round(deseq.mlogpval.max,2))
+    title = paste0("DESeq -log10(pval): ", round(-log(dat.info$pval.deseq.300[ss],10),2), " -log10(qval): ", round(-log(dat.info$qval.deseq.300[ss],10),2), " -log(min(pval)): ", round(deseq.mlogpval.max,2), "-log10(pval) full: ", round(-log(dat.info$pval.deseq.full[ss],10),2))
   }else{
     title = paste0("DESeq")
   }
 
-  ymax.t = 5
+  ymax.t = 4
   ymin.t = 0
 
   plot(1,1,type="n", xlab = "position", ylab = "DESeq -log10(pvalue)",ylim=c(ymin.t, ymax.t),xlim=c(xmin, xmax),main = title)
@@ -666,6 +677,49 @@ if(deseq.effect){
 
 
 }
+
+
+
+
+
+########################
+## deseq 600 effect
+########################
+
+if(deseq.600.effect){
+
+  ## read p-value
+  deseq.mlogpval.all = -log(as.numeric(deseq.600.info[ss,]),10)
+  deseq.mlogpval.max = max(deseq.mlogpval.all)
+  ## title
+  if(!null){
+    title = paste0("DESeq -log10(pval): ", round(-log(dat.info$pval.deseq.600[ss],10),2), " -log10(qval): ", round(-log(dat.info$qval.deseq.600[ss],10),2), " -log(min(pval)): ", round(deseq.mlogpval.max,2), "-log10(pval) full: ", round(-log(dat.info$pval.deseq.full[ss],10),2))
+  }else{
+    title = paste0("DESeq")
+  }
+
+  ymax.t = 4
+  ymin.t = 0
+
+  plot(1,1,type="n", xlab = "position", ylab = "DESeq -log10(pvalue)",ylim=c(ymin.t, ymax.t),xlim=c(xmin, xmax),main = title)
+  xleft = rep(NA, 3)
+  xright = rep(NA, 3)
+  xleft[1] = xmin
+  for(j in 1:2){
+    xleft[j+1] = xleft[j] + 600
+    xright[j] = xleft[j+1] - 1
+  }
+  xright[3] = xmax
+    
+  ybottom = ytop = rep(0,3)
+  ytop = deseq.mlogpval.all
+  
+  rect(xleft, ybottom, xright, ytop, col = "grey")
+  
+
+
+}
+
 
 }
 
