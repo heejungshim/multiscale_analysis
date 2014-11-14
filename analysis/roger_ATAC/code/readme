@@ -121,6 +121,15 @@ see.FDR.R
 #############################################
 see.overlap.R
 
+##############################
+## Find examples and prepare information to make figure for those examples
+## Originally I used find.example.both.deseq.R
+## Now I'll make two different functions - one to find a list of index and the other to prepare all information 
+##############################
+make.list.index.R
+prepare.info.R
+
+
 
 
 
