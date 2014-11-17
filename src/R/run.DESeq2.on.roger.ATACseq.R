@@ -1,7 +1,7 @@
-## `run.DESeq.on.roger.ATACseq.R' contains scrits to run DESeq on Roger's ATAC data.
+## `run.DESeq2.on.roger.ATACseq.R' contains scrits to run DESeq2 on Roger's ATAC data.
 ## 
 ##
-## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/Copper.2048.plus.100.alt.run/com/deseq.sh) : /data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore "--args wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/' siteSize=2048 treatment='Copper' null=FALSE strand='plus' window.size=100 numSam = 6" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.DESeq.on.roger.ATACseq.R
+## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/Copper.2048.plus.100.alt.run/com/deseq.sh) : /data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore "--args wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/' siteSize=2048 treatment='Copper' null=FALSE strand='plus' window.size=100 numSam = 6 filter.cut=0" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.DESeq2.on.roger.ATACseq.R
 ##
 ##
 ## wd.path : working directory path
@@ -11,6 +11,7 @@
 ## strand : 'both', 'plus', 'minus'; add two strands, use + strand, or use - strand
 ## window.size : window size we consider for DESeq analysis
 ## numSam : number of samples
+## filter.cut : analysis includes window with read count > filter.cut
 ##
 ##
 ## Copyright (C) 2014 Heejung Shim
@@ -39,7 +40,7 @@
 #strand='minus'
 #window.size=100
 #numSam = 6
-
+#filter.cut = 0
 
 args = (commandArgs(TRUE))
 eval(parse(text=args[[1]]))
@@ -49,8 +50,9 @@ eval(parse(text=args[[4]]))
 eval(parse(text=args[[5]]))
 eval(parse(text=args[[6]]))
 eval(parse(text=args[[7]]))
+eval(parse(text=args[[8]]))
 
-library("DESeq")
+library("DESeq2")
 
 ## set up working directory 
 setwd(wd.path)
@@ -88,29 +90,35 @@ for(chr in 1:22){
 }
 #sum(err.check==FALSE)
 # 22
-#sum(is.na(deseq.data))
+#osum(is.na(deseq.data))
 # 0
 
-## prepare input format for deseq
-condition=factor(c(rep("treated", numSam/2),rep("untreated", numSam/2)))
-## prepare data 
-deseq.full.data =newCountDataSet(deseq.data,condition)
 
-## estimate size factors
-deseq.full.data=estimateSizeFactors(deseq.full.data)
-#sizeFactors(deseq.full.data)
-#        1         2         3         4         5         6 
-#0.8735805 0.8908987 0.9346553 1.0000000 0.9634925 1.0000000 
+ 
+## Converts the colData table to a dataframe with vector labels
+colData <- data.frame(row.names= c("T1","T2", "T3", "C1", "C2", "C3") ,t=c("T","T","T","C","C","C"),r=as.factor(c(1,2,3,1,2,3)))
 
-## estimate dispersion parameters
-deseq.full.data=estimateDispersions(deseq.full.data)
+## filter data
+rsum = rowSums ( deseq.data)
+use = (rsum > filter.cut)
+countData.filtered = deseq.data[ use, ]
 
-## perform test
-resDESeq=nbinomTest(deseq.full.data,"treated", "untreated")
-pval=matrix(resDESeq$pval,ncol=numC,byrow=T)
+## Perform DESeq2 Analysis
+ddsTvC <- DESeqDataSetFromMatrix(
+	countData=countData.filtered,
+	colData=colData,
+	design = ~ r + t)
+dds <- DESeq(ddsTvC)
+res <- results(dds)
+
+## get p-value
+pval.vec = rep(NA, length(use))
+pval.vec[use==TRUE] = res$pvalue
+pval.filtered =matrix(pval.vec,ncol=numC,byrow=T)
 
 ## get minimum p-value for each site
-min.pval=apply(pval,1,min,na.rm=TRUE)
+min.pval=apply(pval.filtered,1,min,na.rm=TRUE)
+min.pval[is.infinite(min.pval)] = NA
 
 ## try to save output
 ## make an output directory
@@ -131,7 +139,7 @@ write.table(sum(is.na(deseq.data)), file = paste0(output.dir.path, "/errcheck.tx
 # 0
 
 ## output object just in case we want to take a close look!
-save("resDESeq", file =paste0(output.dir.path, "/res.Robj"))
+save("res", file =paste0(output.dir.path, "/res.Robj"))
 
 
 
