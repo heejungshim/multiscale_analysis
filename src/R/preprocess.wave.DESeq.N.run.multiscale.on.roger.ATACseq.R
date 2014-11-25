@@ -47,20 +47,17 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
 
 
-#chr=1
-#sites.ix=100
-#wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/'
-#siteSize=2048
-#treatment='Selenium'
-
-#null=FALSE
-#strand='both'
-#strand='plus'
-#strand='minus'
-#meanR.thresh=1
-#window.size.list=c(100,300)
-#wavelet.preprocess=TRUE
-#deseq.preprocess=TRUE
+##chr=1 
+##sites.ix=1 
+##wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/' 
+##siteSize=1024
+##treatment='Copper'
+##null=FALSE
+##strand='both'
+##meanR.thresh=2
+##window.size.list=c(100,300,1024)
+##wavelet.preprocess=TRUE
+##deseq.preprocess=TRUE
 
 
 
@@ -117,7 +114,7 @@ if(treatment=='Retinoic'){
 names.Sam = c("N501", "N502", "N503")
 
 ## Path to directory which contain ATAC-seq data as hdf5 format, 
-hdf5.data.path = "/data/share/genome_db/hg19/roger_atacseq/"
+hdf5.data.path = "/data/share/genome_db/hg19/roger_atacseq2/"
 
 ## Make a list of sample names and a list of hdf5 file names : treatment first and control later.
 sample.names = c(paste0(name.treatment, names.Sam), paste0(name.control, names.Sam))
@@ -128,7 +125,7 @@ sample.files = paste0(sample.names, ".qfiltered10")
 g = c(rep(0, length(names.Sam)), rep(1, length(names.Sam)))
 
 ## Path to library read depth
-library.read.depth.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/info/"
+library.read.depth.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/info/"
 
 
 
@@ -160,11 +157,16 @@ if(!file.exists(warning.dir.path)){
 
 ## make output directory name and output directory for wavelets
 if(wavelet.preprocess){
-
+  
     wave.out.dir.path = paste0(wd.path, "wave/", output.dir.name, ".data/") 
     if(!file.exists(wave.out.dir.path)){
         dir.create(wave.out.dir.path)
     }
+    waveNoQT.out.dir.path = paste0(wd.path, "waveNoQT/", output.dir.name, ".data/") 
+    if(!file.exists(waveNoQT.out.dir.path)){
+        dir.create(waveNoQT.out.dir.path)
+    }
+    
 }
 
 ## make output directory name and output directory for DESeq
@@ -190,10 +192,10 @@ if(deseq.preprocess){
 #############################
 # read location information and numSites for each chromosome
 #############################
-path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/locus/", treatment, ".", siteSize, ".chr", chr, ".locus")
+path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/locus/", treatment, ".", siteSize, ".chr", chr, ".locus")
 loc.info = read.table(path, header=TRUE)
 
-path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/locus/", treatment, ".", siteSize, ".numSites.txt")
+path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/locus/", treatment, ".", siteSize, ".numSites.txt")
 numSites = scan(path)[chr]
 
 
@@ -310,6 +312,18 @@ if(wavelet.preprocess){
     this.path = paste0(wave.out.dir.path, "use.", chr, ".", sites, ".txt")
     cat(filteredWCs, file = this.path)
 
+    ## No QT
+    res = WaveQTL_preprocess(Data = phenoD, library.read.depth = library.read.depth , Covariates = NULL, meanR.thresh = meanR.thresh, no.QT = TRUE)
+
+    filteredWCs = res$filtered.WCs
+    norm.WCs = res$WCs
+
+    this.path = paste0(waveNoQT.out.dir.path, "WC.", chr, ".", sites, ".txt")
+    write.table(norm.WCs, file = this.path, quote= FALSE, row.names = FALSE, col.names = FALSE)
+    this.path = paste0(waveNoQT.out.dir.path, "use.", chr, ".", sites, ".txt")
+    cat(filteredWCs, file = this.path)
+
+    
 }
 
  
@@ -323,12 +337,13 @@ if(deseq.preprocess){
         numC = numBPs%/%window.size
         mat = matrix(data=NA, nc = numSam, nr = numC)
         st = 1
-        for(c in 1:(numC-1)){
-             en = st + window.size  - 1
+        if(numC > 1){
+          for(c in 1:(numC-1)){
+            en = st + window.size  - 1
             mat[c,] = apply(phenoD[,st:en], 1, sum)
             st = en + 1
+          }
         }
-
         en = numBPs
         mat[numC,] = apply(phenoD[,st:en], 1, sum)
   
@@ -370,20 +385,5 @@ if(is.null(sites.ix)){
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
