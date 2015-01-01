@@ -1,0 +1,206 @@
+#######################################################
+# first clone Grahams' repo 
+# ~/genome
+# follow his instruction 
+#######################################################
+
+
+#######################################################
+# In /mnt/gluster/data/external_private_supp/roger_atacseq/newdata/merged
+# filtered read with low alignment quality 10 and saved them into
+# /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/ 
+#######################################################
+
+samtools view -b -q 10 AT2-N702N501.bam > ../../process_bams2/AT2-N702N501.qfiltered10.bam
+samtools view -b -q 10 AT2-N702N502.bam > ../../process_bams2/AT2-N702N502.qfiltered10.bam
+samtools view -b -q 10 AT2-N702N503.bam > ../../process_bams2/AT2-N702N503.qfiltered10.bam
+
+samtools view -b -q 10 AT2-N703N501.bam > ../../process_bams2/AT2-N703N501.qfiltered10.bam
+samtools view -b -q 10 AT2-N703N502.bam > ../../process_bams2/AT2-N703N502.qfiltered10.bam
+samtools view -b -q 10 AT2-N703N503.bam > ../../process_bams2/AT2-N703N503.qfiltered10.bam
+
+samtools view -b -q 10 AT2-N704N501.bam > ../../process_bams2/AT2-N704N501.qfiltered10.bam
+samtools view -b -q 10 AT2-N704N502.bam > ../../process_bams2/AT2-N704N502.qfiltered10.bam
+samtools view -b -q 10 AT2-N704N503.bam > ../../process_bams2/AT2-N704N503.qfiltered10.bam
+
+samtools view -b -q 10 AT2-N705N501.bam > ../../process_bams2/AT2-N705N501.qfiltered10.bam
+samtools view -b -q 10 AT2-N705N502.bam > ../../process_bams2/AT2-N705N502.qfiltered10.bam
+samtools view -b -q 10 AT2-N705N503.bam > ../../process_bams2/AT2-N705N503.qfiltered10.bam
+
+samtools view -b -q 10 AT2-N706N501.bam > ../../process_bams2/AT2-N706N501.qfiltered10.bam
+samtools view -b -q 10 AT2-N706N502.bam > ../../process_bams2/AT2-N706N502.qfiltered10.bam
+samtools view -b -q 10 AT2-N706N503.bam > ../../process_bams2/AT2-N706N503.qfiltered10.bam
+
+
+
+#######################################################
+# In /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/ 
+# index filtered bam files 
+#######################################################
+
+samtools index AT2-N702N501.qfiltered10.bam
+samtools index AT2-N702N502.qfiltered10.bam
+samtools index AT2-N702N503.qfiltered10.bam
+
+samtools index AT2-N703N501.qfiltered10.bam
+samtools index AT2-N703N502.qfiltered10.bam
+samtools index AT2-N703N503.qfiltered10.bam
+
+samtools index AT2-N704N501.qfiltered10.bam
+samtools index AT2-N704N502.qfiltered10.bam
+samtools index AT2-N704N503.qfiltered10.bam
+
+samtools index AT2-N705N501.qfiltered10.bam
+samtools index AT2-N705N502.qfiltered10.bam
+samtools index AT2-N705N503.qfiltered10.bam
+
+samtools index AT2-N706N501.qfiltered10.bam
+samtools index AT2-N706N502.qfiltered10.bam
+samtools index AT2-N706N503.qfiltered10.bam
+
+
+
+#######################################################
+# In /mnt/lustre/home/shim/genome/python/script/db
+# convert filtered bam files into hdf5
+#######################################################
+
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N702N501.qfiltered10.fwd /roger_atacseq2/N702N501.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N702N501.qfiltered10.bam
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N702N502.qfiltered10.fwd /roger_atacseq2/N702N502.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N702N502.qfiltered10.bam
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N702N503.qfiltered10.fwd /roger_atacseq2/N702N503.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N702N503.qfiltered10.bam
+
+
+
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N703N501.qfiltered10.fwd /roger_atacseq2/N703N501.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N703N501.qfiltered10.bam
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N703N502.qfiltered10.fwd /roger_atacseq2/N703N502.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N703N502.qfiltered10.bam
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N703N503.qfiltered10.fwd /roger_atacseq2/N703N503.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N703N503.qfiltered10.bam
+
+
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N704N501.qfiltered10.fwd /roger_atacseq2/N704N501.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N704N501.qfiltered10.bam
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N704N502.qfiltered10.fwd /roger_atacseq2/N704N502.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N704N502.qfiltered10.bam
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N704N503.qfiltered10.fwd /roger_atacseq2/N704N503.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N704N503.qfiltered10.bam
+
+
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N705N501.qfiltered10.fwd /roger_atacseq2/N705N501.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N705N501.qfiltered10.bam
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N705N502.qfiltered10.fwd /roger_atacseq2/N705N502.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N705N502.qfiltered10.bam
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N705N503.qfiltered10.fwd /roger_atacseq2/N705N503.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N705N503.qfiltered10.bam
+
+
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N706N501.qfiltered10.fwd /roger_atacseq2/N706N501.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N706N501.qfiltered10.bam
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N706N502.qfiltered10.fwd /roger_atacseq2/N706N502.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N706N502.qfiltered10.bam
+python load_bam_5prime_ends.py --assembly hg19 /roger_atacseq2/N706N503.qfiltered10.fwd /roger_atacseq2/N706N503.qfiltered10.rev /mnt/gluster/data/external_private_supp/roger_atacseq/process_bams2/AT2-N706N503.qfiltered10.bam
+
+
+
+#######################################################
+# In /mnt/lustre/home/shim/genome/python/script/db
+# To compute library read depth, first set track stats using set_track_stats.py
+# and get library read depth using get_track_stats.py.  
+# One downside might be that it computes library read depth over all chromosomes including sex chromosomes.  
+#######################################################
+
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N702N501.qfiltered10.fwd
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N702N502.qfiltered10.fwd
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N702N503.qfiltered10.fwd
+
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N702N501.qfiltered10.rev
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N702N502.qfiltered10.rev
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N702N503.qfiltered10.rev
+
+
+
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N703N501.qfiltered10.fwd
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N703N502.qfiltered10.fwd
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N703N503.qfiltered10.fwd
+
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N703N501.qfiltered10.rev
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N703N502.qfiltered10.rev
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N703N503.qfiltered10.rev
+
+
+
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N704N501.qfiltered10.fwd
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N704N502.qfiltered10.fwd
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N704N503.qfiltered10.fwd
+
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N704N501.qfiltered10.rev
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N704N502.qfiltered10.rev
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N704N503.qfiltered10.rev
+
+
+
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N705N501.qfiltered10.fwd
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N705N502.qfiltered10.fwd
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N705N503.qfiltered10.fwd
+
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N705N501.qfiltered10.rev
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N705N502.qfiltered10.rev
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N705N503.qfiltered10.rev
+
+
+
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N706N501.qfiltered10.fwd
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N706N502.qfiltered10.fwd
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N706N503.qfiltered10.fwd
+
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N706N501.qfiltered10.rev
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N706N502.qfiltered10.rev
+python set_track_stats.py --assembly hg19 /roger_atacseq2/N706N503.qfiltered10.rev
+
+
+
+
+
+
+
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N702N501.qfiltered10.fwd
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N702N502.qfiltered10.fwd
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N702N503.qfiltered10.fwd
+
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N702N501.qfiltered10.rev
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N702N502.qfiltered10.rev
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N702N503.qfiltered10.rev
+
+
+
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N703N501.qfiltered10.fwd
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N703N502.qfiltered10.fwd
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N703N503.qfiltered10.fwd
+
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N703N501.qfiltered10.rev
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N703N502.qfiltered10.rev
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N703N503.qfiltered10.rev
+
+
+
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N704N501.qfiltered10.fwd
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N704N502.qfiltered10.fwd
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N704N503.qfiltered10.fwd
+
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N704N501.qfiltered10.rev
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N704N502.qfiltered10.rev
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N704N503.qfiltered10.rev
+
+
+
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N705N501.qfiltered10.fwd
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N705N502.qfiltered10.fwd
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N705N503.qfiltered10.fwd
+
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N705N501.qfiltered10.rev
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N705N502.qfiltered10.rev
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N705N503.qfiltered10.rev
+
+
+
+
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N706N501.qfiltered10.fwd
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N706N502.qfiltered10.fwd
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N706N503.qfiltered10.fwd
+
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N706N501.qfiltered10.rev
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N706N502.qfiltered10.rev
+python get_track_stats.py --assembly hg19 /roger_atacseq2/N706N503.qfiltered10.rev
+
+
+
