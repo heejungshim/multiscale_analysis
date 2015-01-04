@@ -30,13 +30,14 @@ null=FALSE
 strand='both'
 meanR.thresh=2
 window.size.list=c(100,300,1024)
-wavelet.preprocess=TRUE
+wavelet.preprocess.QT=TRUE
+wavelet.preprocess.NoQT=TRUE
 deseq.preprocess=TRUE
-get.com.preprocess.run.multiseq.ATACseq(com.path, wd.path, siteSize, treatment, null, strand, meanR.thresh, window.size.list, wavelet.preprocess, deseq.preprocess)
+get.com.preprocess.run.multiseq.ATACseq(com.path, wd.path, siteSize, treatment, null, strand, meanR.thresh, window.size.list, wavelet.preprocess.QT, wavelet.preprocess.NoQT, deseq.preprocess)
 
 
 
-get.com.preprocess.run.multiseq.ATACseq <- function(com.path, wd.path, siteSize, treatment, null, strand, meanR.thresh, window.size.list, wavelet.preprocess, deseq.preprocess){
+get.com.preprocess.run.multiseq.ATACseq <- function(com.path, wd.path, siteSize, treatment, null, strand, meanR.thresh, window.size.list, wavelet.preprocess.QT, wavelet.preprocess.NoQT, deseq.preprocess){
    
     ## directory name 
     if(!null){
@@ -89,7 +90,7 @@ get.com.preprocess.run.multiseq.ATACseq <- function(com.path, wd.path, siteSize,
             }
         }
         com = paste0(com, window.size.list[length(window.size.list)])
-        com = paste0(com, ") wavelet.preprocess=", wavelet.preprocess, " deseq.preprocess=", deseq.preprocess, "\" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.DESeq.N.run.multiscale.on.roger.ATACseq.R")
+        com = paste0(com, ") wavelet.preprocess.QT=", wavelet.preprocess.QT, " wavelet.preprocess.NoQT=", wavelet.preprocess.NoQT, " deseq.preprocess=", deseq.preprocess, "\" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.DESeq.N.run.multiscale.on.roger.ATACseq.R")
         cat(com, file = file.name, append = TRUE)
 	cat("\n", file = file.name, append = TRUE)
     }
@@ -420,11 +421,13 @@ collect.logLR.wavelets <- function(com.path, wd.path, siteSize, treatment, null,
 
 com.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/deseq/com/'
 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/deseq/'
-siteSize=2048
+siteSize=1024
 treatment='Copper'
 null=FALSE
-strand='plus'
+strand='both'
 window.size=100
+#window.size=300
+#window.size=1024
 numSam=6
 
 combine.for.DESeq.data <- function(com.path, wd.path, siteSize, treatment, null, strand, window.size, numSam){
@@ -488,12 +491,15 @@ combine.for.DESeq.data <- function(com.path, wd.path, siteSize, treatment, null,
 ###########################
 
 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/deseq/'
-siteSize=2048
+siteSize=1024
 treatment='Copper'
 null=FALSE
-strand='plus'
+strand='both'
 window.size=100
+#window.size=300
+#window.size=1024
 numSam=6
+filter.cut=0
 
 run.DESeq <- function(wd.path, siteSize, treatment, null, strand, window.size, numSam){
         
@@ -532,7 +538,7 @@ run.DESeq <- function(wd.path, siteSize, treatment, null, strand, window.size, n
     cat(com, file = file.name, append = TRUE)
     cat("\n", file = file.name, append = TRUE)
 
-    com = paste0("/data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore \"--args wd.path='", wd.path, "' siteSize=", siteSize, " treatment='", treatment, "' null=", null, " strand='", strand, "' window.size=", window.size, " numSam=", numSam, "\" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.DESeq.on.roger.ATACseq.R")    
+    com = paste0("/data/tools/R-3.1.0/bin/R CMD BATCH --no-save --no-restore \"--args wd.path='", wd.path, "' siteSize=", siteSize, " treatment='", treatment, "' null=", null, " strand='", strand, "' window.size=", window.size, " numSam=", numSam, " filter.cut=",filter.cut, "\" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.DESeq2.on.roger.ATACseq.R")    
     cat(com, file = file.name, append = TRUE)
     cat("\n", file = file.name, append = TRUE)
 

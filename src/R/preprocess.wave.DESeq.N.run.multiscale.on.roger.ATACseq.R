@@ -1,7 +1,7 @@
 ## `preprocess.wave.DESeq.N.run.multiscale.on.roger.ATACseq.R' combines `preprocess.wave.DESeq.roger.ATACseq.R' and `run.multiscale.on.roger.ATACseq.R'
 ##
 ##
-## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/gen.data/com) : R CMD BATCH --no-save --no-restore "--args chr=1 sites.ix=1 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/' siteSize=2048 treatment='Copper' null=FALSE strand='both' meanR.thresh=1 window.size.list=c(100,300) wavelet.preprocess=TRUE deseq.preprocess=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.DESeq.N.run.multiscale.on.roger.ATACseq.R
+## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/gen.data/com) : R CMD BATCH --no-save --no-restore "--args chr=1 sites.ix=1 wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/' siteSize=2048 treatment='Copper' null=FALSE strand='both' meanR.thresh=1 window.size.list=c(100,300) wavelet.preprocess.QT=TRUE wavelet.preprocess.NoQT=TRUE deseq.preprocess=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.DESeq.N.run.multiscale.on.roger.ATACseq.R
 ##
 ##
 ## chr : chromosome
@@ -13,7 +13,8 @@
 ## strand : 'both', 'plus', 'minus'; add two strands, use + strand, or use - strand
 ## meanR.thresh=1 : for wavelet preprocess
 ## window.size.list=c(100,300) : list of window sizes we consider for DESeq analysis
-## wavelet.preprocess=TRUE
+## wavelet.preprocess.QT=TRUE
+## wavelet.preprocess.NoQT=TRUE
 ## deseq.preprocess=TRUE
 ##
 ## Copyright (C) 2014 Heejung Shim
@@ -56,7 +57,8 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 ##strand='both'
 ##meanR.thresh=2
 ##window.size.list=c(100,300,1024)
-##wavelet.preprocess=TRUE
+##wavelet.preprocess.QT=TRUE
+##wavelet.preprocess.NoQT=TRUE
 ##deseq.preprocess=TRUE
 
 
@@ -74,6 +76,7 @@ eval(parse(text=args[[8]]))
 eval(parse(text=args[[9]]))
 eval(parse(text=args[[10]]))
 eval(parse(text=args[[11]]))
+eval(parse(text=args[[12]]))
 
 
 ## assigen treatment and control name according to input
@@ -156,18 +159,19 @@ if(!file.exists(warning.dir.path)){
 
 
 ## make output directory name and output directory for wavelets
-if(wavelet.preprocess){
-  
+if(wavelet.preprocess.QT){  
     wave.out.dir.path = paste0(wd.path, "wave/", output.dir.name, ".data/") 
     if(!file.exists(wave.out.dir.path)){
         dir.create(wave.out.dir.path)
     }
+}
+
+if(wavelet.preprocess.NoQT){  
     waveNoQT.out.dir.path = paste0(wd.path, "waveNoQT/", output.dir.name, ".data/") 
     if(!file.exists(waveNoQT.out.dir.path)){
         dir.create(waveNoQT.out.dir.path)
     }
-    
-}
+  }
 
 ## make output directory name and output directory for DESeq
 if(deseq.preprocess){
@@ -299,7 +303,7 @@ phenoD = ATAC.dat
 # data preprocessing for wavelet analysis
 #########################################
 
-if(wavelet.preprocess){
+if(wavelet.preprocess.QT){
 
     source(paste0(WaveQTL.repodir, "/R/WaveQTL_preprocess_funcs.R"))
     res = WaveQTL_preprocess(Data = phenoD, library.read.depth = library.read.depth , Covariates = NULL, meanR.thresh = meanR.thresh)
@@ -311,8 +315,11 @@ if(wavelet.preprocess){
     write.table(norm.WCs, file = this.path, quote= FALSE, row.names = FALSE, col.names = FALSE)
     this.path = paste0(wave.out.dir.path, "use.", chr, ".", sites, ".txt")
     cat(filteredWCs, file = this.path)
+  }
 
-    ## No QT
+if(wavelet.preprocess.NoQT){
+
+    source(paste0(WaveQTL.repodir, "/R/WaveQTL_preprocess_funcs.R"))
     res = WaveQTL_preprocess(Data = phenoD, library.read.depth = library.read.depth , Covariates = NULL, meanR.thresh = meanR.thresh, no.QT = TRUE)
 
     filteredWCs = res$filtered.WCs
@@ -322,8 +329,6 @@ if(wavelet.preprocess){
     write.table(norm.WCs, file = this.path, quote= FALSE, row.names = FALSE, col.names = FALSE)
     this.path = paste0(waveNoQT.out.dir.path, "use.", chr, ".", sites, ".txt")
     cat(filteredWCs, file = this.path)
-
-    
 }
 
  
