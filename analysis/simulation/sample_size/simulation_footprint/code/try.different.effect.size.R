@@ -121,7 +121,8 @@ sig.all.smooth = BAYES.THR(sig.all)
 sig0.smooth = sig.all.smooth[1:1024]
 sig1.smooth = sig.all.smooth[1025:2048]
 
-cut.thresh = 10/70
+for(val in c(2,6,10)){
+cut.thresh = val/70
 delix = which(abs(sig0.smooth - sig1.smooth) <= cut.thresh)
 sig1.smooth[delix] = sig0.smooth[delix]
 
@@ -138,6 +139,10 @@ if(length(wh.zero) > 0){
 
 ## get smooth signal as a ratio
 smooth.ratio = sig1.smooth/sig0.smooth
+output = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/"
+write.table(smooth.ratio, file = paste0(output, "smooth.ratio.", val), col.names = FALSE, row.names = FALSE, quote=FALSE)
+
+
 
 
 ##########################################
@@ -145,7 +150,7 @@ smooth.ratio = sig1.smooth/sig0.smooth
 ##########################################
 
 output = "/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/fig/effectsize/"
-pdf(paste0(output, "footprint_signal_10",".pdf"), height = 4, width = 7)
+png(paste0(output, "FootprintSignal", val ,".png"), height = 4, width = 7, units="in", res=300)
 
 
 numBPs = 1024
@@ -212,7 +217,7 @@ box()
 dev.off()
 
 
-
+}
 
 
 
