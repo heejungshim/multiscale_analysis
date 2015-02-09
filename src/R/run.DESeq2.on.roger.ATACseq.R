@@ -30,17 +30,16 @@
 ## along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-
-#wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/deseq/'
-#siteSize=2048
-#treatment='Copper'
-#null=FALSE
-#strand='both'
-#strand='plus'
-#strand='minus'
-#window.size=100
-#numSam = 6
-#filter.cut = 0
+##wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/deseq/'
+##siteSize=1024
+##treatment='Copper'
+##null=FALSE
+##strand='both'
+##strand='plus'
+##strand='minus'
+##window.size=100
+##numSam = 6
+##filter.cut = 0
 
 args = (commandArgs(TRUE))
 eval(parse(text=args[[1]]))
@@ -65,7 +64,7 @@ if(!null){
 }
 
 ## get number of sites informaiton 
-path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/locus/", treatment, ".", siteSize, ".numSites.txt")
+path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/locus/", treatment, ".", siteSize, ".numSites.txt")
 numSites.list = scan(path)
 
 ## read data and check if data is proper
@@ -90,7 +89,7 @@ for(chr in 1:22){
 }
 #sum(err.check==FALSE)
 # 22
-#osum(is.na(deseq.data))
+#sum(is.na(deseq.data))
 # 0
 
 
@@ -139,7 +138,7 @@ write.table(sum(is.na(deseq.data)), file = paste0(output.dir.path, "/errcheck.tx
 # 0
 
 ## output object just in case we want to take a close look!
-save("res", file =paste0(output.dir.path, "/res.Robj"))
+save("res", "use", file =paste0(output.dir.path, "/res.Robj"))
 
 
 
