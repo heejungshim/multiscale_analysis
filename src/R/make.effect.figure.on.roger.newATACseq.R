@@ -1,4 +1,4 @@
-## `make.effect.figure.on.roger.ATACseq.R' makes effect size figures from multiseq, wavelets, DESeq for selected sites
+## `make.effect.figure.on.roger.newATACseq.R' makes effect size figures from multiseq, wavelets, DESeq for selected sites
 #
 ## Example Usage : R CMD BATCH --no-save --no-restore "--args info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/summary/Copper.1024.both.msOnly.ms.DESeq300.info' DESeq.100.info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/deseq/Copper.1024.both.100.alt.run/output/res.Robj' DESeq.300.info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/deseq/Copper.1024.both.300.alt.run/output/res.Robj' DESeq.full.info.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/deseq/Copper.1024.both.1024.alt.run/output/res.Robj' out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/code/' wave.out.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/wave/' file.name='ES' siteSize=1024 treatment='Copper' strand='both' sig.level=2 wave.effect=TRUE multiseq.effect=TRUE deseq.100.effect=TRUE deseq.300.effect=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/make.effect.figure.on.roger.ATACseq.R
 ##
@@ -47,11 +47,11 @@ source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
 WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
 
-##info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/summary/Copper.1024.both.msOnly.ms.DESeq300.info'
+##info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/summary/Copper.1024.both.all.ms.DESeq300.info'
 ##DESeq.100.info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/deseq/Copper.1024.both.100.alt.run/output/res.Robj'
 ##DESeq.300.info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/deseq/Copper.1024.both.300.alt.run/output/res.Robj'
 ##DESeq.full.info.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/deseq/Copper.1024.both.1024.alt.run/output/res.Robj'
-##out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/code/'
+##out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/gen.fig/Copper.1024.both/fig/'
 ##wave.out.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/wave/'
 ##file.name= 'ES'
 ##siteSize=1024
