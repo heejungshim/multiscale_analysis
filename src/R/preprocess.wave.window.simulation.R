@@ -38,18 +38,18 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
 
 
-#seed=1
-#geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/geno10.dat'
-#raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat'
-#ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/smooth.ratio'
-#scale.level=0.5
-#wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/alt/'
-#read.depth.ratio=NULL
-#output.dir.name='fullread.10ind'
-#wavelet.preprocess=TRUE
-#window.preprocess=TRUE
-#DESeq.preprocess=TRUE
-#over.dispersion=1/70/70/10
+##seed=1
+##geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/data/geno10.dat'
+##raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/data/raw.dat'
+##ratio.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/data/smooth.ratio.6'
+##scale.level=0.5
+##wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/alt/'
+##read.depth.ratio=1
+##output.dir.name='fullread.10ind'
+##wavelet.preprocess=TRUE
+##window.preprocess=TRUE
+##DESeq.preprocess=TRUE
+##over.dispersion=1/70/70/10
 
 
 args = (commandArgs(TRUE))
@@ -224,39 +224,47 @@ if(window.preprocess){
 
 if(DESeq.preprocess){
 
-    numBPs = dim(phenoD)[2]
-    numC = numBPs%/%100
+  numBPs = dim(phenoD)[2]
+  window.size.list = c(100, 300, numBPs)
+
+  for(ww in 1:length(window.size.list)){
+
+    window.size = window.size.list[ww]
+    numC = numBPs%/%window.size
     numIND = dim(phenoD)[1]
 
     mat = matrix(data=NA, nc = numC, nr = numIND)
     st = 1
-    for(c in 1:(numC-1)){
-        en = st + 100 - 1
+    if(numC > 1){
+      for(c in 1:(numC-1)){
+        en = st + window.size - 1
         den = en - st + 1
         if(den > 0){
-            mat[,c] = apply(phenoD[,st:en], 1, sum)
+          mat[,c] = apply(phenoD[,st:en], 1, sum)
         }else{
-            mat[,c] = 0
+          mat[,c] = 0
         }
         st = en + 1
+      }
     }
     en = numBPs
-
+    
     den = en - st + 1
     if(den > 0){
-        mat[,numC] = apply(phenoD[,st:en], 1, sum)
+      mat[,numC] = apply(phenoD[,st:en], 1, sum)
     }else{
-        mat[,numC] = 0
+      mat[,numC] = 0
     }
 
-    # save data
-    out.dir.path = paste0(wd.path, "DESeq/", output.dir.name, ".data/") 
+    ## save data
+    out.dir.path = paste0(wd.path, "DESeq/", output.dir.name, ".", window.size, ".data/") 
     if(!file.exists(out.dir.path)){
-        dir.create(out.dir.path)
+      dir.create(out.dir.path)
     }
-
+    
     this.path = paste0(out.dir.path, "DESeq.", seed, ".txt")
     write.table(t(mat), file = this.path, quote= FALSE, row.names = FALSE, col.names = FALSE)
+  }
 }
 
 
