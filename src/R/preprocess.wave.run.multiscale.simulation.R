@@ -2,7 +2,7 @@
 ##
 ##
 ## Example Usage : 
-## /data/tools/R-3.0.3/bin/R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/data/geno70.dat' sig0.path='~/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/data/alt.sig0' sig1.path='~/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/data/alt.sig1' wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/alt/' output.dir.name='fullread.10ind'" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.run.multiscale.simulation.R
+## /data/tools/R-3.0.3/bin/R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/data/geno70.dat' sig0.path='~/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/data/alt.sig0' sig1.path='~/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/data/alt.sig1' wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/alt/' output.dir.name='fullread.10ind' multipleSig=1" /mnt/lustre/home/shim/multiscale_analysis/src/R/preprocess.wave.run.multiscale.simulation.R
 ## 
 ##
 ##
@@ -41,7 +41,7 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 ##sig1.path='~/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/data/alt.sig1'
 ##wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/alt/'
 ##output.dir.name='fullread.10ind'
-
+##multipleSig=1 
 
 
 args = (commandArgs(TRUE))
@@ -51,7 +51,13 @@ eval(parse(text=args[[3]]))
 eval(parse(text=args[[4]]))
 eval(parse(text=args[[5]]))
 eval(parse(text=args[[6]]))
- 
+if(length(args) > 6){
+  eval(parse(text=args[[6]]))
+  if(multipleSig == 1){
+    sig0.path = paste0(sig0.path, ".", seed)
+    sig1.path = paste0(sig1.path, ".", seed)
+  }
+}
 
 setwd(wd.path)
 
