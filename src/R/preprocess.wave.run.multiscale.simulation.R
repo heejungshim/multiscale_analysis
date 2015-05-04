@@ -52,7 +52,7 @@ eval(parse(text=args[[4]]))
 eval(parse(text=args[[5]]))
 eval(parse(text=args[[6]]))
 if(length(args) > 6){
-  eval(parse(text=args[[6]]))
+  eval(parse(text=args[[7]]))
   if(multipleSig == 1){
     sig0.path = paste0(sig0.path, ".", seed)
     sig1.path = paste0(sig1.path, ".", seed)
