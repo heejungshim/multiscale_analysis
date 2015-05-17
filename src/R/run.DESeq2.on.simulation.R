@@ -94,7 +94,7 @@ for(ww in 1:3){
 
   ## filter data
   rsum = rowSums (deseq.data)
-  use = (rsum > filter.cut)
+  use = ((rsum > filter.cut) & (!is.na(rsum)))
   countData.filtered = deseq.data[use, ]
 
   ## Perform DESeq2 Analysis
