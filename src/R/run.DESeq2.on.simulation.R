@@ -37,6 +37,8 @@ eval(parse(text=args[[5]]))
 eval(parse(text=args[[6]]))
 if(length(args) == 6){
   null.path = NULL
+}else{
+  eval(parse(text=args[[7]]))
 }
 
 
