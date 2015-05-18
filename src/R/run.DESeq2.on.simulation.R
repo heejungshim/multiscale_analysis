@@ -1,7 +1,7 @@
 ## `run.DESeq2.on.simulation.R' contains scrits to run DESeq2 on simulated data.
 ## 
 ##
-## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/sum/DESeq/com/): R CMD BATCH --no-save --no-restore "--args wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/' numSam=6 read.depth.ratio=1 num.simu=500 siteSize=1024 filter.cut=0" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.DESeq2.on.simulation.R
+## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/sum/DESeq/com/): R CMD BATCH --no-save --no-restore "--args wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/' numSam=6 read.depth.ratio=1 num.simu=500 siteSize=1024 filter.cut=0 null.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/'" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.DESeq2.on.simulation.R
 ##
 ##
 ## wd.path : working directory path
@@ -35,6 +35,9 @@ eval(parse(text=args[[3]]))
 eval(parse(text=args[[4]]))
 eval(parse(text=args[[5]]))
 eval(parse(text=args[[6]]))
+if(length(args) == 6){
+  null.path = NULL
+}
 
 
 ##wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/'
@@ -43,6 +46,7 @@ eval(parse(text=args[[6]]))
 ##num.simu = 500
 ##siteSize = 1024
 ##filter.cut = 0
+##null.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/'
 
 library("DESeq2")
 
@@ -79,7 +83,11 @@ for(ww in 1:3){
   numC = siteSize%/%window.size
 
   ## read null data
-  input.path = paste0(wd.path, "null/DESeq/", dir.name, ".", window.size, ".run/")
+  if(is.null(null.path)){
+    input.path = paste0(wd.path, "null/DESeq/", dir.name, ".", window.size, ".run/")
+  }else{
+    input.path = paste0(null.path, "null/DESeq/", dir.name, ".", window.size, ".run/")
+  }    
   deseq.data.null = read.table(paste0(input.path, "data.txt"))
 
   ## read alt data
