@@ -18,6 +18,38 @@
 
 
 
+##' 'compute.proportions.given.effect.size' takes effect sizes over a retion (as a ratio)
+##' and sum of proportions (in binomial sampling) for two groups as input. And it computes
+##' proportion parameters in binomial sampling for two groups for the given effect sizes
+##' (as a ratio). Specifically, let $p_1 = p$ and $p_2 = p \times effect.ratio$
+##' where $\log(effect.ratio)$ is effec.size in log space and $effect.ratio = 1$ means
+##' there is no effect. Use $p$ which satisfies $p_1 + p_2 = sum.prop$.
+##' So $p_1 = p = sum.prop\frac{1}{1+effect.ratio}$ and $p_2 = sum.propr\frac{effect.ratio}{1+effect.ratio}$.
+##'
+##'
+##' for example,
+##' sum.prop = rep(2/70, 1024)
+##' effect.ratio = rep(1, 1024)
+##' effect.ratio[100:200] = 1/2
+##' res = compute.proportions.given.effect.size(sum.prop = sum.prop, effect.ratio = effect.ratio)
+##' res$prop0
+##' res$prop1
+##' 
+##' @param sum.prop a vector of sum of proportions (in binomial sampling) for two groups over a region
+##' @param effect.ratio a vector of effect sizes over a region as a ratio; default value = NULL; if effect.ratio == NULL, we assign the same proportion to two groups (no effect).
+##' @return a list of prop0 and prop1; prop0 (prop1) is a vector of proportions (in binomial sampling) for group0 (group1) over a region 
+compute.proportions.given.effect.size <- function(sum.prop, effect.ratio=NULL) {
+
+  if(is.null(effect.ratio)){
+    effect.ratio = rep(1, length(sum.prop))
+  }
+  prop0 = sum.prop/(effect.ratio + 1)
+  prop1 = sum.prop/(effect.ratio + 1)*effect.ratio
+  
+  return(params = list(prop0 = prop0, prop1 = prop1))
+}
+
+
 
 ##' 'estBetaParams' takes mean and variance for beta distribution and returns
 ##' alpha and beta parameters in beta distribution.
