@@ -10,7 +10,6 @@ check.simulation.procedure.R
 check.function.PCR.artifacts.R
  - implement functions to check position with PCR artifacts and remove them..
 
-
-
-
+check.install.multiseq.R
+ - check if I installed a right version of multiseq
   
