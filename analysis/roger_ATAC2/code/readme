@@ -8,4 +8,7 @@ gen.submit.file.R
 # debug "preprocess.wave.DESeq.N.run.multiscale.on.roger.ATACseq.R" for some cases
 debug.preprocess.code.R
 
+# look at statistic patterns from null and alternative (three methods) Copper both 1024 and get p-values
+see.statistic.3method.both.R
+
 
