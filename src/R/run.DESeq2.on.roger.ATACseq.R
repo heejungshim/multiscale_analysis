@@ -56,13 +56,13 @@ library("DESeq2")
 ## set up working directory 
 setwd(wd.path)
 
-## make directory name  
+## make directory name
 if(!null){
-    dir.name=paste0(treatment,".", siteSize, ".", strand,  ".", window.size, ".alt")
+  dir.name=paste0(treatment,".", siteSize, ".", strand,  ".", window.size, ".alt")
 }else{
-    dir.name=paste0(treatment,".", siteSize, ".", strand, ".", window.size, ".null")
+  dir.name=paste0(treatment,".", siteSize, ".", strand, ".", window.size, ".null")
 }
-
+  
 ## get number of sites informaiton 
 path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/locus/", treatment, ".", siteSize, ".numSites.txt")
 numSites.list = scan(path)
@@ -121,11 +121,18 @@ min.pval[is.infinite(min.pval)] = NA
 
 ## try to save output
 ## make an output directory
-output.dir.path = paste0(input.dir.path, "output/")
-if(!file.exists(output.dir.path)){
+if(filter.cut == 0){
+  output.dir.path = paste0(input.dir.path, "output/")
+  if(!file.exists(output.dir.path)){
     dir.create(output.dir.path)
+  }
+}else{
+  output.dir.path = paste0(input.dir.path, "output", filter.cut, "/")
+  if(!file.exists(output.dir.path)){
+    dir.create(output.dir.path)
+  }
 }
-
+  
 ## output min.pval
 write.table(min.pval, file = paste0(output.dir.path, "/min.pval.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
 

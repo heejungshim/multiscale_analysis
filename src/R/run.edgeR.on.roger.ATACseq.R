@@ -190,11 +190,17 @@ output.dir.path = paste0(wd.path, dir.name, ".run/")
 if(!file.exists(output.dir.path)){
     dir.create(output.dir.path)
 }
-output.dir.path = paste0(output.dir.path, "output/")
-if(!file.exists(output.dir.path)){
+if(filter.cut == 0){
+  output.dir.path = paste0(output.dir.path, "output/")
+  if(!file.exists(output.dir.path)){
     dir.create(output.dir.path)
-}
-
+  }
+}else{
+  output.dir.path = paste0(output.dir.path, "output", filter.cut, "/")
+  if(!file.exists(output.dir.path)){
+    dir.create(output.dir.path)
+  }
+}  
 
 ## output min.pval
 write.table(min.pval, file = paste0(output.dir.path, "/min.pval.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
