@@ -1,3 +1,9 @@
+get.effect.on.roger.newATACseq.R 
+ - compute effect size; modify make.effect.figure.on.roger.newATACseq.R
+
+my.utils.edit.R
+ - to modify the function remove.pcr.artifacts; want to speed up 
+
 prepare.info.for.Roger.R
  - to prepare information for roger quickly
 
