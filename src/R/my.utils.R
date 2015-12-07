@@ -216,6 +216,39 @@ remove.pcr.artifacts <- function(data, win.half.size = 50, prop.thresh = 0.9){
 }
 
 
+##' 'remove.pcr.artifacts.in.known.posi' uses pre-identified positions where at least one sample has pcr artifacts and replace read counts of all samples at that position with max(1, average of read counts of sample without pcr artifacts).
+##'
+##'
+##' 
+##' 
+##' @param data a matrix of num of samples by site size; original count data of all samples in a given site
+##' @param known.pcr.posi a vector of positions 
+##' @param win.half.size default=50; argument to get.pcr.artifacts.posi
+##' @param prop.thresh default=0.9; argument to get.pcr.artifacts.posi
+##' @return a list of data and posi.with.pcr.artifacts; data contains pcr artifacts-removed data; posi.with.pcr.artifacts contains a list of positions where at least one sample has pcr.artifacts. 
+remove.pcr.artifacts.in.known.posi <- function(data, known.pcr.posi, win.half.size = 50, prop.thresh = 0.9){
+
+  if(length(known.pcr.posi) > 0){
+    num.sam = dim(data)[2]
+  
+    pcr.posi.list = lapply(known.pcr.posi, get.pcr.artifacts.posi, data = data, win.half.size = win.half.size, prop.thresh = prop.thresh)
+
+    len.pcr.posi = length(pcr.posi.list)
+    for(p in 1:len.pcr.posi){
+      pcr.sam = pcr.posi.list[[p]]
+      ix = known.pcr.posi[p]
+      if(length(pcr.sam) == num.sam){
+        data[,ix] = 1
+      }else{
+        data[, ix] = max(1, ceiling(mean(data[-pcr.sam,ix])))
+      }
+    }
+  }
+  return(list(data=data))
+}
+
+
+
 
 ##' 'get.pval.from.empirical.null.dist.discrete' takes empirical distribution of statistic
 ##' under the null (statistic.null) and a series of observed test statistics (statistic.alt),
