@@ -123,9 +123,7 @@ cat(filteredWCs, file = this.path)
 numPerm = NULL
 numSig = 10
 # perform test 
-res = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth = NULL, numPerm = numPerm, numSig= numSig, use.default.compute.logLR = TRUE, cxx=TRUE)
-
-
+res = multiseq(phenoD,genoD,ashparam=list(prior="uniform"),verbose=TRUE)
 
 # write output
 out.dir.path = paste0(wd.path, "multiscale/", output.dir.name, ".output") 
@@ -134,7 +132,7 @@ if(!file.exists(out.dir.path)){
 }
 
 
-write.table(res$logLR, file = paste0(out.dir.path, "/res.", seed, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+write.table(res$logLR$value, file = paste0(out.dir.path, "/res.", seed, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
 
 
 
