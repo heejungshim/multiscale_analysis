@@ -347,15 +347,16 @@ if(deseq.preprocess){
 
 ## perform test
 genoD = g
-res = permutation.logLR(pheno.dat = phenoD, geno.dat = genoD, library.read.depth = library.read.depth, numPerm = NULL, use.default.compute.logLR = TRUE, cxx=TRUE)
+res = multiseq(x = phenoD, g = genoD, read.depth = library.read.depth, verbose=TRUE)
+out.res = c(res$logLR$value, res$logLR$scales)
 
 ## write output
 if(is.null(sites.ix)){
-    write.table(t(c(sites, res$logLR)), file = paste0(multiseq.out.dir.path, "/res.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
+    write.table(t(c(sites, out.res)), file = paste0(multiseq.out.dir.path, "/res.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
     write.table(t(c(sites, pcr.posi[[1]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
     write.table(t(c(sites, pcr.posi[[2]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
 }else{
-    write.table(res$logLR, file = paste0(multiseq.out.dir.path, "/res.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+    write.table(t(out.res), file = paste0(multiseq.out.dir.path, "/res.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
     for(m in 1:(pcr.ix-1)){
         if(m == 1){
             write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
