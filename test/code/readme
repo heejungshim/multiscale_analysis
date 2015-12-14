@@ -1,3 +1,6 @@
+simulateDataForAll.run.multiscale_debug.R
+ - to generate data sets which show NA in their logLR computation. 
+
 get.effect.on.roger.newATACseq.R 
  - compute effect size; modify make.effect.figure.on.roger.newATACseq.R
 
