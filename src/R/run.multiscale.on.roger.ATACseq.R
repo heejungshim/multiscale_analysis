@@ -1,4 +1,4 @@
-## `run.multiscale.on.roger.ATACseq.R' runs only multiseq on roger ATAC-seq data. It is useful when we try to rerun only multiseq after preprocessing (there is an option to avoid pcr.posi computation).  
+## `run.multiscale.on.roger.ATACseq.R' runs only multiseq on roger ATAC-seq data. It is useful when we try to rerun only multiseq after preprocessing (there is an option to avoid pcr.posi computation).
 ##
 ##
 ## Example Usage (in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/multiscale/com/Copper.1024.both.null/) R CMD BATCH --no-save --no-restore "--args chr=10 sites.ix=$SGE_TASK_ID wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/' siteSize=1024 treatment='Copper' null=TRUE strand='both' pcr.posi.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/multiscale.backup/Copper.1024.both.null.output/' pcr.posi.print=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.roger.ATACseq.R
@@ -11,8 +11,8 @@
 ## treatment : treatment name
 ## null : indicate whether it's null (control 1 vs control 2) or alternative data
 ## strand : 'both', 'plus', 'minus'; add two strands, use + strand, or use - strand
-## pcr.posi.path : default = NULL; if it is null, recompute pcr posi. Otherwise, read pre-computed pcr.posi 
-## pcr.posi.print : default = TRUE; whether to print pcr posi or not. 
+## pcr.posi.path : default = NULL; if it is null, recompute pcr posi. Otherwise, read pre-computed pcr.posi
+## pcr.posi.print : default = TRUE; whether to print pcr posi or not.
 ##
 ## Copyright (C) 2015 Heejung Shim
 ##
