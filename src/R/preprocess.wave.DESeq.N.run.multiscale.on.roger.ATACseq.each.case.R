@@ -44,36 +44,36 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 
 
 
-chr=7
-sites.ix=1
-wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/'
-siteSize=2048
-treatment='Copper'
+##chr=7
+##sites.ix=1
+##wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC/run/'
+##siteSize=2048
+##treatment='Copper'
 
-null=TRUE
-strand='both'
+##null=TRUE
+##strand='both'
 #strand='plus'
 #strand='minus'
-meanR.thresh=1
-window.size.list=c(100,300)
-wavelet.preprocess=TRUE
-deseq.preprocess=TRUE
+##meanR.thresh=1
+##window.size.list=c(100,300)
+##wavelet.preprocess=TRUE
+##deseq.preprocess=TRUE
 
 
 
 
-#args = (commandArgs(TRUE))
-#eval(parse(text=args[[1]]))
-#eval(parse(text=args[[2]]))
-#eval(parse(text=args[[3]]))
-#eval(parse(text=args[[4]]))
-#eval(parse(text=args[[5]]))
-#eval(parse(text=args[[6]]))
-#eval(parse(text=args[[7]]))
-#eval(parse(text=args[[8]]))
-#eval(parse(text=args[[9]]))
-#eval(parse(text=args[[10]]))
-#eval(parse(text=args[[11]]))
+args = (commandArgs(TRUE))
+eval(parse(text=args[[1]]))
+eval(parse(text=args[[2]]))
+eval(parse(text=args[[3]]))
+eval(parse(text=args[[4]]))
+eval(parse(text=args[[5]]))
+eval(parse(text=args[[6]]))
+eval(parse(text=args[[7]]))
+eval(parse(text=args[[8]]))
+eval(parse(text=args[[9]]))
+eval(parse(text=args[[10]]))
+eval(parse(text=args[[11]]))
 
 
 ## assigen treatment and control name according to input
@@ -347,7 +347,7 @@ if(deseq.preprocess){
 
 ## perform test
 genoD = g
-res = multiseq(x = phenoD, g = genoD, read.depth = library.read.depth)
+res = multiseq(x = phenoD, g = genoD, read.depth = library.read.depth, verbose = TRUE)
 out.res = c(res$logLR$value, res$logLR$scales)
 
 ## write output
