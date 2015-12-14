@@ -1,7 +1,7 @@
 ## `run.multiscale.on.roger.ATACseq.R' runs only multiseq on roger ATAC-seq data. It is useful when we try to rerun only multiseq after preprocessing (there is an option to avoid pcr.posi computation).  
 ##
 ##
-## Example Usage
+## Example Usage (in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/multiscale/com/Copper.1024.both.null/) R CMD BATCH --no-save --no-restore "--args chr=10 sites.ix=$SGE_TASK_ID wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/' siteSize=1024 treatment='Copper' null=TRUE strand='both' pcr.posi.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/multiscale.backup/Copper.1024.both.null.output/' pcr.posi.print=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.roger.ATACseq.R
 ##
 ##
 ## chr : chromosome
@@ -277,7 +277,7 @@ phenoD = ATAC.dat
 
 ## perform test
 genoD = g
-res = multiseq(x = phenoD, g = genoD, read.depth = library.read.depth)
+res = multiseq(x = phenoD, g = genoD, read.depth = library.read.depth, verbose = TRUE)
 out.res = c(res$logLR$value, res$logLR$scales)
 
 ## write output
