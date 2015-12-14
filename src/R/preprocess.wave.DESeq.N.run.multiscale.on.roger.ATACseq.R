@@ -370,7 +370,7 @@ if(deseq.preprocess){
 
 ## perform test
 genoD = g
-res = multiseq(x = phenoD, g = genoD, read.depth = library.read.depth, verbose=TRUE)
+res = multiseq(x = phenoD, g = genoD, read.depth = library.read.depth)
 out.res = c(res$logLR$value, res$logLR$scales)
 
 ## write output
