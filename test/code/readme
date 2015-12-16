@@ -22,4 +22,7 @@ check.function.PCR.artifacts.R
 
 check.install.multiseq.R
  - check if I installed a right version of multiseq
+
+
+
   
