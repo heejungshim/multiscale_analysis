@@ -19,27 +19,6 @@
 ## strand : 'both', 'plus', 'minus'; add two strands, use + strand, or use - strand
 ## pcr.posi.path : default = NULL; if it is null, recompute pcr posi. Otherwise, read pre-computed pcr.posi
 ## pcr.posi.print : default = TRUE; whether to print pcr posi or not.
-
-
-##pcr.artifact.script.path='/depot/hjshim/data/hjshim/projects/utils_shim/R/pcr.artifact.R'
-##rhdf5.script.path='/depot/hjshim/data/hjshim/projects/utils_shim/R/rhdf5.R'
-##hdf5.data.path ='/depot/hjshim/data/shared_data/internal_restricted/roger_atacseq2/hdf5/'
-##library.read.depth.path='/depot/hjshim/data/shared_data/internal_restricted/roger_atacseq2/hdf5/'
-##loc.path='/depot/hjshim/data/hjshim/projects/multiscale/atacseq_analysis/locus/'
-
-##wd.path='/depot/hjshim/data/hjshim/projects/multiscale/atacseq_analysis/run/' 
-##siteSize=1024
-##treatment='Copper'
-##strand='both'
-##null=FALSE
-
-##chr=1 
-##sites.ix=1
-##sites.iv=1
-##pcr.posi.path=NULL
-##pcr.posi.print = TRUE
-
-
 ##
 ## Copyright (C) 2015 Heejung Shim
 ##
