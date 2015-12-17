@@ -1,11 +1,17 @@
 ## `run.multiscale.on.roger.ATACseq.R' runs only multiseq on roger ATAC-seq data. It is useful when we try to rerun only multiseq after preprocessing (there is an option to avoid pcr.posi computation).
 ##
 ##
-## Example Usage (in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/multiscale/com/Copper.1024.both.null/) R CMD BATCH --no-save --no-restore "--args chr=10 sites.ix=$SGE_TASK_ID wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/' siteSize=1024 treatment='Copper' null=TRUE strand='both' pcr.posi.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/multiscale.backup/Copper.1024.both.null.output/' pcr.posi.print=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.roger.ATACseq.R
+## Example Usage (in /mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/multiscale/com/Copper.1024.both.null/) R CMD BATCH --no-save --no-restore "--args chr=2 sites.ix=$SGE_TASK_ID sites.iv=100 pcr.artifact.script.path='/mnt/lustre/home/shim/multiscale_analysis/src/R/my.utils.R' rhdf5.script.path='/mnt/lustre/home/shim/multiscale_analysis/src/R/utils.R' hdf5.data.path='/data/share/genome_db/hg19/roger_atacseq2/' library.read.depth.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/info/' loc.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/locus/' wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/' siteSize=1024 treatment='Copper' null=TRUE strand='both' pcr.posi.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/multiscale.backup/Copper.1024.both.null.output/' pcr.posi.print=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.multiscale.on.roger.ATACseq.R
 ##
 ##
+## pcr.artifact.script.path : path to script to handle pcr artifact
+## rhdf5.script.path : path to script to read data from hdf5 format
+## hdf5.data.path : path to a directory which contains hdf5 data
+## library.read.depth.path : path to a directory which contains library read depth file
+## loc.path : path to a directory which contains location file
 ## chr : chromosome
-## sites.ix : default=NULL; if it is null, run multiseq on all sites or we can specifiy partifular site
+## sites.iv : how many sites to run in this script.
+## sites.ix : this script will run from st.sites = sites.iv * (sites.ix -1) + 1 to en.sites = min(sites.iv * sites.ix, numSites) 
 ## wd.path : working directory path
 ## siteSize : site size
 ## treatment : treatment name
@@ -13,6 +19,27 @@
 ## strand : 'both', 'plus', 'minus'; add two strands, use + strand, or use - strand
 ## pcr.posi.path : default = NULL; if it is null, recompute pcr posi. Otherwise, read pre-computed pcr.posi
 ## pcr.posi.print : default = TRUE; whether to print pcr posi or not.
+
+
+##pcr.artifact.script.path='/depot/hjshim/data/hjshim/projects/utils_shim/R/pcr.artifact.R'
+##rhdf5.script.path='/depot/hjshim/data/hjshim/projects/utils_shim/R/rhdf5.R'
+##hdf5.data.path ='/depot/hjshim/data/shared_data/internal_restricted/roger_atacseq2/hdf5/'
+##library.read.depth.path='/depot/hjshim/data/shared_data/internal_restricted/roger_atacseq2/hdf5/'
+##loc.path='/depot/hjshim/data/hjshim/projects/multiscale/atacseq_analysis/locus/'
+
+##wd.path='/depot/hjshim/data/hjshim/projects/multiscale/atacseq_analysis/run/' 
+##siteSize=1024
+##treatment='Copper'
+##strand='both'
+##null=FALSE
+
+##chr=1 
+##sites.ix=1
+##sites.iv=1
+##pcr.posi.path=NULL
+##pcr.posi.print = TRUE
+
+
 ##
 ## Copyright (C) 2015 Heejung Shim
 ##
@@ -31,40 +58,34 @@
 
 
 
-
-setwd("/mnt/lustre/home/shim/multiscale_analysis")
-
 library("multiseq")
 library("ashr")
 
 
-multiscale.analysis.repodir <- scan(".multiscale_analysis.repodir.txt", what=character())
-source(paste0(multiscale.analysis.repodir, "/src/R/utils.R"))
-source(paste0(multiscale.analysis.repodir, "/src/R/my.utils.R"))
+##pcr.artifact.script.path='/depot/hjshim/data/hjshim/projects/utils_shim/R/pcr.artifact.R'
+##rhdf5.script.path='/depot/hjshim/data/hjshim/projects/utils_shim/R/rhdf5.R'
+##hdf5.data.path ='/depot/hjshim/data/shared_data/internal_restricted/roger_atacseq2/hdf5/'
+##library.read.depth.path='/depot/hjshim/data/shared_data/internal_restricted/roger_atacseq2/hdf5/'
+##loc.path='/depot/hjshim/data/hjshim/projects/multiscale/atacseq_analysis/locus/'
 
-
-##chr=1 
-##sites.ix=1 
-##wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/' 
+##wd.path='/depot/hjshim/data/hjshim/projects/multiscale/atacseq_analysis/run/' 
 ##siteSize=1024
 ##treatment='Copper'
-##null=FALSE
 ##strand='both'
-##pcr.posi.path = '/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/run/multiscale.backup/Copper.1024.both.alt.output/'
+##null=FALSE
+
+##chr=1 
+##sites.ix=1
+##sites.iv=1
+##pcr.posi.path=NULL
 ##pcr.posi.print = TRUE
 
 
-
 args = (commandArgs(TRUE))
-eval(parse(text=args[[1]]))
-eval(parse(text=args[[2]]))
-eval(parse(text=args[[3]]))
-eval(parse(text=args[[4]]))
-eval(parse(text=args[[5]]))
-eval(parse(text=args[[6]]))
-eval(parse(text=args[[7]]))
-eval(parse(text=args[[8]]))
-eval(parse(text=args[[9]]))
+eval(parse(text=args))
+
+source(pcr.artifact.script.path)
+source(rhdf5.script.path)
 
 ## assigen treatment and control name according to input
 ## treatment    alt     null    control 
@@ -103,19 +124,12 @@ if(treatment=='Retinoic'){
 ## sample names
 names.Sam = c("N501", "N502", "N503")
 
-## Path to directory which contain ATAC-seq data as hdf5 format, 
-hdf5.data.path = "/data/share/genome_db/hg19/roger_atacseq2/"
-
 ## Make a list of sample names and a list of hdf5 file names : treatment first and control later.
 sample.names = c(paste0(name.treatment, names.Sam), paste0(name.control, names.Sam))
 sample.files = paste0(sample.names, ".qfiltered10")
 
-
 ## Make a covariate
 g = c(rep(0, length(names.Sam)), rep(1, length(names.Sam)))
-
-## Path to library read depth
-library.read.depth.path = "/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/info/"
 
 ## pcr posi is given
 if(!is.null(pcr.posi.path)){
@@ -141,7 +155,6 @@ if(!file.exists(multiseq.out.dir.path)){
 }
 
 
-    
 ## make warning message directory
 warning.dir.path = paste0(wd.path, "multiscale/", output.dir.name, ".warnings") 
 if(!file.exists(warning.dir.path)){
@@ -149,29 +162,23 @@ if(!file.exists(warning.dir.path)){
 }
 
 #############################
-# read location information and numSites for each chromosome
+## read location information and numSites for each chromosome
 #############################
-path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/locus/", treatment, ".", siteSize, ".chr", chr, ".locus")
+path = paste0(loc.path, treatment, ".", siteSize, ".chr", chr, ".locus")
 loc.info = read.table(path, header=TRUE)
 
-path = paste0("/mnt/lustre/home/shim/multiscale_analysis/analysis/roger_ATAC2/locus/", treatment, ".", siteSize, ".numSites.txt")
+path = paste0(loc.path, treatment, ".", siteSize, ".numSites.txt")
 numSites = scan(path)[chr]
 
-## whether we run a whole chromosome together or not 
-if(is.null(sites.ix)){
-    st.sites = 1
-    en.sites = numSites
-    write.table(NULL, file = paste0(multiseq.out.dir.path, "/res.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
-    write.table(NULL, file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
-   
-}else{
-    st.sites = sites.ix
-    en.sites = sites.ix
-}
 
+st.sites = sites.iv * (sites.ix -1) + 1
+en.sites = min(sites.iv * sites.ix, numSites) 
+
+if(st.sites <= numSites){
+  
 for(sites in st.sites:en.sites){
 
-# sites = 1    
+## sites = 1    
 ## create file for warning message
 warn.path = paste0(warning.dir.path, "/warnings.", chr, ".", sites, ".txt")
 warnings.file <- file(warn.path, open="wt")
@@ -281,23 +288,16 @@ res = multiseq(x = phenoD, g = genoD, read.depth = library.read.depth, verbose =
 out.res = c(res$logLR$value, res$logLR$scales)
 
 ## write output
-if(is.null(sites.ix)){
-    write.table(t(c(sites, out.res)), file = paste0(multiseq.out.dir.path, "/res.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
-    write.table(t(c(sites, pcr.posi[[1]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
-    write.table(t(c(sites, pcr.posi[[2]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
-}else{
-    write.table(t(out.res), file = paste0(multiseq.out.dir.path, "/res.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
-    if(pcr.posi.print){
-      for(m in 1:(pcr.ix-1)){
-        if(m == 1){
-          write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
-        }else{
-          write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
-        }
-      }
+write.table(t(out.res), file = paste0(multiseq.out.dir.path, "/res.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+if(pcr.posi.print){
+  for(m in 1:(pcr.ix-1)){
+    if(m == 1){
+      write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+    }else{
+      write.table(t(c(m, pcr.posi[[m]])), file = paste0(multiseq.out.dir.path, "/pcrposi.", chr, ".", sites, ".out"), quote= FALSE, row.names = FALSE, col.names = FALSE, append = TRUE)
     }
+  }
 }
 
 }
-
-
+}
