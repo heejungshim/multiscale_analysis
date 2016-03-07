@@ -1,7 +1,7 @@
 ## `run.edgeR.on.simulation.R' contains scrits to run edgeR on simulated data.
 ## 
 ##
-## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/sum/DESeq/com/): R CMD BATCH --no-save --no-restore "--args wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/' numSam=6 read.depth.ratio=1 num.simu=500 siteSize=1024 filter.cut=0 null.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/' combineNullandAlt=TRUE separateNullandAlt=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.DESeq2.on.simulation.R
+## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_manyQTLfinal_v1/sum/edgeR/com/): R CMD BATCH --no-save --no-restore "--args wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_manyQTLfinal_v1/' numSam=10 read.depth.ratio=1 num.simu=578 siteSize=1024 filter.cut=0 combineNullandAlt=TRUE separateNullandAlt=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.edgeR.on.simulation.R
 ##
 ##
 ## wd.path : working directory path
