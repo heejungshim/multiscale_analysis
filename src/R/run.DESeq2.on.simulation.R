@@ -1,7 +1,7 @@
 ## `run.DESeq2.on.simulation.R' contains scrits to run DESeq2 on simulated data.
 ## 
 ##
-## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/sum/DESeq/com/): R CMD BATCH --no-save --no-restore "--args wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/' numSam=6 read.depth.ratio=1 num.simu=500 siteSize=1024 filter.cut=0 null.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/'" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.DESeq2.on.simulation.R
+## Example Usage (see command in /mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/sum/DESeq/com/): R CMD BATCH --no-save --no-restore "--args wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/' numSam=6 read.depth.ratio=1 num.simu=500 siteSize=1024 filter.cut=0 null.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/' combineNullandAlt=TRUE separateNullandAlt=TRUE" /mnt/lustre/home/shim/multiscale_analysis/src/R/run.DESeq2.on.simulation.R
 ##
 ##
 ## wd.path : working directory path
@@ -10,6 +10,9 @@
 ## num.simu : number of simulations
 ## siteSize : site size in simulation 
 ## filter.cut : analysis includes window with read count > filter.cut
+## null.path : path to directory where null data have been saved.
+## combineNullandAlt : if it is true, the script runs software after combining null and alternative data sets
+## separateNullandAlt : if it is true, the script runs software after combining null and alternative data sets
 ##
 ##
 ## Copyright (C) 2014 Heejung Shim
@@ -29,26 +32,29 @@
 
 
 args = (commandArgs(TRUE))
-eval(parse(text=args[[1]]))
-eval(parse(text=args[[2]]))
-eval(parse(text=args[[3]]))
-eval(parse(text=args[[4]]))
-eval(parse(text=args[[5]]))
-eval(parse(text=args[[6]]))
-if(length(args) == 6){
+eval(parse(text=args))
+
+if(!exists("null.path")){
   null.path = NULL
-}else{
-  eval(parse(text=args[[7]]))
+}
+if(!exists("combineNullandAlt")){
+  combineNullandAlt = TRUE
+}
+if(!exists("separateNullandAlt")){
+  separateNullandAlt = TRUE
 }
 
 
-##wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/'
-##numSam = 6
-##read.depth.ratio = 1
-##num.simu = 500
-##siteSize = 1024
-##filter.cut = 0
-##null.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint_new/'
+##wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_manyQTLfinal_v2/'
+##numSam=10
+##read.depth.ratio=1
+##num.simu=578
+##siteSize=1024
+##filter.cut=0
+##null.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_manyQTLfinal_v1/'
+##combineNullandAlt = TRUE
+##separateNullandAlt = TRUE
+
 
 library("DESeq2")
 
@@ -96,41 +102,139 @@ for(ww in 1:3){
   input.path = paste0(wd.path, "alt/DESeq/", dir.name, ".", window.size, ".run/")
   deseq.data.alt = read.table(paste0(input.path, "data.txt"))
 
-  ## combine data
-  deseq.data = rbind(deseq.data.null, deseq.data.alt)
+  if(combineNullandAlt){
+    ## combine data
+    deseq.data = rbind(deseq.data.null, deseq.data.alt)
 
-  ## Converts the colData table to a dataframe with vector labels
-  colData <- data.frame(row.names = as.vector(name.list), t = as.vector(genoD))
+    ## Converts the colData table to a dataframe with vector labels
+    colData <- data.frame(row.names = as.vector(name.list), t = as.vector(genoD))
 
-  ## filter data
-  rsum = rowSums (deseq.data)
-  use = ((rsum > filter.cut) & (!is.na(rsum)))
-  countData.filtered = deseq.data[use, ]
+    ## filter data
+    rsum = rowSums (deseq.data)
+    use = ((rsum > filter.cut) & (!is.na(rsum)))
+    countData.filtered = deseq.data[use, ]
 
-  ## Perform DESeq2 Analysis
-  ddsTvC <- DESeqDataSetFromMatrix(
-      countData=countData.filtered,
-      colData=colData,
-      design = ~ t)
-  dds <- DESeq(ddsTvC)
-  res <- results(dds)
+    ## Perform DESeq2 Analysis
+    ddsTvC <- DESeqDataSetFromMatrix(
+        countData=countData.filtered,
+        colData=colData,
+        design = ~ t)
+    dds <- DESeq(ddsTvC)
+    res <- results(dds)
 
-  ## get p-value
-  pval.vec = rep(NA, length(use))
-  pval.vec[use==TRUE] = res$pvalue
-  pval.filtered =matrix(pval.vec,ncol=numC,byrow=T)
+    ## get p-value
+    pval.vec = rep(NA, length(use))
+    pval.vec[use==TRUE] = res$pvalue
+    pval.filtered =matrix(pval.vec,ncol=numC,byrow=T)
 
-  ## get minimum p-value for each site
-  min.pval=apply(pval.filtered,1,min,na.rm=TRUE)
-  min.pval[is.infinite(min.pval)] = NA
+    ## get minimum p-value for each site
+    min.pval=apply(pval.filtered,1,min,na.rm=TRUE)
+    min.pval[is.infinite(min.pval)] = NA
 
-  ## try to save output
-  output.path = paste0(wd.path, "sum/DESeq/", dir.name, ".", window.size)
+    ## try to save output
+    output.path = paste0(wd.path, "sum/DESeq/", dir.name, ".", window.size)
 
-  ## output min.pval
-  write.table(min.pval, file = paste0(output.path, ".min.pval.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+    ## output min.pval
+    write.table(min.pval, file = paste0(output.path, ".min.pval.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
 
-  ## output object just in case we want to take a close look!
-  save("res", "use", file =paste0(output.path, ".Robj"))
+    ## output object just in case we want to take a close look!
+    save("res", "use", file =paste0(output.path, ".Robj"))
 
+    if(ww == 3){
+      mlogLR.vec = qchisq(1-res@listData$pvalue, 1)/2
+      mlogLR = rep(NA, length(use))
+      mlogLR[use==TRUE] = mlogLR.vec
+      ## write logLR for windown size 1024
+      write.table(mlogLR, file = paste0(output.path, ".logLR.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+    }
+  }
+
+  if(separateNullandAlt){
+    ## Converts the colData table to a dataframe with vector labels
+    colData <- data.frame(row.names = as.vector(name.list), t = as.vector(genoD))
+
+    ## for null data
+    deseq.data = deseq.data.null
+    
+    ## filter data
+    rsum = rowSums (deseq.data)
+    use = ((rsum > filter.cut) & (!is.na(rsum)))
+    countData.filtered = deseq.data.null[use, ]
+
+    ## Perform DESeq2 Analysis
+    ddsTvC <- DESeqDataSetFromMatrix(
+        countData=countData.filtered,
+        colData=colData,
+        design = ~ t)
+    dds <- DESeq(ddsTvC)
+    res <- results(dds)
+
+    ## get p-value
+    pval.vec = rep(NA, length(use))
+    pval.vec[use==TRUE] = res$pvalue
+    pval.filtered =matrix(pval.vec,ncol=numC,byrow=T)
+
+    ## get minimum p-value for each site
+    min.pval=apply(pval.filtered,1,min,na.rm=TRUE)
+    min.pval[is.infinite(min.pval)] = NA
+
+    min.pval.null = min.pval
+    res.null = res
+    use.null = use
+
+    ## for alt data
+    deseq.data = deseq.data.alt
+    
+    ## filter data
+    rsum = rowSums (deseq.data)
+    use = ((rsum > filter.cut) & (!is.na(rsum)))
+    countData.filtered = deseq.data.null[use, ]
+
+    ## Perform DESeq2 Analysis
+    ddsTvC <- DESeqDataSetFromMatrix(
+        countData=countData.filtered,
+        colData=colData,
+        design = ~ t)
+    dds <- DESeq(ddsTvC)
+    res <- results(dds)
+
+    ## get p-value
+    pval.vec = rep(NA, length(use))
+    pval.vec[use==TRUE] = res$pvalue
+    pval.filtered =matrix(pval.vec,ncol=numC,byrow=T)
+
+    ## get minimum p-value for each site
+    min.pval=apply(pval.filtered,1,min,na.rm=TRUE)
+    min.pval[is.infinite(min.pval)] = NA
+
+    min.pval.alt = min.pval
+    res.alt = res
+    use.alt = use
+
+    min.pval = c(min.pval.null, min.pval.alt)
+    use = c(use.null, use.alt)
+    
+    ## try to save output
+    output.path = paste0(wd.path, "sum/DESeq/sep.", dir.name, ".", window.size)
+
+    ## output min.pval
+    write.table(min.pval, file = paste0(output.path, ".min.pval.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+
+    ## output object just in case we want to take a close look!
+    save("res.alt", "res.null", "use", "use.alt", "use.null", file =paste0(output.path, ".Robj"))
+
+    if(ww == 3){
+      mlogLR.vec.null = qchisq(1-res.null@listData$pvalue, 1)/2
+      mlogLR.null = rep(NA, length(use.null))
+      mlogLR.null[use.null==TRUE] = mlogLR.vec.null
+      mlogLR.vec.alt = qchisq(1-res.alt@listData$pvalue, 1)/2
+      mlogLR.alt = rep(NA, length(use.alt))
+      mlogLR.alt[use.alt==TRUE] = mlogLR.vec.alt
+      mlogLR = c(mlogLR.null, mlogLR.alt)
+      ## write logLR for windown size 1024
+      write.table(mlogLR, file = paste0(output.path, ".logLR.txt"), quote= FALSE, row.names = FALSE, col.names = FALSE)
+    }
+    
+  }
+  
 }
