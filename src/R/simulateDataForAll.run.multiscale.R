@@ -2,8 +2,22 @@
 ##
 ##
 ## Example Usage : 
-## /data/tools/R-3.0.3/bin/R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/data/geno70.dat' raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_footprint/data/raw.dat' sig0.path='~/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/data/alt.sig0' sig1.path='~/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/data/alt.sig1' read.depth.ratio=NULL over.dispersion=NULL multipleSig=1 wavelet.preprocess=TRUE DESeq.preprocess=TRUE wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_simple_v1/alt/' output.dir.name='fullread.10ind'" /mnt/lustre/home/shim/multiscale_analysis/src/R/simulateDataForAll.run.multiscale.R
-## 
+## R CMD BATCH --no-save --no-restore "--args seed=$SGE_TASK_ID geno.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_manyQTLfinal_v1/data/geno10.dat' raw.dat.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_manyQTLfinal_v1/data/pheno.dat' sig0.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_manyQTLfinal_v1/data/alt.sig0' sig1.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_manyQTLfinal_v1/data/alt.sig1' read.depth.ratio=1 over.dispersion=1/70/70/10 multipleSig=1 wavelet.preprocess=TRUE DESeq.preprocess=TRUE wd.path='/mnt/lustre/home/shim/multiscale_analysis/analysis/simulation/sample_size/simulation_manyQTLfinal_v1/alt/' output.dir.name='fullread.10ind'" /mnt/lustre/home/shim/multiscale_analysis/src/R/simulateDataForAll.run.multiscale.R
+##
+##
+## seed: seed number for simulation
+## geno.path : path to genotype file
+## raw.dat.path : path to raw data file
+## sig0.path : path to signal for one group
+## sig1.path : path to signal for another group
+## read.depth.ratio : how much to increase or decreae library read depth
+## over.dispersion : overdispersion in beta-binomail distribution
+## multipleSig : if multiple signals are used (1) or not (0)
+## wavelet.preprocess : if preprocess for WaveQTL should be performed or not
+## DESeq.preprocess : if preprocess for DESeq2 should be performed or not
+## wd.path : path to working directory (all outputs will be relative to this directory)
+## output.dir.name : simulation identifier
+##
 ##
 ## Copyright (C) 2014 Heejung Shim
 ##
@@ -50,23 +64,8 @@ WaveQTL.repodir <- scan(".WaveQTL.repodir.txt", what=character())
 ##output.dir.name='fullread.10ind'
 
 
-
-
 args = (commandArgs(TRUE))
-eval(parse(text=args[[1]]))
-eval(parse(text=args[[2]]))
-eval(parse(text=args[[3]]))
-eval(parse(text=args[[4]]))
-eval(parse(text=args[[5]]))
-eval(parse(text=args[[6]]))
-eval(parse(text=args[[7]]))
-eval(parse(text=args[[8]]))
-eval(parse(text=args[[9]]))
-eval(parse(text=args[[10]]))
-eval(parse(text=args[[11]]))
-eval(parse(text=args[[12]]))
-
-
+eval(parse(text=args))
 
 if(multipleSig == 1){
   sig0.path = paste0(sig0.path, ".", seed)
@@ -227,7 +226,7 @@ if(DESeq.preprocess){
 #######################
 
 ## perform test 
-res=multiseq(phenoD,genoD,ashparam=list(prior="uniform"),verbose=TRUE)
+res=multiseq(phenoD,genoD,verbose=TRUE)
 out.res = c(res$logLR$value, res$logLR$scales)
 
 ## write output
