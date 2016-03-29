@@ -64,17 +64,15 @@ window.size.list = c(100, 300, 1024)
 setwd(wd.path)
 
 ## set up directory name
-if(read.depth.ratio==0.5){
-  dir.name=paste0("halfread.", numSam, "ind")
-}
-if(read.depth.ratio==1){
-  dir.name=paste0("fullread.", numSam, "ind")
-}
-if(read.depth.ratio==2){
-  dir.name=paste0("fullread2.", numSam, "ind")
-}
-if(read.depth.ratio==4){
-  dir.name=paste0("fullread4.", numSam, "ind")
+if(read.depth.ratio < 2){
+  if(read.depth.ratio==0.5){
+    dir.name=paste0("halfread.", numSam, "ind")
+  }
+  if(read.depth.ratio==1){
+    dir.name=paste0("fullread.", numSam, "ind")
+  }
+}else{
+  dir.name=paste0("fullread", read.depth.ratio, ".", numSam, "ind")
 }
 
 ## set up name list to run DESeq
