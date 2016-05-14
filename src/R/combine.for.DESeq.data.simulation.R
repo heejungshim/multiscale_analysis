@@ -48,14 +48,13 @@ window.size.list = c(100, 300, 1024)
 setwd(wd.path)
 
 ## set up directory name
-if(read.depth.ratio < 2){
-  if(read.depth.ratio==0.5){
-    dir.name=paste0("halfread.", numSam, "ind")
-  }
-  if(read.depth.ratio==1){
-    dir.name=paste0("fullread.", numSam, "ind")
-  }
-}else{
+if(read.depth.ratio==0.5){
+  dir.name=paste0("halfread.", numSam, "ind")
+}
+if(read.depth.ratio==1){
+  dir.name=paste0("fullread.", numSam, "ind")
+}
+if((read.depth.ratio!=0.5) & (read.depth.ratio!=1)){
   dir.name=paste0("fullread", read.depth.ratio, ".", numSam, "ind")
 }
 
